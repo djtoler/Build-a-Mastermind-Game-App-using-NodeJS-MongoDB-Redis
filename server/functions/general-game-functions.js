@@ -1,10 +1,14 @@
 // test variables
+function testGuess () {
+  return Math.floor(Math.random() * 9999) + 1;
+}
 
 const axios = require('axios');
 
 const convertThenReturnRandomNumber = (res, response) => {
+  let test = testGuess().toString();
   let number = response.data.replace(/[\n]/gm, '').toString();
-  return number ? res.json({random_number: number}) : res.json({error: 'Cant get random number'})
+  return number ? res.json({random_number: number, test_guess: test}) : res.json({error: 'Cant get random number'})
 }
 
 const getRandomNumber = async (response, res) => 
