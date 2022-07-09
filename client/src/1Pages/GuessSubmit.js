@@ -25,7 +25,6 @@ const GuessSubmit = () => {
                 });
             }
             fetchData();
-            
         }
         catch (errors) {
             toast({
@@ -36,12 +35,10 @@ const GuessSubmit = () => {
                 position: "bottom"
             });
         }
-
     }, []); 
     
     const click = async () => {
         console.log(randomNumber);
-
     }
 
     return (
