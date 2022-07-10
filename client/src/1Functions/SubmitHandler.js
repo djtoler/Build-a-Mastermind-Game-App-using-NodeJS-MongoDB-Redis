@@ -1,5 +1,4 @@
 import {checkValidInput, validateAllCorrect, checkUserGuesses, updateUserGuessInfo} from './ClientFunctions';
-
 export const submit_handler = (
     setLoading,
     toast,

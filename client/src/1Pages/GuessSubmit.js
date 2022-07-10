@@ -5,13 +5,15 @@ import { Button } from "@chakra-ui/button";
 import {VStack} from '@chakra-ui/layout';
 import axios from "axios";
 import { useToast } from '@chakra-ui/react';
+import SliderInput from '../1ComponentHelper/SliderInput';
 
 const GuessSubmit = () => {
     const toast = useToast();
     const [loading, setLoading] = useState();
-    const [guess, setGuess] = useState();
+    const [guess, setGuess] = useState(0);
     const [takeaguess, setTakeAGuess] = useState();
-    const [randomNumber, setRandomNumber] = useState()
+    const [randomNumber, setRandomNumber] = useState();
+    const [userInputNumber, setUserInputNumber] = useState();
     const config = {"Content-type": "application/json"}
 
     useEffect(()=> {
@@ -39,6 +41,13 @@ const GuessSubmit = () => {
     
     const click = async () => {
         console.log(randomNumber);
+        console.log(Number(guess)); 
+        console.log(guess, typeof(guess));
+        const {data} = await axios.post(
+            "http://127.0.0.1:9991/",
+            {guess},
+            config
+        );
     }
 
     return (
@@ -46,13 +55,16 @@ const GuessSubmit = () => {
             <FormControl isRequired>
                 <FormLabel htmlFor='first-name'>Take A Guess</FormLabel>
                 <Input 
+                    min={0} max={9999}
                     className='guessInput' 
                     id='takeaguess' 
+                    type='number'
                     placeholder='Enter a 4 Digit Number From 0000 to 9999' 
                     value={takeaguess} 
                     onChange={(e) => setGuess(e.target.value)}
                 />
             </FormControl>
+            <SliderInput guess={guess}/>
             <Button
                 colorScheme="green"
                 width="100%"
