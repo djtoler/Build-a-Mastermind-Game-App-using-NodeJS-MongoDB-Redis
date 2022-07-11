@@ -45,6 +45,7 @@ const get_and_evaluate_user_guess = (req, res) => {
   let correct_numbers_count_array = [];
   let correct_numbers_count = 0;
   let correct_locations_count = 0;
+  let guess_attempt_count = 0;
 
   const correct_numbers = () => {
     let guess_digits_array = Array.from(guess);
@@ -65,11 +66,12 @@ const get_and_evaluate_user_guess = (req, res) => {
     console.log(correct_locations_count);
     return correct_locations_count;
   }
+
   correct_numbers();
   correct_locations();
-  console.log('line71');
-  console.log(round_results = correct_numbers_count > 0 ? {correct_numbers_return: correct_numbers_count, correct_locations_return: correct_locations_count} : {})
-  return res.json(round_results = correct_numbers_count > 0 ? {correct_numbers_return: correct_numbers_count, correct_locations_return: correct_locations_count} : {})
+
+  console.log(round_results = correct_numbers_count > 0 ? {correct_numbers_return: correct_numbers_count, correct_locations_return: correct_locations_count} : {correct_numbers_return: 0, correct_locations_return: 0})
+  return res.json(round_results = correct_numbers_count > 0 ? {correct_numbers_return: correct_numbers_count, correct_locations_return: correct_locations_count} : {correct_numbers_return: 0, correct_locations_return: 0})
 };
 
 // const create_game = () => {}
@@ -82,27 +84,16 @@ const get_and_evaluate_user_guess = (req, res) => {
 //   !success ? get_random_number_from_backup() : {error:'error getting random number'}
 // }
 
-const user_input_response = (count=0) => {
-  // const {guess} = req.body;
- count++
- convert_guess_number();
- convert_random_number();
- get_and_evaluate_user_guess();
- round_count_limit();
-}
 
-// const round_count_limit = () => {
-//   switch (count) {
-//     case count < 10:
-//       round_results.guess_attempt_count = count;
-//       break;
-//     case count > 10:
-//       round_results.guess_attempt_count = 'Game Over';
-//     default:
-//       break;
-//   }
-//   return round_results;
+// const user_input_response = (count=0) => {
+//   // const {guess} = req.body;
+//  count++
+//  convert_guess_number();
+//  convert_random_number();
+//  get_and_evaluate_user_guess();
+//  round_count_limit();
 // }
+
 
 module.exports = {
   get_random_number_from_api,
