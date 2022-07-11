@@ -1,9 +1,13 @@
 const express = require('express');
 const game = express.Router();
-const { getRandomNumber } = require('../../functions/general-game-functions')
+const { get_random_number_from_api, get_and_evaluate_user_guess } = require('../../functions/general-game-functions')
 
 game.get('/random-number', (req, res, next) => {
-      getRandomNumber(req, res);
+    get_random_number_from_api(req, res);
+  })
+
+game.post('/guess-evaluation', (req, res, next) => {
+    get_and_evaluate_user_guess(req, res);
   })
 
 

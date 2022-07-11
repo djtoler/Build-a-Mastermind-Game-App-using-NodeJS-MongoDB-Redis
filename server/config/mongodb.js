@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const connectMongo = async() => {
     try {
-        const mongoConnection = await mongoose.connect(process.env.MONGO_URI, {
+        const mongoConnection = await mongoose.connect('mongodb+srv://djtoler:alphagpc@cluster0.rwafh.mongodb.net/LinkedInMMG?retryWrites=true&w=majority', {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         });
@@ -14,4 +14,4 @@ const connectMongo = async() => {
     }
 }
 
-module.exports = connectMongo
+module.exports = connectMongo;
