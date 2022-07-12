@@ -1,4 +1,4 @@
-import {React, useState, useEffect} from "react";
+import {React, useState} from "react";
 import {FormControl, FormLabel} from '@chakra-ui/react';
 import {Input} from '@chakra-ui/input';
 import { Button } from "@chakra-ui/button";
@@ -6,61 +6,41 @@ import {VStack} from '@chakra-ui/layout';
 import axios from "axios";
 import { useToast } from '@chakra-ui/react';
 import SliderInput from '../1ComponentHelper/SliderInput';
+import GameModes from "../1ComponentsMain/GameModes";
+import { checkValidInput, send_user_guess, clickHandler, FetchRandomNumber, render_guess_data} from "../1Functions/ClientFunctions";
+import './GuessSubmitCSS.css'
 
 const GuessSubmit = () => {
     const toast = useToast();
     const [loading, setLoading] = useState();
-    const [guess, setGuess] = useState(0);
-    const [takeaguess, setTakeAGuess] = useState();
+    const [guess, setGuess] = useState();
+    const [takeaguess, setTakeAGuess] = useState(undefined);
     const [randomNumber, setRandomNumber] = useState();
-    const [userInputNumber, setUserInputNumber] = useState();
-    const config = {"Content-type": "application/json"}
+    const config = {"Content-type": "application/json"};
+    const [currentGameDataArray, setCurrentGameDataArray] = useState([]);
+    let round_counter = 1;
+    let guess_evaluation;
 
-    useEffect(()=> {
-        try {
-            const fetchData = async() => {
-                await axios
-                .get("http://127.0.0.1:9991/random-number")
-                .then((res) => {
-                    setRandomNumber(res.data)
-                    console.log(res.data);
-                });
-            }
-            fetchData();
-        }
-        catch (errors) {
-            toast({
-                title: 'Error Occured!',
-                status: 'error',
-                duration: 9000,
-                isClosable: true,
-                position: "bottom"
-            });
-        }
-    }, []); 
-    
-    const click = async () => {
-        console.log(randomNumber);
-        console.log(Number(guess)); 
-        console.log(guess, typeof(guess));
-        const {data} = await axios.post(
-            "http://127.0.0.1:9991/",
-            {guess},
-            config
-        );
-    }
+    FetchRandomNumber(axios, setRandomNumber, toast);
+    const clickHandler = async () => {
+        checkValidInput(guess, toast, setLoading, 4);
+        send_user_guess (guess, axios, config, guess_evaluation, currentGameDataArray, setCurrentGameDataArray);
+        setGuess('');
+    };
 
     return (
-        <VStack spacing="5px" color="black">
+        <div>
+            <GameModes/>
+            <VStack spacing="5px" color="black">
             <FormControl isRequired>
-                <FormLabel htmlFor='first-name'>Take A Guess</FormLabel>
+                <FormLabel htmlFor='first-name'></FormLabel>
                 <Input 
                     min={0} max={9999}
                     className='guessInput' 
                     id='takeaguess' 
                     type='number'
                     placeholder='Enter a 4 Digit Number From 0000 to 9999' 
-                    value={takeaguess} 
+                    value={guess} 
                     onChange={(e) => setGuess(e.target.value)}
                 />
             </FormControl>
@@ -69,13 +49,20 @@ const GuessSubmit = () => {
                 colorScheme="green"
                 width="100%"
                 style={{ marginTop: 15 }}
-                onClick={click}
+                onClick={clickHandler}
                 isLoading={loading}
                 >
                 Submit Your Guess
             </Button>
-        </VStack>
+            </VStack> 
+            <div>
+                {render_guess_data(currentGameDataArray, round_counter, 5)}
+            </div>
+        </div>
     );
 };
 
 export default GuessSubmit;
+
+
+

@@ -1,131 +1,91 @@
-export const handler = (
-  setLoading,
-  toast,
-  setWonGame,
-  userInputNumber,
-  props,
-  serverData,
-  guessAttemptCounter,
-  setGuessArray,
-  setUserInputNumber,
-  count,
-  setCount
-) => {
-  setLoading(true);
-  let correctLocationCount = 0;
-  let correctNumbersCount = 0;
-  let tally = guessAttemptCounter;
-  checkValidInput(userInputNumber, toast, setLoading);
-  if (validateAllCorrect(userInputNumber, props, setLoading, setWonGame))
-    return;
-  else {
-    // tallyFunc(count, setCount)
-    [correctLocationCount, correctNumbersCount, tally] = checkUserGuesses(
-      serverData,
-      userInputNumber,
-      correctLocationCount,
-      correctNumbersCount,
-      tally
-    );
-    updateUserGuessInfo(
-      setGuessArray,
-      userInputNumber,
-      setLoading,
-      setUserInputNumber,
-      guessAttemptCounter,
-      correctLocationCount,
-      correctNumbersCount
-    );
-  }
-};
+import { useEffect } from "react";
 
-export const checkValidInput = (userInputNumber, toast, setLoading) => {
-  // if user tries to input w/out entering # or less than 4 digits
-  // UPDATE THIS CODE TO TAKE ANY AMOUNT OF USER INPUTS IN PARAMATERS
-  if (!userInputNumber || userInputNumber.length < 4) {
+export const FetchRandomNumber = (axios, setRandomNumber, toast) => {
+  useEffect(()=> {
+    try {
+        const fetchData = async() => {
+            await axios
+            .get("http://127.0.0.1:9991/random-number")
+            .then((res) => {
+                setRandomNumber(res.data)
+                console.log(res.data);
+            });
+        }
+        fetchData();
+    }
+    catch (errors) {
+        toast({
+            title: 'Error Occured!',
+            status: 'error',
+            duration: 9000,
+            isClosable: true,
+            position: "bottom"
+        });
+    }
+}, []); 
+}
+
+export const clickHandler = async (guess, toast, setLoading, axios, config, guess_evaluation,  setCurrent_Game_Data) => {
+  checkValidInput(guess, toast, setLoading);
+  send_user_guess (guess, axios, config, guess_evaluation, setCurrent_Game_Data);
+}
+
+export const checkValidInput = (guess, toast, setLoading, min_guess_length) => {
+  let not_valid = undefined || guess.length < min_guess_length 
+    ?
     toast({
       title: "Please Enter A 4-Digit Number The Field Before Clicking Submit",
       status: "warning",
       duration: 5000,
       isClosable: true,
       position: "bottom",
-    });
-    setLoading(false);
-    return;
-  }
+    }) && setLoading(false) 
+    : 
+    null
+    return not_valid;
+}
+
+export const send_user_guess = async ( guess, axios, config, guess_evaluation, array, setArray) => {
+  const data = await axios
+  .post(
+    "http://127.0.0.1:9991/guess-evaluation",
+    {guess},
+    config
+  )
+  .then((res) => {
+      console.log(res.data);
+      guess_evaluation = res.data;
+      setArray(array => [... array, guess_evaluation])
+    })
+}
+
+export const render_guess_data = (array, round_counter, limited_number_of_rounds) => {
+  let guesses_left = limited_number_of_rounds - 1
+  let render =             
+  <div>
+    {array.map((round, i) => {     
+        return <div className="guess-data" key={i}>
+            Round #: {round_counter >= limited_number_of_rounds ? game_reload() : round_counter++} <br/>
+            Your Guess: {round.guess_attempt_return} <br/>
+            Correct Numbers: {round.correct_numbers_return < 4 ? round.correct_numbers_return : all_four_correct_reload('you won')} <br/>
+            Correct Locations: {round.correct_locations_return} <br/>
+            Guesses Left: {guesses_left--}
+        </div>
+    })}
+  </div>
+  return render;
+}
+
+export const all_four_correct_reload = (game_won_response) => {
+  return setTimeout(() => {
+    game_won_response &&
+    window.location.reload()
+  }, 5000);
 };
 
-export const checkUserGuesses = (
-  serverData,
-  userInputNumber,
-  correctLocationCount,
-  correctNumbersCount,
-  tally
-) => {
-  tally++;
-  console.log(tally);
-  for (let i = 0; i < serverData.length; i++) {
-    // evaluate for correct numbers only
-    if (
-      serverData.charAt(i) === userInputNumber.charAt(0).toString() ||
-      serverData.charAt(i) === userInputNumber.charAt(1).toString() ||
-      serverData.charAt(i) === userInputNumber.charAt(2).toString() ||
-      serverData.charAt(i) === userInputNumber.charAt(3).toString()
-    ) {
-      correctNumbersCount++;
-    }
-    // evaluate for correct number with correct location
-    if (userInputNumber.toString().charAt(i) === serverData.charAt(i)) {
-      correctLocationCount++;
-    }
-    console.log(tally);
-  }
-  return [correctLocationCount, correctNumbersCount, tally];
-};
-
-export const updateUserGuessInfo = (
-  setGuessArray,
-  userInputNumber,
-  setLoading,
-  setUserInputNumber,
-  count,
-  correctLocationCount,
-  correctNumbersCount,
-  tally
-) => {
-  // update array state to store users guess, # of guesses, # of correct locations & number of correct numbers
-  setGuessArray((guessArray) => [
-    ...guessArray,
-    {
-      userInputNumberData: {
-        userGuess: userInputNumber,
-        guessNumberCount: tally,
-        correctLocations: correctLocationCount,
-        correctNumbers: correctNumbersCount,
-      },
-    },
-  ]);
-
-  setLoading(false);
-  setUserInputNumber("");
-};
-
-export const validateAllCorrect = (
-  userInputNumber,
-  props,
-  setLoading,
-  setWonGame
-) => {
-  // if user guess all 4 numbers in correct locations
-  if (userInputNumber.toString() === props.numbers) {
-    console.log("yes");
-    setLoading(false);
-    setWonGame(true);
-  }
-};
-
-export const homeRedirect = () => {
+export const game_reload = () => {
   window.location.reload();
-};
+}
+
 
 
