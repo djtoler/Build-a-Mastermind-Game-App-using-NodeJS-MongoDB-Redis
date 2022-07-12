@@ -1,4 +1,6 @@
 const axios = require("axios");
+// import { correct_numbers, correct_locations} from "../functions/game-helper-functions";
+
 let test;
 function testGuess() {
   return Math.floor(Math.random() * 9999) + 1;
@@ -45,7 +47,11 @@ const get_and_evaluate_user_guess = (req, res) => {
   let correct_numbers_count_array = [];
   let correct_numbers_count = 0;
   let correct_locations_count = 0;
-  let guess_attempt_count = 0;
+  let user_guessed_correct;
+
+  const correct_guess_all_four = () => {
+    return user_guessed_correct = guess == random_number_string ? true : false
+  }  
 
   const correct_numbers = () => {
     let guess_digits_array = Array.from(guess);
@@ -57,7 +63,7 @@ const get_and_evaluate_user_guess = (req, res) => {
     correct_numbers_count = correct_numbers_count_array.length
   }
 
-  const correct_locations = () => {
+const correct_locations = () => {
     let i = 0;
     while (i < 4) {
       guess.toString().charAt(i) == random_number_string.charAt(i) ? correct_locations_count++ : 0
@@ -65,13 +71,14 @@ const get_and_evaluate_user_guess = (req, res) => {
     }
     console.log(correct_locations_count);
     return correct_locations_count;
-  }
+}
 
+  correct_guess_all_four();
   correct_numbers();
   correct_locations();
 
-  console.log(round_results = correct_numbers_count > 0 ? {correct_numbers_return: correct_numbers_count, correct_locations_return: correct_locations_count} : {correct_numbers_return: 0, correct_locations_return: 0})
-  return res.json(round_results = correct_numbers_count > 0 ? {correct_numbers_return: correct_numbers_count, correct_locations_return: correct_locations_count} : {correct_numbers_return: 0, correct_locations_return: 0})
+  console.log(round_results = correct_numbers_count > 0 ? {correct_numbers_return: correct_numbers_count, correct_locations_return: correct_locations_count, guess_attempt_return: guess} : {correct_numbers_return: 0, correct_locations_return: 0, guess_attempt: guess})
+  return res.json(user_guessed_correct ? {guess_attempt_return: guess, all_four_correct: true} : round_results = correct_numbers_count > 0 ? {correct_numbers_return: correct_numbers_count, correct_locations_return: correct_locations_count, guess_attempt_return: guess} : {correct_numbers_return: 0, correct_locations_return: 0, guess_attempt: guess})
 };
 
 // const create_game = () => {}
@@ -83,17 +90,6 @@ const get_and_evaluate_user_guess = (req, res) => {
 //   get_random_number_from_api();
 //   !success ? get_random_number_from_backup() : {error:'error getting random number'}
 // }
-
-
-// const user_input_response = (count=0) => {
-//   // const {guess} = req.body;
-//  count++
-//  convert_guess_number();
-//  convert_random_number();
-//  get_and_evaluate_user_guess();
-//  round_count_limit();
-// }
-
 
 module.exports = {
   get_random_number_from_api,
