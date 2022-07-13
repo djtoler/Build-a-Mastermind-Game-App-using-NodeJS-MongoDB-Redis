@@ -1,5 +1,6 @@
 const axios = require("axios");
 // import { correct_numbers, correct_locations} from "../functions/game-helper-functions";
+const {easy_mode, hard_mode, super_easy_mode, super_hard_mode} = require( "../functions/game-mode-functions");
 
 let test;
 function testGuess() {
@@ -42,15 +43,16 @@ const get_random_number_from_api = async (response, res) => {
 }
 
 const get_and_evaluate_user_guess = (req, res) => {
-  const {guess} = req.body;
+  const {guess, mode} = req.body;
   let round_results = {};
   let correct_numbers_count_array = [];
   let correct_numbers_count = 0;
   let correct_locations_count = 0;
-  let user_guessed_correct;
+  let user_guessed_all_correct_numbers;
+
 
   const correct_guess_all_four = () => {
-    return user_guessed_correct = guess == random_number_string ? true : false
+    return user_guessed_all_correct_numbers = guess == random_number_string ? true : false
   }  
 
   const correct_numbers = () => {
@@ -63,7 +65,7 @@ const get_and_evaluate_user_guess = (req, res) => {
     correct_numbers_count = correct_numbers_count_array.length
   }
 
-const correct_locations = () => {
+  const correct_locations = () => {
     let i = 0;
     while (i < 4) {
       guess.toString().charAt(i) == random_number_string.charAt(i) ? correct_locations_count++ : 0
@@ -71,15 +73,50 @@ const correct_locations = () => {
     }
     console.log(correct_locations_count);
     return correct_locations_count;
-}
+  }
 
   correct_guess_all_four();
   correct_numbers();
   correct_locations();
-
+  
   console.log(round_results = correct_numbers_count > 0 ? {correct_numbers_return: correct_numbers_count, correct_locations_return: correct_locations_count, guess_attempt_return: guess} : {correct_numbers_return: 0, correct_locations_return: 0, guess_attempt: guess})
-  return res.json(user_guessed_correct ? {guess_attempt_return: guess, all_four_correct: true} : round_results = correct_numbers_count > 0 ? {correct_numbers_return: correct_numbers_count, correct_locations_return: correct_locations_count, guess_attempt_return: guess} : {correct_numbers_return: 0, correct_locations_return: 0, guess_attempt: guess})
+  return res.json(
+    user_guessed_all_correct_numbers
+    ? 
+    {guess_attempt_return: guess, all_four_correct: true} 
+    : round_results = correct_numbers_count > 0 
+    ? {correct_numbers_return: correct_numbers_count, correct_locations_return: correct_locations_count, guess_attempt_return: guess} 
+    : {correct_numbers_return: 0, correct_locations_return: 0, guess_attempt: guess}
+  )
 };
+
+const send_hint_data = async (req, res,) => {
+  const {current_game_mode, guess} = req.body;
+  console.log("currentgm: " + current_game_mode);
+  console.log("guess: " + guess);
+  console.log(req.body);
+  let hint_evaluation;
+
+  const game_modes = {
+    a: 'easy',
+    b: 'super_easy',
+    c: 'hard',
+    d: 'super_hard',
+  }
+  // if (current_game_mode === null || undefined) return;
+  if (game_modes.a == current_game_mode) {hint_evaluation = easy_mode(random_number, guess)}
+    console.log(hint_evaluation);
+    return res.json({current_game_mode_hints: hint_evaluation})
+};
+
+const recieve_update_server_variables = (hi_num, low_num) => {
+  const {reload} = req.body;
+  console.log(reload);
+  if (reload) {
+    hi_num = 9999, low_num = 0000
+  }
+  return [hi_num, low_num]
+}
 
 // const create_game = () => {}
 // const update_game = () => {}
@@ -93,5 +130,6 @@ const correct_locations = () => {
 
 module.exports = {
   get_random_number_from_api,
-  get_and_evaluate_user_guess
+  get_and_evaluate_user_guess,
+  send_hint_data,
 };

@@ -1,28 +1,47 @@
-export const default_mode = () => {};
-export const super_easy_mode = () => {};
-export const hard_mode = () => {};
-export const super_hard_mode = () => {};
+const default_mode = () => {};
+const super_easy_mode = () => {};
+const hard_mode = () => {};
+const super_hard_mode = () => {};
 
-export const easy_mode = () => {
-    let guess_evaluation;
-    let hi_num = 9999;
-    let low_num = 0000;
+low_num = 0000;
+hi_num = 9999;
 
-    const lower = () => {
-      hi_num = test;
-      return `lower , secret number is between ${low_num}  to ${test - 1}`;
-    };
+const easy_mode = (random_number, guess) => {
+  let hint;
+  let guess_array = [];
+  console.log(guess);
+  console.log(guess.toString());
+  let user_guess = Number(guess)
+  let hint_evaluation;
 
-    const higher = () => {
-      low_num = test;
-      return `higher, secret number is between ${test + 1} to ${hi_num}`;
-    };
-
-    console.log(
-        "return: " + guess_evaluation,
-        "low_num: " + low_num,
-        "hi_num: " + hi_num
-      );
-    return guess_evaluation = random_number < test ? lower() : higher();
+  guess_array.push(user_guess)
+  console.log(guess_array);
+  const lower = () => {
+    hi_num = user_guess;
+    console.log(user_guess-1);
+    return `lower , secret number is between ${low_num}  to ${(user_guess - 1)}`;
   };
+
+  const higher = () => {
+    low_num = user_guess;
+    console.log(user_guess+1);
+    return `higher, secret number is between ${(user_guess + 1)} to ${hi_num}`;
+  };
+
+  if (random_number < guess) {
+    hint = `lower , secret number is between ${low_num}  to ${(user_guess - 1)}`;
+    hi_num = user_guess;
+  } else {
+    hint = `higher, secret number is between ${(user_guess + 1)} to ${hi_num}`;
+    low_num = user_guess;
+  }
+
+  hint_evaluation = random_number < guess ? lower() : higher();
+  console.log("return: " + hint_evaluation, "low_num: " + low_num, "hi_num: " + hi_num);
+  return hint_evaluation
+  };
+  
+  module.exports = {
+    easy_mode,
+  }
 
