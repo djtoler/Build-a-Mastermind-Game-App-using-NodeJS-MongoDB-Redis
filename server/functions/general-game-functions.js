@@ -1,6 +1,6 @@
 const axios = require("axios");
 // import { correct_numbers, correct_locations} from "../functions/game-helper-functions";
-const {easy_mode, hard_mode, super_easy_mode, super_hard_mode} = require( "../functions/game-mode-functions");
+const {game_modes, easy_mode, hard_mode, super_easy_mode, super_hard_mode} = require( "../functions/game-mode-functions");
 
 let test;
 function testGuess() {
@@ -92,31 +92,24 @@ const get_and_evaluate_user_guess = (req, res) => {
 
 const send_hint_data = async (req, res,) => {
   const {current_game_mode, guess} = req.body;
+  if (current_game_mode === null || undefined) return;
   console.log("currentgm: " + current_game_mode);
   console.log("guess: " + guess);
   console.log(req.body);
   let hint_evaluation;
 
-  const game_modes = {
-    a: 'easy',
-    b: 'super_easy',
-    c: 'hard',
-    d: 'super_hard',
-  }
-  // if (current_game_mode === null || undefined) return;
   if (game_modes.a == current_game_mode) {hint_evaluation = easy_mode(random_number, guess)}
     console.log(hint_evaluation);
-    return res.json({current_game_mode_hints: hint_evaluation})
+
+  if (game_modes.c == current_game_mode) {hint_evaluation = hard_mode(random_number, 3)}
+    console.log(hint_evaluation);
+
+  if (game_modes.d == current_game_mode) {hint_evaluation = super_hard_mode(random_number)}
+    console.log(hint_evaluation);
+
+  return res.json({current_game_mode_hints: hint_evaluation})
 };
 
-const recieve_update_server_variables = (hi_num, low_num) => {
-  const {reload} = req.body;
-  console.log(reload);
-  if (reload) {
-    hi_num = 9999, low_num = 0000
-  }
-  return [hi_num, low_num]
-}
 
 // const create_game = () => {}
 // const update_game = () => {}
