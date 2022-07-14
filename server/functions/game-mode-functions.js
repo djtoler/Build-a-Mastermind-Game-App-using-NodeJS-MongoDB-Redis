@@ -1,6 +1,5 @@
 const super_easy_mode = () => {};
 const game_modes = { a: 'easy', b: 'super_easy', c: 'hard', d: 'super_hard' };
-
 low_num = 0000;
 hi_num = 9999;
 

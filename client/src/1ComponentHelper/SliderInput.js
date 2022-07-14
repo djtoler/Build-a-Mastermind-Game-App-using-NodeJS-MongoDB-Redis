@@ -25,7 +25,6 @@ function SliderInput(props) {
           focusThumbOnChange={false}
           value={value}
           onChange={handleChange}
-          
         >
           <SliderTrack min={50} max={9999}>
             <SliderFilledTrack />
