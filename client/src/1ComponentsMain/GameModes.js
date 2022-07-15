@@ -26,6 +26,13 @@ function GameModes(props) {
         console.log(current_game_mode);
         return current_game_mode;
     }
+
+    const super_easy_mode_button_handler = () => {
+        current_game_mode = props.func('super_easy');
+        console.log(gamemode);
+        console.log(current_game_mode);
+        return current_game_mode;
+    }
     return (
         <Container maxWidth="xl" centerContent>
             <Box
@@ -61,7 +68,7 @@ function GameModes(props) {
                     <Tab width="50%">SuperHard</Tab>
                 </TabList>
                 <TabPanels>
-                    <TabPanel><Button colorScheme="green" width="30%" style={{ marginTop: 15 }} onClick='' isLoading={false}>Super Easy Hints</Button></TabPanel>
+                    <TabPanel><Button colorScheme="green" width="30%" style={{ marginTop: 15 }} onClick={super_easy_mode_button_handler} isLoading={false}>Super Easy Hints</Button></TabPanel>
                     <TabPanel><Button colorScheme="green" width="30%" style={{ marginTop: 15 }} onClick={easy_mode_button_handler} isLoading={false}>Easy Hints</Button></TabPanel>
                     <TabPanel>Default</TabPanel>
                     <TabPanel><Button colorScheme="green" width="30%" style={{ marginTop: 15 }} onClick={hard_mode_button_handler} isLoading={false}>Hard Hints</Button></TabPanel>

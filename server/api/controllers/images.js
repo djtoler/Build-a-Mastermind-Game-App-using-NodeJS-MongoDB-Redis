@@ -2,23 +2,17 @@ const express = require("express");
 const images = express.Router();
 const Busboy = require('busboy');
 const redis = require('redis');
-const redisImageConnection = redis.createClient ({ 
-    host: '127.0.0.1', 
-    port: 6379,
-    return_buffers : true 
-})
+// client = redis.createClient({ return_buffers : true });
 
-redisImageConnection.on('connect', function name() {
-    console.log('Redis for pics connected ' + redis_host + ":" + redis_port);
-})
-
-redisImageConnection.on("error", function (err) {
-    console.log("Error " + err);
-  });
+// function imageConvert (image_file_location) {
+//     const file = fs.readFileSync(image_file_location)
+//     const blob = Buffer.from(file)
+// }
 
 // images.post(
 //     '/file/:fileId',
 //     function(req,res,next) {
+//         let
 //         //new instance of busboy
 //         busboy  = new Busboy({ headers: req.headers }),
 //         //where we will store our data

@@ -1,4 +1,3 @@
-const super_easy_mode = () => {};
 const game_modes = { a: 'easy', b: 'super_easy', c: 'hard', d: 'super_hard' };
 low_num = 0000;
 hi_num = 9999;
@@ -75,6 +74,26 @@ const super_hard_mode = (random_number) => {
   console.log(hint_evaluation);
   return hint_evaluation;
 }
+
+// const super_easy_mode = () => {
+//   console.log(req.path.file);
+//   let img = file(req.file.path);
+//   let encode_image = img.toString('base64');
+//   // Define a JSONobject for the image attributes for saving to database
+
+//   let finalImg = {
+//       contentType: req.file.mimetype,
+//       image: Buffer.from(encode_image)
+//   };
+
+//   console.log(finalImg.image);
+
+//   client.HSET('hints', 'zeros', finalImage.image)
+//   client.HGETALL(hints)
+
+//   console.log(client.HSET('hints', 'zeros', image));
+//   console.log(client.HGETALL(hints));
+// }
 
   
 module.exports = {

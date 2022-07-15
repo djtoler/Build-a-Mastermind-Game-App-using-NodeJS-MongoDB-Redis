@@ -1,7 +1,7 @@
 const axios = require("axios");
 // import { correct_numbers, correct_locations} from "../functions/game-helper-functions";
-const {game_modes, easy_mode, hard_mode, super_easy_mode, super_hard_mode} = require( "../functions/game-mode-functions");
-
+const {game_modes, easy_mode, hard_mode, super_hard_mode} = require( "../functions/game-mode-functions");
+const {super_easy_mode} = require('../api/controllers/images')
 let test;
 function testGuess() {
   return Math.floor(Math.random() * 9999) + 1;
@@ -105,6 +105,9 @@ const send_hint_data = async (req, res,) => {
     console.log(hint_evaluation);
 
   if (game_modes.d == current_game_mode) {hint_evaluation = super_hard_mode(random_number)}
+    console.log(hint_evaluation);
+
+  if (game_modes.b == current_game_mode) {hint_evaluation = super_easy_mode()}
     console.log(hint_evaluation);
 
   return res.json({current_game_mode_hints: hint_evaluation})

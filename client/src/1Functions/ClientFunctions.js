@@ -73,6 +73,22 @@ export const easy_mode_click_handler = async (current_game_mode, guess, axios, c
     })
 } 
 
+export const super_easy_mode_click_handler = async (pictures, current_game_mode, guess, axios, config) => {
+    const formData = new FormData();
+    formData.append("file", pictures);
+    formData.append("hash-key", "random-number");
+    const data = await axios
+    .post(
+      "http://127.0.0.1:9991/upload-image",
+        {formData},
+        config
+    )
+    .then((res)=> {
+      console.log('in image');
+      console.log(res.data); 
+    })
+} 
+
 // export const update_server_variables = async (axios, config, reload) => {
 //   if (reload) {
 //     try {

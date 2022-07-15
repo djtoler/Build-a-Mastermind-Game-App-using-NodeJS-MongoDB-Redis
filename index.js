@@ -3,29 +3,19 @@ const dotenv = require("dotenv");
 const app = express();
 const cors = require("cors");
 const bodyParser = require('body-parser')
+
 const game = require('./server/api/controllers/game');
+const image = require('./server/config/image')
 const connectMongo = require("./server/config/mongodb");
-const redis = require('redis')
+
+// const redis = require('redis')
 // const connectRedis = require("./server/config/redis");
 
 dotenv.config();
 connectMongo();
 // connectRedis();
-// connectRedisForImages();
 
-const redisImageConnection = redis.createClient ({ 
-  host: '127.0.0.1', 
-  port: 6379,
-  return_buffers : true 
-})
 
-redisImageConnection.on('connect', function name() {
-  console.log('Redis for pics connected ' + host + ":" + port);
-})
-
-redisImageConnection.on("error", function (err) {
-  console.log("Error " + err);
-});
 
 
 app.use(bodyParser.json());
@@ -38,6 +28,8 @@ app.get('/random-number', game)
 app.post('/guess-evaluation', game)
 app.post('/get-hints', game)
 app.put('/update-vars', game)
+app.post('/upload-photo', image)
+app.get('/get_super_easy_hint', image)
 
 app.listen(
     9991,
