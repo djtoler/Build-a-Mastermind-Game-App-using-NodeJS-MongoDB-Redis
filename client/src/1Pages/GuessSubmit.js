@@ -65,9 +65,7 @@ const GuessSubmit = () => {
         current_game_mode = mode;
         if (mode != 'super_easy') {
             easy_mode_click_handler(current_game_mode, guess, axios, config);
-        } else {
-            super_easy_mode_click_handler(pictures, current_game_mode, guess, axios, config)
-        }
+        } 
     };
 
     return (

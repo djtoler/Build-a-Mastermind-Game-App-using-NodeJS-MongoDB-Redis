@@ -1,7 +1,7 @@
 const axios = require("axios");
 // import { correct_numbers, correct_locations} from "../functions/game-helper-functions";
-const {game_modes, easy_mode, hard_mode, super_hard_mode} = require( "../functions/game-mode-functions");
-const {super_easy_mode} = require('../api/controllers/images')
+const {game_modes, easy_mode, hard_mode, super_hard_mode, super_easy_mode} = require( "../functions/game-mode-functions");
+// const {super_easy_mode} = require('../api/controllers/images')
 let test;
 function testGuess() {
   return Math.floor(Math.random() * 9999) + 1;

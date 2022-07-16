@@ -61,33 +61,55 @@ export const send_user_guess = async ( guess, axios, config, guess_evaluation, a
 }
 
 export const easy_mode_click_handler = async (current_game_mode, guess, axios, config) => {
+  let hints_from_server;
   const data = await axios
     .post(
-      "http://127.0.0.1:9991/get-hints",
+      "http://localhost:9991/get-hints",
         {guess, current_game_mode},
         config
     )
     .then((res)=> {
       console.log('in then');
-      console.log(res.data); 
+      console.log(res.data);
+      hints_from_server = res.data
     })
+    return hints_from_server
 } 
 
-export const super_easy_mode_click_handler = async (pictures, current_game_mode, guess, axios, config) => {
-    const formData = new FormData();
-    formData.append("file", pictures);
-    formData.append("hash-key", "random-number");
-    const data = await axios
-    .post(
-      "http://127.0.0.1:9991/upload-image",
-        {formData},
-        config
-    )
-    .then((res)=> {
-      console.log('in image');
-      console.log(res.data); 
-    })
-} 
+// export const super_easy_mode_click_handler = async (pictures, current_game_mode, guess, axios, config) => {
+//   const formData = new FormData();
+//   formData.append("file", pictures);
+//   formData.append("hash-key", "random-number");
+//   const data = await axios
+//   .post(
+//     "http://127.0.0.1:9991/get_super_easy_hint",
+//       {formData},
+//       config
+//   )
+//   .then((res)=> {
+//     console.log('in image');
+//     console.log(res.data); 
+//   })
+// } 
+
+
+
+
+// export const super_easy_mode_click_handler = async (pictures, current_game_mode, guess, axios, config) => {
+//     const formData = new FormData();
+//     formData.append("file", pictures);
+//     formData.append("hash-key", "random-number");
+//     const data = await axios
+//     .post(
+//       "http://127.0.0.1:9991/upload-image",
+//         {formData},
+//         config
+//     )
+//     .then((res)=> {
+//       console.log('in image');
+//       console.log(res.data); 
+//     })
+// } 
 
 // export const update_server_variables = async (axios, config, reload) => {
 //   if (reload) {

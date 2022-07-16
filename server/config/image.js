@@ -3,7 +3,7 @@ const fs = require('fs');
 const image = express.Router();
 const redis = require('redis');
 const path = require('path');
-const www  = require("../../output" );
+const testImg  = require("../../output" );
 let file;
 let blob;
 let hint_data;
@@ -101,6 +101,7 @@ image.get('/get_super_easy_hint', (req, res) => {
         client.on('connect', function() {
             console.log('Connected!');
         });
+        let easy_hint_response = {};
         try {
             const key = 'hint_data';
             let hint_data_obj = await (client.get(key, (err, val)=>{
@@ -123,24 +124,24 @@ image.get('/get_super_easy_hint', (req, res) => {
             }));
 
             let parse = JSON.parse(hint_data_obj);
-            parse = parse.image.data.length
-            console.log(parse);
-            fs.writeFile('output.txt', hint_data_obj, (err) => {
-                if (err) throw err;
-            })
-            console.log(www.image.data.length)
+            let cole = parse.image.data.length
+            console.log(cole);
+            // fs.writeFile('output.txt', hint_data_obj, (err) => {
+            //     if (err) throw err;
+            // })
+            // console.log(testImg.image.data.length)
             // console.log(Object.values(hint_data_obj)[0]);
             // printObjectDetails(key, hint_data_obj);
         } catch (error) {
             console.error(error);
         }
+        let hint_image = String.fromCharCode(testImg.image.data)
+        hint_image = `<img src="data:image/jpeg;base64,{${testImg.image.data}}" />`
+        Object.assign(easy_hint_response, {digit_one: testImg.digit, cap: testImg.caption, img: hint_image  })
+        return res.json(easy_hint_response)
     }
     main();
-    // client.get(hint_data, function(err, reply) {
-    //     let data = reply;
-    //     console.log(data);
-    //     response.writeHead(200, {"Content-Type": "image/png"});
-    // })
+
 })
 
 // const super_easy_hints_cache = () => {
