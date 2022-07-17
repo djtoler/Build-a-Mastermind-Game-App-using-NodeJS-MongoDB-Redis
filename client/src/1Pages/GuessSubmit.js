@@ -18,6 +18,8 @@ const GuessSubmit = () => {
     const [randomNumber, setRandomNumber] = useState();
     const config = {"Content-type": "application/json"};
     const [currentGameDataArray, setCurrentGameDataArray] = useState([]);
+    let hintsArray;
+    let renderhints
     let round_counter = 1;
     let guess_evaluation;
     let current_game_mode;
@@ -63,9 +65,33 @@ const GuessSubmit = () => {
     const pullCurrentModeHints = async (mode) => {
         console.log(mode);
         current_game_mode = mode;
-        if (mode != 'super_easy') {
-            easy_mode_click_handler(current_game_mode, guess, axios, config);
+        const easy_mode_click_handler = async (current_game_mode, guess, axios, config) => {
+            const data = await axios
+              .post(
+                "http://localhost:9991/get-hints",
+                  {guess, current_game_mode},
+                  config
+              )
+              .then((res)=> {
+                console.log('in then');
+                console.log(res.data);
+                let hints = res.data
+                console.log(hints);
+                hintsArray = Object.values(hints);
+                console.log(hintsArray);
+            })
         } 
+        easy_mode_click_handler(current_game_mode, guess, axios, config);
+    //     renderhints = 
+    //     <div>
+    //     {hintsArray.map((h, i) => {     
+    //       console.log(h);
+    //     return <div className="guess-data" key={i}>
+    //       Num: {h}{i} <br/>
+    //       Caption: {'dddd'} <br/>
+    //       Image: {} <br/>
+    //     </div>})}
+    //   </div>
     };
 
     return (
@@ -94,7 +120,10 @@ const GuessSubmit = () => {
                 >
                 Submit Your Guess
             </Button>
-            </VStack> 
+            </VStack>     
+            {/* <div>
+                {renderhints}
+            </div> */}
             <div>
                 {render_guess_data(currentGameDataArray, round_counter, 4)}
             </div>

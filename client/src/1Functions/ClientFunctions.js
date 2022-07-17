@@ -60,21 +60,7 @@ export const send_user_guess = async ( guess, axios, config, guess_evaluation, a
     })
 }
 
-export const easy_mode_click_handler = async (current_game_mode, guess, axios, config) => {
-  let hints_from_server;
-  const data = await axios
-    .post(
-      "http://localhost:9991/get-hints",
-        {guess, current_game_mode},
-        config
-    )
-    .then((res)=> {
-      console.log('in then');
-      console.log(res.data);
-      hints_from_server = res.data
-    })
-    return hints_from_server
-} 
+
 
 // export const super_easy_mode_click_handler = async (pictures, current_game_mode, guess, axios, config) => {
 //   const formData = new FormData();

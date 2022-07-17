@@ -6,8 +6,7 @@ let current_game_mode;
 
 function GameModes(props) {
     const [gamemode, setGamemode] = useState();
-    const [showHints, setShowHints] = useState(flase);
-
+    // const [showHints, setShowHints] = useState(flase);
 
     const easy_mode_button_handler = () => {
         current_game_mode = props.func('easy');
@@ -21,14 +20,12 @@ function GameModes(props) {
         console.log(current_game_mode);
         return current_game_mode;
     }
-
     const super_hard_mode_button_handler = () => {
         current_game_mode = props.func('super_hard');
         console.log(gamemode);
         console.log(current_game_mode);
         return current_game_mode;
     }
-
     const super_easy_mode_button_handler = () => {
         current_game_mode = props.func('super_easy');
         console.log(gamemode);

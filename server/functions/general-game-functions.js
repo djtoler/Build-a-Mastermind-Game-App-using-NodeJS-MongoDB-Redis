@@ -1,4 +1,5 @@
 const axios = require("axios");
+const redis = require("redis");
 // import { correct_numbers, correct_locations} from "../functions/game-helper-functions";
 const {game_modes, easy_mode, hard_mode, super_hard_mode, super_easy_mode} = require( "../functions/game-mode-functions");
 // const {super_easy_mode} = require('../api/controllers/images')
@@ -107,7 +108,32 @@ const send_hint_data = async (req, res,) => {
   if (game_modes.d == current_game_mode) {hint_evaluation = super_hard_mode(random_number)}
     console.log(hint_evaluation);
 
-  if (game_modes.b == current_game_mode) {hint_evaluation = super_easy_mode()}
+  if (game_modes.b == current_game_mode) {
+    let client = redis.createClient();
+    client.connect();
+    client.on("connect", function () {
+      console.log("Connected!");
+    });
+    let easy_hint_response = {};
+    const key = "hint_data";
+    const hint_data_obj = await client.get(key)
+    console.log(typeof hint_data_obj);
+    console.log(hint_data_obj.digit);
+    let parse = JSON.parse(hint_data_obj);
+    let cole = parse.image.data.length;
+    console.log(cole);
+    let hint_image = String.fromCharCode(parse.image.data);
+    let hint_image_tag = `<img src="data:image/jpeg;base64,{${hint_image}}" />`;
+    Object.assign(easy_hint_response, {
+      digit_one: parse.digit,
+      cap: parse.caption,
+      img: hint_image_tag,
+    });
+    hint_evaluation = easy_hint_response;
+  
+  }
+    console.log(hint_evaluation);
+    console.log('from ggf');
     console.log(hint_evaluation);
 
   return res.json({current_game_mode_hints: hint_evaluation})

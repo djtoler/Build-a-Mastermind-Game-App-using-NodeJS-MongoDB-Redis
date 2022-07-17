@@ -95,52 +95,52 @@ function printObjectDetails(key, obj) {
 }
 
 image.get('/get_super_easy_hint', (req, res) => {
-    async function main() {
-        client = redis.createClient();
-        await client.connect();
-        client.on('connect', function() {
-            console.log('Connected!');
-        });
-        let easy_hint_response = {};
-        try {
-            const key = 'hint_data';
-            let hint_data_obj = await (client.get(key, (err, val)=>{
-                console.log(val);
-                if (err) {
-                    reject(err)
-                    return
-                   }
-                if (val == null) {
-                    console.log(null);
-                    return
-                }
-                try{
-                    let d = Object.values(val)
-                    console.log(d[d.length-2]);
+    // async function main() {
+    //     client = redis.createClient();
+    //     await client.connect();
+    //     client.on('connect', function() {
+    //         console.log('Connected!');
+    //     });
+    //     let easy_hint_response = {};
+    //     try {
+    //         const key = 'hint_data';
+    //         let hint_data_obj = await (client.get(key, (err, val)=>{
+    //             console.log(val);
+    //             if (err) {
+    //                 reject(err)
+    //                 return
+    //                }
+    //             if (val == null) {
+    //                 console.log(null);
+    //                 return
+    //             }
+    //             try{
+    //                 let d = Object.values(val)
+    //                 console.log(d[d.length-2]);
                     
-                } catch {
-                    console.log('rewind');
-                }
-            }));
+    //             } catch {
+    //                 console.log('rewind');
+    //             }
+    //         }));
 
-            let parse = JSON.parse(hint_data_obj);
-            let cole = parse.image.data.length
-            console.log(cole);
-            // fs.writeFile('output.txt', hint_data_obj, (err) => {
-            //     if (err) throw err;
-            // })
-            // console.log(testImg.image.data.length)
-            // console.log(Object.values(hint_data_obj)[0]);
-            // printObjectDetails(key, hint_data_obj);
-        } catch (error) {
-            console.error(error);
-        }
-        let hint_image = String.fromCharCode(testImg.image.data)
-        hint_image = `<img src="data:image/jpeg;base64,{${testImg.image.data}}" />`
-        Object.assign(easy_hint_response, {digit_one: testImg.digit, cap: testImg.caption, img: hint_image  })
-        return res.json(easy_hint_response)
-    }
-    main();
+    //         let parse = JSON.parse(hint_data_obj);
+    //         let cole = parse.image.data.length
+    //         console.log(cole);
+    //         // fs.writeFile('output.txt', hint_data_obj, (err) => {
+    //         //     if (err) throw err;
+    //         // })
+    //         // console.log(testImg.image.data.length)
+    //         // console.log(Object.values(hint_data_obj)[0]);
+    //         // printObjectDetails(key, hint_data_obj);
+    //     } catch (error) {
+    //         console.error(error);
+    //     }
+    //     let hint_image = String.fromCharCode(parse.image.data)
+    //     let hint_image_tag = `<img src="data:image/jpeg;base64,{${hint_image}}" />`
+    //     Object.assign(easy_hint_response, {digit_one: testImg.digit, cap: testImg.caption, img: hint_image_tag  })
+    //     return res.json(easy_hint_response)
+    // }
+    // main();
 
 })
 
