@@ -65,8 +65,11 @@ const uploadFile = (req, filePath) => {
             console.log('Processing  ...  100%');
             console.log(filePath);
             file = fs.readFileSync(filePath)
-            blob = Buffer.from(file)
-            console.log(blob)
+            blob = Buffer.from(file).toString('base64')
+            // console.log(blob)
+            fs.writeFile('output1.txt', blob, (err) => {
+                if (err) throw err;
+                })
             main();
             resolve(filePath)
         });

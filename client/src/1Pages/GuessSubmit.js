@@ -7,7 +7,7 @@ import axios from "axios";
 import { useToast } from '@chakra-ui/react';
 import SliderInput from '../1ComponentHelper/SliderInput';
 import GameModes from "../1ComponentsMain/GameModes";
-import { checkValidInput, send_user_guess, clickHandler, FetchRandomNumber, render_guess_data, easy_mode_click_handler} from "../1Functions/ClientFunctions";
+import { checkValidInput, send_user_guess, clickHandler, FetchRandomNumber, render_guess_data, render_hint_data, easy_mode_click_handler} from "../1Functions/ClientFunctions";
 import './GuessSubmitCSS.css'
 
 const GuessSubmit = () => {
@@ -18,8 +18,8 @@ const GuessSubmit = () => {
     const [randomNumber, setRandomNumber] = useState();
     const config = {"Content-type": "application/json"};
     const [currentGameDataArray, setCurrentGameDataArray] = useState([]);
-    let hintsArray;
-    let renderhints
+    const [hintsArray, setHintsArray] = useState([]);
+    let render_hints;
     let round_counter = 1;
     let guess_evaluation;
     let current_game_mode;
@@ -65,7 +65,7 @@ const GuessSubmit = () => {
     const pullCurrentModeHints = async (mode) => {
         console.log(mode);
         current_game_mode = mode;
-        const easy_mode_click_handler = async (current_game_mode, guess, axios, config) => {
+        const easy_mode_click_handler = async (current_game_mode, guess, axios, config, render_hints, array, setArray) => {
             const data = await axios
               .post(
                 "http://localhost:9991/get-hints",
@@ -74,14 +74,13 @@ const GuessSubmit = () => {
               )
               .then((res)=> {
                 console.log('in then');
-                console.log(res.data);
-                let hints = res.data
-                console.log(hints);
-                hintsArray = Object.values(hints);
-                console.log(hintsArray);
+                console.log(res.data);  
+                render_hints = res.data
+                console.log(current_game_mode);
+                setArray(array => [... array, render_hints])        
             })
         } 
-        easy_mode_click_handler(current_game_mode, guess, axios, config);
+        easy_mode_click_handler(current_game_mode, guess, axios, config, render_hints, hintsArray, setHintsArray);
     //     renderhints = 
     //     <div>
     //     {hintsArray.map((h, i) => {     
@@ -120,10 +119,10 @@ const GuessSubmit = () => {
                 >
                 Submit Your Guess
             </Button>
-            </VStack>     
-            {/* <div>
-                {renderhints}
-            </div> */}
+            </VStack>
+            <div>
+                {render_hint_data(hintsArray, current_game_mode)}
+            </div>
             <div>
                 {render_guess_data(currentGameDataArray, round_counter, 4)}
             </div>

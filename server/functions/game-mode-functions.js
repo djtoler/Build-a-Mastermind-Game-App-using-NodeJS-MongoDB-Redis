@@ -39,9 +39,10 @@ async function super_easy_mode() {
     console.log(hint_data_obj.digit);
     let parse = JSON.parse(hint_data_obj);
     let cole = parse.image.data.length;
+    
     console.log(cole);
-    let hint_image = String.fromCharCode(parse.image.data);
-    let hint_image_tag = `<img src="data:image/jpeg;base64,{${hint_image}}" />`;
+    // let hint_image = String.fromCharCode(parse.image.data);
+    // let hint_image_tag = `<img src="data:image/jpeg;base64,{${hint_image}}" />`;
     Object.assign(easy_hint_response, {
       digit_one: parse.digit,
       cap: parse.caption,
@@ -112,14 +113,13 @@ const easy_mode = (random_number, guess) => {
 
 const hard_mode = (random_number, exponent) => {
   let digit_calculations = {};
-  let hint_evaluation;
   Object.assign(digit_calculations, {
     0: random_number / 2,
     1: random_number * 2,
     2: Math.pow(random_number, exponent),
   });
   console.log(digit_calculations[return_random_index(3)]);
-  hint_evaluation = digit_calculations[return_random_index(3)];
+  let hint_evaluation = {game_mode: 'hard', hint:digit_calculations[return_random_index(3)]};
   return hint_evaluation;
 };
 
@@ -136,8 +136,8 @@ const super_hard_mode = (random_number) => {
     random_number_from_generator.substring(0, position) +
     random_number_from_api_as_string +
     random_number_from_generator.substring(position);
-  console.log(new_num, position);
-  let hint_evaluation = Number(new_num);
+  console.log(new_num, position); 
+  let hint_evaluation = {game_mode:'super_hard', hint: Number(new_num)};
   console.log(hint_evaluation);
   return hint_evaluation;
 };

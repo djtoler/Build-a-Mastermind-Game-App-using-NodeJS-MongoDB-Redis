@@ -3,7 +3,6 @@ const dotenv = require("dotenv");
 const app = express();
 const cors = require("cors");
 const bodyParser = require('body-parser')
-
 const game = require('./server/api/controllers/game');
 const image = require('./server/config/image')
 const connectMongo = require("./server/config/mongodb");

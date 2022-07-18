@@ -1,5 +1,6 @@
 const axios = require("axios");
 const redis = require("redis");
+const fs = require('fs');
 // import { correct_numbers, correct_locations} from "../functions/game-helper-functions";
 const {game_modes, easy_mode, hard_mode, super_hard_mode, super_easy_mode} = require( "../functions/game-mode-functions");
 // const {super_easy_mode} = require('../api/controllers/images')
@@ -119,14 +120,24 @@ const send_hint_data = async (req, res,) => {
     const hint_data_obj = await client.get(key)
     console.log(typeof hint_data_obj);
     console.log(hint_data_obj.digit);
-    let parse = JSON.parse(hint_data_obj);
-    let cole = parse.image.data.length;
-    console.log(cole);
-    let hint_image = String.fromCharCode(parse.image.data);
-    let hint_image_tag = `<img src="data:image/jpeg;base64,{${hint_image}}" />`;
+    let parsedHintObj = JSON.parse(hint_data_obj);
+    // console.log(parse);
+    console.log(typeof(parsedHintObj));
+    // console.log(parsedHintObj.image);
+      //   fs.writeFile('output2.txt', parse, (err) => {
+      // if (err) throw err;
+      // })
+    let b64string = parsedHintObj.image;
+    console.log(typeof(b64string));
+    // fs.writeFile('output1.txt', cole, (err) => {
+    //   if (err) throw err;
+    //   })
+    // let hint_image = String.fromCharCode(parse.image.data);
+    let hint_image_tag = `data:image/jpeg;base64,${b64string}`;
     Object.assign(easy_hint_response, {
-      digit_one: parse.digit,
-      cap: parse.caption,
+      game_mode: 'super_easy',
+      digit_one: parsedHintObj.digit,
+      cap: parsedHintObj.caption,
       img: hint_image_tag,
     });
     hint_evaluation = easy_hint_response;
