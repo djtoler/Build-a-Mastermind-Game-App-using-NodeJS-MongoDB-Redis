@@ -19,6 +19,7 @@ const GuessSubmit = () => {
     const config = {"Content-type": "application/json"};
     const [currentGameDataArray, setCurrentGameDataArray] = useState([]);
     const [hintsArray, setHintsArray] = useState([]);
+    const [hints, setHints] = useState([])
     let render_hints;
     let round_counter = 1;
     let guess_evaluation;
@@ -121,7 +122,7 @@ const GuessSubmit = () => {
             </Button>
             </VStack>
             <div>
-                {render_hint_data(hintsArray, current_game_mode)}
+                {render_hint_data(hintsArray, hints, setHints, current_game_mode)}
             </div>
             <div>
                 {render_guess_data(currentGameDataArray, round_counter, 4)}

@@ -6,7 +6,7 @@ const path = require('path');
 const testImg  = require("../../output" );
 let file;
 let blob;
-let hint_data;
+let hint_data_02;
 // const file = fs.readFileSync('image')
 // const blob = Buffer.from(file)
 const {createReadStream, createWriteStream} = require("fs");
@@ -21,14 +21,13 @@ async function main() {
         console.log('Connected!');
     });
     
-    hint_data = {
-        digit: 4,
-        caption: "mills",
+    hint_data_02 = {
+        caption: "Sub-Zero",
         image: blob
     };
     try {
-        const key = 'hint_data';
-        const result = await client.set(key, JSON.stringify(hint_data));
+        const key = 'hint_data_02';
+        const result = await client.set(key, JSON.stringify(hint_data_02));
         console.log(result);
 
         // Turn around and bring back Shamu immediately to prove it works.
@@ -67,7 +66,7 @@ const uploadFile = (req, filePath) => {
             file = fs.readFileSync(filePath)
             blob = Buffer.from(file).toString('base64')
             // console.log(blob)
-            fs.writeFile('output1.txt', blob, (err) => {
+            fs.writeFile('Zeros2.txt', blob, (err) => {
                 if (err) throw err;
                 })
             main();
@@ -82,7 +81,7 @@ const uploadFile = (req, filePath) => {
 };
 
 image.post('/upload-photo', (req, res) => {
-    const file_path = path.join(__dirname, `/test.jpg`);
+    const file_path = path.join(__dirname, `/Zeros2.jpg`);
     uploadFile(req, file_path)
         .then(path => {
             res.send({ status: 'success', path })

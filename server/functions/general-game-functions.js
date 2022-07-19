@@ -2,8 +2,8 @@ const axios = require("axios");
 const redis = require("redis");
 const fs = require('fs');
 // import { correct_numbers, correct_locations} from "../functions/game-helper-functions";
-const {game_modes, easy_mode, hard_mode, super_hard_mode, super_easy_mode} = require( "../functions/game-mode-functions");
-// const {super_easy_mode} = require('../api/controllers/images')
+const {game_modes, easy_mode, hard_mode, super_hard_mode, return_random_index} = require( "../functions/game-mode-functions");
+
 let test;
 function testGuess() {
   return Math.floor(Math.random() * 9999) + 1;
@@ -111,44 +111,112 @@ const send_hint_data = async (req, res,) => {
 
   if (game_modes.b == current_game_mode) {
     let client = redis.createClient();
-    client.connect();
+    await client.connect();
     client.on("connect", function () {
       console.log("Connected!");
     });
     let easy_hint_response = {};
-    const key = "hint_data";
-    const hint_data_obj = await client.get(key)
-    console.log(typeof hint_data_obj);
-    console.log(hint_data_obj.digit);
-    let parsedHintObj = JSON.parse(hint_data_obj);
+    function getRandom(index) {
+      let r = Math.floor(Math.random() * index) + 1;
+      return r
+  }
+    let keys = [];
+    let processed_data = [];
+    let i = 0;
+    let k = 1;
+    while (i < 4) {
+      let random_obj = getRandom(3)
+      console.log('randomobj : ' + random_obj);
+      console.log('charPos : ' + random_number_string.charAt(i));
+      keys[i] = `hint_data_${random_number_string.charAt(i)}${random_obj}`  
+      i++;
+      k++;
+      console.log('-------------------------------');
+      // console.log(keys);
+      console.log('-------------------------------');
+    }
+    const hint_key1 = await client.get(keys[0]);
+    const hint_key2 = await client.get(keys[1]);
+    const hint_key3 = await client.get(keys[2]);
+    const hint_key4 = await client.get(keys[3]);
+    console.log('-------------------------------');
+    // console.log(hint_key1);
+    // console.log(hint_key2);
+    // console.log(hint_key3);
+    // console.log(hint_key4);
+    console.log('-------------------------------');
+    let processed_array = [hint_key1, hint_key2, hint_key3, hint_key4];
+    const processed_object = {}
+
+    for (let index = 0; index < processed_array.length; index++) {
+      let parsedHintObj = JSON.parse(processed_array[index]);
+      console.log("----------------------------PARSED1---------------------------");
+      console.log(parsedHintObj);
+      console.log("----------------------------PARSED2---------------------------");
+      let b64string = parsedHintObj.image;
+      console.log(typeof(b64string));
+      // console.log(parsedHintObj);
+      console.log('---------------------------------------------------------');
+      // console.log(hint);
+
+      let hint_image_tag = `data:image/jpeg;base64,${b64string}`;
+      Object.assign(easy_hint_response, {
+        game_mode: 'super_easy',
+        digit_one: parsedHintObj.digit,
+        cap: parsedHintObj.caption,
+        img: hint_image_tag,
+      });
+      hint_evaluation = easy_hint_response;
+      processed_data.push(hint_evaluation)
+    }
+    console.log(processed_data.length);
+    hint_evaluation = processed_array
+    console.log(hint_evaluation.length);
+      
+    }
+
+    // const npa = processed_array.map((hint) => {
+    //   let parsedHintObj = JSON.parse(hint);
+    //   console.log("----------------------------PARSED1---------------------------");
+    //   console.log(parsedHintObj);
+    //   console.log("----------------------------PARSED2---------------------------");
+    //   let b64string = parsedHintObj.image;
+    //   console.log(typeof(b64string));
+    //   // console.log(parsedHintObj);
+    //   console.log('---------------------------------------------------------');
+    //   // console.log(hint);
+
+    //   let hint_image_tag = `data:image/jpeg;base64,${b64string}`;
+    //   Object.assign(easy_hint_response, {
+    //     game_mode: 'super_easy',
+    //     digit_one: parsedHintObj.digit,
+    //     cap: parsedHintObj.caption,
+    //     img: hint_image_tag,
+    //   });
+    //   hint_evaluation = easy_hint_response;
+    //   processed_data.push(hint_evaluation)
+    // })
+    // console.log(processed_data.length);
+    // hint_evaluation = processed_array
+    // console.log(hint_evaluation.length);
+    // console.log('from ggf');
+    // console.log(random_number);
+
+    // console.log(typeof hint_data_obj);
+    // console.log(random_number);
+    // console.log(hint_data_obj.digit);
+
     // console.log(parse);
     console.log(typeof(parsedHintObj));
     // console.log(parsedHintObj.image);
       //   fs.writeFile('output2.txt', parse, (err) => {
       // if (err) throw err;
       // })
-    let b64string = parsedHintObj.image;
-    console.log(typeof(b64string));
-    // fs.writeFile('output1.txt', cole, (err) => {
-    //   if (err) throw err;
-    //   })
-    // let hint_image = String.fromCharCode(parse.image.data);
-    let hint_image_tag = `data:image/jpeg;base64,${b64string}`;
-    Object.assign(easy_hint_response, {
-      game_mode: 'super_easy',
-      digit_one: parsedHintObj.digit,
-      cap: parsedHintObj.caption,
-      img: hint_image_tag,
-    });
-    hint_evaluation = easy_hint_response;
-  
-  }
-    console.log(hint_evaluation);
-    console.log('from ggf');
-    console.log(hint_evaluation);
+    
 
   return res.json({current_game_mode_hints: hint_evaluation})
-};
+}
+
 
 
 // const create_game = () => {}

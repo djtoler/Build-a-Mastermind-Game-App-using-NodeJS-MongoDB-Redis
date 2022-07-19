@@ -139,27 +139,8 @@ export const render_hint_data = (array) => {
     return render_hard_hints;
   }
 
-  if (array.length > 0 && array[0].current_game_mode_hints.game_mode == 'super_easy' ) {
-    console.log(array[0].current_game_mode_hints.game_mode);
-    let super_easy_hints = (
-      <div>
-        {array.map((round, i) => {
-          console.log(round);
-          console.log(i);
-          return (
-            <div className="guess-data" key={i}>
-              Digit: {round.current_game_mode_hints.digit_one} <br />
-              Caption: {round.current_game_mode_hints.cap} <br />
-              <img src={round.current_game_mode_hints.img} />
-            </div>
-          );
-        })}
-      </div>
-    );
-    return super_easy_hints;
-  }
-
-  if (array.length > 0) {
+  
+  if (array.length > 0 && array[0].current_game_mode_hints.game_mode == 'easy') {
     console.log(array[0].current_game_mode_hints.game_mode);
     let render_easy_hints = (
       <div>
@@ -168,7 +149,7 @@ export const render_hint_data = (array) => {
           console.log(i);
           return (
             <div className="guess-data" key={i}>
-              Range: {round.current_game_mode_hints} <br />
+              Range: {round.current_game_mode_hints.hint} <br />
             </div>
           );
         })}
@@ -176,7 +157,41 @@ export const render_hint_data = (array) => {
     );
     return render_easy_hints;
   }
-  
+
+  if (array.length == 1 ) {
+    let i = 0;
+    let k = 20
+    let display = [];
+    const bringitback = () => {
+      for (let index = 0; index < 4; index++) {
+        console.log(array.length);
+        const element = JSON.parse(array[0].current_game_mode_hints[index]);
+        console.log(typeof(element));
+        console.log(element);
+        // console.log(element);
+        let img = element.image;
+        let cap = element.caption;
+        display.push(element)
+        // console.log(display);
+      }
+    }
+    bringitback()
+    let super_easy_hints = [
+      <div key={k}>
+        {display.map((round, i) => {
+          return (
+            <div className="guess-data" key={i}>
+                Caption: {round.caption} <br />
+               <img src={`data:image/jpeg;base64,${round.image}`} />
+            </div>
+          );
+        })}
+        {i++}
+        {k++}
+      </div>
+    ];
+    return super_easy_hints;
+  }
 };
 
 export const all_four_correct_reload = (game_won_response, reload, config) => {
