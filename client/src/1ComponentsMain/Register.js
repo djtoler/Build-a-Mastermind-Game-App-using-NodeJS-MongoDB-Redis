@@ -1,40 +1,40 @@
-// import { Button } from "@chakra-ui/button";
-// import { FormLabel, FormControl } from '@chakra-ui/form-control';
-// import {Input, InputGroup, InputRightElement} from '@chakra-ui/input';
-// import {VStack} from '@chakra-ui/layout';
-// import React, { useState } from 'react';
-// import { useMutate } from 'restful-react';
-// import { Redirect } from "react-router-dom";
-// import { useToast } from '@chakra-ui/react';
-// import { useHistory } from 'react-router';
-// import axios from "axios";
+import { Button } from "@chakra-ui/button";
+import { FormLabel, FormControl } from '@chakra-ui/form-control';
+import {Input, InputGroup, InputRightElement} from '@chakra-ui/input';
+import {VStack} from '@chakra-ui/layout';
+import React, { useState } from 'react';
+import { useMutate } from 'restful-react';
+import { Redirect } from "react-router-dom";
+import { useToast } from '@chakra-ui/react';
+import { useHistory } from 'react-router';
+import axios from "axios";
 
-// const Register = () => {
+const Register = () => {
 
-//     const Upload = () => {
-//         const [selectedImage, setSelectedImage] = useState();
-//         const { mutate: uploadImage } = useMutate({
-//           verb: 'POST',
-//           path: 'image-upload'
-//         });
+    // const Upload = () => {
+    //     const [selectedImage, setSelectedImage] = useState();
+    //     const { mutate: uploadImage } = useMutate({
+    //       verb: 'POST',
+    //       path: 'image-upload'
+    //     });
 
-//         const handleChange = event => {
-//             setSelectedImage(event.target.files[0]);
-//           }
+    //     const handleChange = event => {
+    //         setSelectedImage(event.target.files[0]);
+    //       }
         
-//           const handleImageUpload = () => {
-//             if (!selectedImage) { return; }
-//             const formData = new FormData();
-//             formData.append('image', selectedImage);
+    //       const handleImageUpload = () => {
+    //         if (!selectedImage) { return; }
+    //         const formData = new FormData();
+    //         formData.append('image', selectedImage);
         
-//             uploadImage(formData)
-//               .then(uploadedImage => {
-//                 console.log(uploadedImage);
-//               })
-//               .catch(_ => {
-//                 console.log('Oooops, something went wrong!')
-//               })
-//           }
+    //         uploadImage(formData)
+    //           .then(uploadedImage => {
+    //             console.log(uploadedImage);
+    //           })
+    //           .catch(_ => {
+    //             console.log('Oooops, something went wrong!')
+    //           })
+    //       }
     //  // Set useState hooks for form fields
     //  const [name, setName] = useState()
     //  const [email, setEmail] = useState()   
@@ -161,83 +161,31 @@
     //          });
     //          setLoading(false);
     //      }
-//      };
+        
   
-//      return (
-//          <VStack spacing="5px" color="black">
+     return (
+         <VStack spacing="5px" color="black">
  
-//          <FormControl id="first-name" isRequired>
-//              <FormLabel>Name</FormLabel>
-//              <Input
-//              placeholder='Enter Your Name'
-//              onChange={(e)=>setName(e.target.value)} //Set name to whats entered in name field
-//              />
-//          </FormControl>
+         <FormControl id="first-name" isRequired>
+             <FormLabel>Name</FormLabel>
+             <Input
+             placeholder='Enter Your Name'
+            //  onChange={(e)=>setName(e.target.value)} //Set name to whats entered in name field
+             />
+         </FormControl>
  
-//          <FormControl id="email" isRequired>
-//              <FormLabel>Email</FormLabel>
-//              <Input
-//              placeholder='Enter Your Email'
-//              onChange={(e)=>setEmail(e.target.value)} //Set email to whats entered in email field
-//              />
-//          </FormControl>
- 
-//          <FormControl id="password" isRequired>
-//              <FormLabel>Password</FormLabel>
-//              <InputGroup>
-//                  <Input
-//                  type={show? 'text' : 'password'}
-//                  placeholder='Enter Your Password'
-//                  onChange={(e)=>setPassword(e.target.value)} //Set password to whats entered in password field
-//                  />
-//                  <InputRightElement width="4.5rem"> 
-//                      <Button h="1.75rem" size="sm" onClick={handleClick}> 
-//                          {show ? "Hide" : "Show"} 
-//                      </Button>
-//                  </InputRightElement>
-//              </InputGroup>
-//          </FormControl>
          
-//          <FormControl id="passwordConfirm" isRequired>
-//              <FormLabel>Confirm Password</FormLabel>
-//              <InputGroup size="md">
-//                  <Input
-//                  type={show ? "text" : "password"}
-//                  placeholder="Confirm password"
-//                  onChange={(e) => setConfirmPassword(e.target.value)}
-//                  />
-//                  <InputRightElement width="4.5rem">
-//                      <Button h="1.75rem" size="sm" onClick={handleClick}>
-//                          {show ? "Hide" : "Show"}
-//                      </Button>
-//                  </InputRightElement>
-//              </InputGroup>
-//          </FormControl>
- 
-//          <FormControl id="picture" >
-//              <FormLabel>Upload Your Picture</FormLabel>
-//              <Input
-//              type="file"
-//              p={1.5}
-//              accept="image/*"
-//              onChange={(e)=>{
-//                 postDetails(e.target.files[0])
-//                 setPhoto(e.target.files[0])
-//             }}
-//              />
-//          </FormControl>
- 
-//          <Button 
-//              colorScheme = "blue"
-//              width = "100%"
-//              style = {{marginTop: 15}}
-//              onClick = {(e) => postDetails(e.target.files[0])}
-//              isLoading = {loading}
-//          >
-//              Register
-//          </Button>
-//          </VStack>
-//      )
-// }
+         <Button 
+             colorScheme = "blue"
+             width = "100%"
+             style = {{marginTop: 15}}
+            //  onClick = {(e) => postDetails(e.target.files[0])}
+            //  isLoading = {loading}
+         >
+             Register
+         </Button>
+         </VStack>
+     )
+}
 
-// export default Register
+export default Register

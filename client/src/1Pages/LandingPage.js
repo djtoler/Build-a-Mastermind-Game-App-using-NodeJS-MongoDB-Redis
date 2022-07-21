@@ -26,7 +26,7 @@ const LandingPage = (props) => {
         borderWidth="1px"
       >
         <Text fontSize="4xl" fontFamily="Work sans" color="black">
-          LinkedIn MasterMind Game
+          MasterMind Game
         </Text>
       </Box>
       <Box

@@ -64,6 +64,7 @@ const Login = (props) => {
             sessionStorage.setItem("userToken", JSON.stringify(data.token));
             setLoading(false);
             console.log("successful login");
+            console.log(sessionStorage);
             history.push("/game")
             
         }
