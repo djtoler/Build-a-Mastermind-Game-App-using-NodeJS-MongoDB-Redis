@@ -4,12 +4,12 @@ const { get_random_number_from_api, get_and_evaluate_user_guess, send_hint_data,
 const {reset_easy_hint_numbers} = require('../../functions/game-mode-functions');
 
 game.get('/random-number', (req, res, next) => {
-    get_random_number_from_api(req, res);
-  })
+  get_random_number_from_api(req, res);
+})
 
 game.post('/guess-evaluation', (req, res, next) => {
-    get_and_evaluate_user_guess(req, res);
-  })
+  get_and_evaluate_user_guess(req, res);
+})
 
 game.post('/get-hints', (req, res, next) => {
   send_hint_data(req, res)

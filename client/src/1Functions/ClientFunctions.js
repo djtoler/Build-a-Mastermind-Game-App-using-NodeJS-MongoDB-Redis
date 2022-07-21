@@ -139,7 +139,6 @@ export const render_hint_data = (array) => {
     return render_hard_hints;
   }
 
-  
   if (array.length > 0 && array[0].current_game_mode_hints.game_mode == 'easy') {
     console.log(array[0].current_game_mode_hints.game_mode);
     let render_easy_hints = (
@@ -158,31 +157,24 @@ export const render_hint_data = (array) => {
     return render_easy_hints;
   }
 
-  if (array.length == 1 ) {
+  if (array.length > 0 && array[0].current_game_mode_hints.game_mode == 'super_easy' ) {
     let i = 0;
     let k = 20
     let display = [];
     const bringitback = () => {
       for (let index = 0; index < 4; index++) {
-        console.log(array.length);
-        const element = JSON.parse(array[0].current_game_mode_hints[index]);
-        console.log(typeof(element));
-        console.log(element);
-        // console.log(element);
-        let img = element.image;
-        let cap = element.caption;
+        const element = array[0].current_game_mode_hints.hint[index];
         display.push(element)
-        // console.log(display);
       }
     }
-    bringitback()
+    bringitback();
     let super_easy_hints = [
       <div key={k}>
         {display.map((round, i) => {
           return (
             <div className="guess-data" key={i}>
-                Caption: {round.caption} <br />
-               <img src={`data:image/jpeg;base64,${round.image}`} />
+                Caption: {round.cap} <br />
+               <img src={round.img} />
             </div>
           );
         })}

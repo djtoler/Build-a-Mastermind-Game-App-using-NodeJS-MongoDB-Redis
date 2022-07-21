@@ -1,19 +1,20 @@
-import { useHistory } from 'react-router';
 import React, { useState } from "react";
-import { Container, Box, Text, Tab, TabList, TabPanel, TabPanels, Tabs} from "@chakra-ui/react";
-import Login from "../../src/1ComponentsMain/Login";
-import Register from "../../src/1ComponentsMain/Register";
+import {
+  Container,
+  Box,
+  Text,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+} from "@chakra-ui/react";
+import Login from "../components/Login";
+import Register from "../components/Register";
 
-const HelloWorld = () => {
-  const history = useHistory();
-  
-  function LandingPageClickHandler() {
-    history.push("/game")
-  }
-  
+const LandingPage = (props) => {
   return (
     <Container maxWidth="xl" centerContent>
-      <button onClick={LandingPageClickHandler}>Click me!</button>
       <Box
         d="flex"
         justifyContent="center"
@@ -23,9 +24,9 @@ const HelloWorld = () => {
         m="40px 0 15px 0"
         borderRadius="lg"
         borderWidth="1px"
-        >
+      >
         <Text fontSize="4xl" fontFamily="Work sans" color="black">
-          MasterMind Game
+          LinkedIn MasterMind Game
         </Text>
       </Box>
       <Box
@@ -43,10 +44,12 @@ const HelloWorld = () => {
             </Tab>
             <Tab width="50%">Register</Tab>
           </TabList>
+
           <TabPanels>
             <TabPanel>
               <Login />
             </TabPanel>
+
             <TabPanel>
               <Register />
             </TabPanel>
@@ -57,5 +60,4 @@ const HelloWorld = () => {
   );
 };
 
-
-export default HelloWorld;
+export default LandingPage;

@@ -1,12 +1,10 @@
 import React, {useState}from 'react';
 import {Container, Box, Text, Tab, TabList, TabPanel, TabPanels, Tabs} from '@chakra-ui/react';
 import { Button } from "@chakra-ui/button";
-// import { easy_mode_click_handler } from '../1Functions/ClientFunctions';
-let current_game_mode;
 
 function GameModes(props) {
     const [gamemode, setGamemode] = useState();
-    // const [showHints, setShowHints] = useState(flase);
+    let current_game_mode;
 
     const easy_mode_button_handler = () => {
         current_game_mode = props.func('easy');

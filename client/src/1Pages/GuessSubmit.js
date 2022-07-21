@@ -82,16 +82,6 @@ const GuessSubmit = () => {
             })
         } 
         easy_mode_click_handler(current_game_mode, guess, axios, config, render_hints, hintsArray, setHintsArray);
-    //     renderhints = 
-    //     <div>
-    //     {hintsArray.map((h, i) => {     
-    //       console.log(h);
-    //     return <div className="guess-data" key={i}>
-    //       Num: {h}{i} <br/>
-    //       Caption: {'dddd'} <br/>
-    //       Image: {} <br/>
-    //     </div>})}
-    //   </div>
     };
 
     return (
