@@ -19,14 +19,22 @@ const Login = (props) => {
     const [show, setShow] = useState(false)
     const [isLoggedIn, setIsLoggedIn] = useState(false)
     const [token, setToken] = useState()
+    const [userData, setUserData] = useState()
     const [redirect, setRedirect] = useState(false)
+    const [user, setUser] = useState("");
+    const [gameId, setGameId] = useState();
+    // console.log(user);
+    // const [userEmail, setUserEmail] = useState(user.email);
+    // const [userId, setUserId] = useState(user._id);
+
     const handleClick = () => setShow(!show)
     const toast = useToast();
     const history = useHistory();
     let passToken;
+    let passUserData;
+    let passGameId;
 
     const submitHandler = async () => {
-        
         setLoading(true);
         if (!email || !password) {
           toast({
@@ -45,7 +53,6 @@ const Login = (props) => {
                     "Content-type":"application/json",
                 },
             };
-
             const {data} = await axios.post(
                 "http://localhost:9991/user/login",
                 {email, password},
@@ -53,6 +60,12 @@ const Login = (props) => {
             );
             setToken(data.token);
             passToken = data.token;
+            console.log(data);
+            console.log(typeof(data));
+            sessionStorage.setItem("userData", JSON.stringify(data))
+            setUserData(sessionStorage.getItem("userData", data));
+            passUserData = sessionStorage.getItem("userData", data)
+            console.log(passUserData);
             toast({
                 title: 'Login Successful',
                 status: 'success',
@@ -60,12 +73,20 @@ const Login = (props) => {
                 isClosable: true,
                 position: "bottom"
             });
-            sessionStorage.setItem("userInfo", JSON.stringify(data));
-            sessionStorage.setItem("userToken", JSON.stringify(data.token));
             setLoading(false);
-            console.log("successful login");
-            console.log(sessionStorage);
-            history.push("/game")
+            const {result} = await axios.post(
+                "http://localhost:9991/create-game",
+                {passUserData},
+                config
+            ).then((result) => {
+                console.log(result.data);
+                sessionStorage.setItem("currentGameId", JSON.stringify(result.data))
+                setGameId(sessionStorage.getItem("currentGameId", result.data));
+                passGameId = sessionStorage.getItem("currentGameId", result.data)
+                console.log(passGameId);
+                history.push("/game")
+            })
+            
             
         }
         catch (error ){
@@ -109,7 +130,7 @@ const Login = (props) => {
                 onClick={submitHandler}
                 isLoading={loading}
             >
-                Login
+                Login1
             </Button>
             <Button
                 variant="solid"

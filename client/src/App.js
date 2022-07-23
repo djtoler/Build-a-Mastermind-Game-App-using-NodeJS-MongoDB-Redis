@@ -1,5 +1,4 @@
 import './App.css';
-
 import { Route, Routes } from 'react-router-dom';
 import React from 'react';
 import GuessSubmit from './1Pages/GuessSubmit';
@@ -17,4 +16,4 @@ function App() {
   );
 }
 
-export default App;
+export default  App;

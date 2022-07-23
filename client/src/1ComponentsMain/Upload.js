@@ -7,8 +7,9 @@ import { Button } from "@chakra-ui/button";
 import { FormLabel, FormControl } from "@chakra-ui/form-control";
 import { Input, InputGroup, InputRightElement } from "@chakra-ui/input";
 import { VStack } from "@chakra-ui/layout";
-import Avatar from "../1ComponentHelper/Avatar";
+import UserAvatarBadge from "../1ComponentHelper/UserAvatarBadge";
 import Logout from "../1ComponentHelper/Logout";
+import ProfileBadge from "../1ComponentHelper/ProfileBadge";
 
 const Upload = () => {
   const [file, setFile] = useState("");
@@ -23,6 +24,7 @@ const Upload = () => {
   const toast = useToast();
   const history = useHistory();
   const [show, setShow] = useState(false);
+  const [uploadedEmail, setUploadedEmail] = useState("");
   const handleClick = () => setShow(!show);
   const config = { headers: { "Content-Type": "application/json" } };
   let sessionData;
@@ -63,12 +65,22 @@ const Upload = () => {
             } 
             validationResponse()
             sessionStorage.setItem("sessionData", JSON.stringify(regResponseObject));
+            sessionStorage.setItem("email", regResponseObject.email)
+            let useremail = sessionStorage.getItem("email")
+            console.log(useremail);
+            console.log(result.data.email)
             setLoading(false);
             console.log('hello');
             // history.push("/home");
             try {
                 const uploadedImg = result.data.picture;
                 setUploadedImg(uploadedImg);
+
+                const uploadedEmail = result.data.email;
+                setUploadedEmail(uploadedEmail)
+
+                console.log(uploadedEmail);
+                
             } catch (error) {
                 setLoading(false);
             }
@@ -78,6 +90,7 @@ const Upload = () => {
   return (
     <div>
         <VStack spacing="5px" color="black">
+        {/* <UserAvatarBadge uploadedImg={uploadedImg} /> */}
             <FormControl id="first-name" isRequired>
                 <FormLabel>Name</FormLabel>{" "}
                     <Input
@@ -146,7 +159,6 @@ const Upload = () => {
             >
                 Register
             </Button>
-            <Avatar uploadedImg={uploadedImg} />
             <Logout />
         </VStack>
     </div>

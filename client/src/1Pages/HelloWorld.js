@@ -38,9 +38,7 @@ const HelloWorld = () => {
       >
         <Tabs variant="soft-rounded" colorScheme="green">
           <TabList mb="1em">
-            <Tab width="50%" data-testid="login">
-              Login
-            </Tab>
+            <Tab width="50%">Login</Tab>
             <Tab width="50%">Register</Tab>
           </TabList>
           <TabPanels>

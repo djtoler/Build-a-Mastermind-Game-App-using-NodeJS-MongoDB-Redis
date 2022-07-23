@@ -25,6 +25,7 @@ app.post('/get-hints', game)
 app.put('/update-vars', game)
 app.post('/upload-photo', image)
 app.get('/get_super_easy_hint', image)
+app.post('/create-game', game)
 
 
 

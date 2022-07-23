@@ -36,6 +36,7 @@ export const clickHandler = async (
   send_user_guess(guess, axios, config, guess_evaluation, setCurrent_Game_Data);
 };
 
+
 export const checkValidInput = (guess, toast, setLoading, min_guess_length) => {
   let not_valid =
     undefined || guess.length < min_guess_length
@@ -59,8 +60,9 @@ export const send_user_guess = async (
   array,
   setArray
 ) => {
+  let current_game_id = sessionStorage.getItem("userData")
   const data = await axios
-    .post("http://127.0.0.1:9991/guess-evaluation", { guess }, config)
+    .post("http://127.0.0.1:9991/guess-evaluation", { guess, current_game_id }, config)
     .then((res) => {
       console.log(res.data);
       guess_evaluation = res.data;

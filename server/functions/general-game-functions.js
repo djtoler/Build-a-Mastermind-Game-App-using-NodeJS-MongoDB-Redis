@@ -2,7 +2,9 @@ const axios = require("axios");
 const redis = require("redis");
 const fs = require('fs');
 const {game_modes, easy_mode, hard_mode, super_hard_mode, return_random_index} = require( "../functions/game-mode-functions");
-
+const Game = require("../models/game-model");
+const User = require("../models/user-model");
+// const game = await Game.create({ is_2_player, random_number, game_mode, rounds_played, game_won, users });
 let test;
 function testGuess() {
   return Math.floor(Math.random() * 9999) + 1;
@@ -12,6 +14,7 @@ let random_number;
 let random_number_string;
 let random_number_conversion_array;
 let guess_conversion_string;
+
 
 const convert_random_number = (res, response) => {
   test = testGuess();
@@ -32,6 +35,10 @@ const get_random_number_from_api = async (response, res) => {
     .then((response) => {
       success = true;
       convert_random_number(res, response);
+      // const game = await Game.create({ is_2_player, random_number, game_mode, rounds_played, game_won, users });
+      // game.update_random_number(random_number)
+      // await game.save()
+      // sewnd game id to client, store in session, access on later requests
       Object.assign(response_obj, {success : true, random_number: random_number, test_guess: test})
       return success
         ? res.json(response_obj)
@@ -44,7 +51,11 @@ const get_random_number_from_api = async (response, res) => {
 }
 
 const get_and_evaluate_user_guess = (req, res) => {
-  const {guess, mode} = req.body;
+  const {guess, current_game_id} = req.body;
+  console.log('done 4 the daaaaaaaaaaayyyyyyyyy, sike');
+  console.log(req.body);
+  console.log(current_game_id);
+  console.log('done 4 the daaaaaaaaaaayyyyyyyyy, sike');
   let round_results = {};
   let correct_numbers_count_array = [];
   let correct_numbers_count = 0;
@@ -93,7 +104,11 @@ const get_and_evaluate_user_guess = (req, res) => {
 
 const send_hint_data = async (req, res,) => {
   const {current_game_mode, guess} = req.body;
+  console.log(req.body);
+
   if (current_game_mode === null || undefined) return;
+  // const game = await Game.findById()
+  // game.update_game_level()
   console.log("currentgm: " + current_game_mode);
   console.log("guess: " + guess);
   console.log(req.body);
@@ -158,7 +173,36 @@ const send_hint_data = async (req, res,) => {
 
 
 
-// const create_game = () => {}
+const create_a_new_game = async (req, res, current_game_mode, user_guessed_all_correct_numbers) => {
+  console.log('in create game route');
+  const {passUserData} = req.body
+  const current_user = JSON.parse(passUserData);
+  const current_user_email = current_user.email;
+  const current_user_id = current_user._id;
+  const game_obj = {is_2_player:false, game_mode: current_game_mode, rounds_played: 1, game_won: false, user: current_user_id}
+  const user = await User.findOne( {email: current_user_email} );
+  const game = await Game.create(game_obj);
+  await game.users.push(user);
+  await game.save();
+  await user.games.push(game);
+  await user.save();
+  
+
+  // await game.get_is_2_player();
+  // await game.update_game_level(current_game_mode);
+  // await game.set_rounds_played();
+  // await game.get_game_won(user_guessed_all_correct_numbers);
+ 
+  // console.log(game._id);
+  return res.json({game_id :game._id})
+
+}
+
+
+
+
+
+
 // const update_game = () => {}
 // const get_random_number_from_backup = () => {};
 
@@ -172,4 +216,5 @@ module.exports = {
   get_random_number_from_api,
   get_and_evaluate_user_guess,
   send_hint_data,
+  create_a_new_game
 };

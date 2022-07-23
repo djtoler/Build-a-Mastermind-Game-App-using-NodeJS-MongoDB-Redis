@@ -7,11 +7,11 @@ import axios from "axios";
 import { useToast } from '@chakra-ui/react';
 import SliderInput from '../1ComponentHelper/SliderInput';
 import GameModes from "../1ComponentsMain/GameModes";
+import StartGameButton from "../1ComponentHelper/StartGameButton";
 import { checkValidInput, send_user_guess, clickHandler, FetchRandomNumber, render_guess_data, render_hint_data, easy_mode_click_handler} from "../1Functions/ClientFunctions";
 import './GuessSubmitCSS.css'
 
-const GuessSubmit = () => {
-    const toast = useToast();
+const GuessSubmit = (props) => {
     const [loading, setLoading] = useState();
     const [guess, setGuess] = useState();
     const [takeaguess, setTakeAGuess] = useState();
@@ -19,12 +19,13 @@ const GuessSubmit = () => {
     const config = {"Content-type": "application/json"};
     const [currentGameDataArray, setCurrentGameDataArray] = useState([]);
     const [hintsArray, setHintsArray] = useState([]);
-    const [hints, setHints] = useState([])
+    const [hints, setHints] = useState([]);
+    const toast = useToast();
     let render_hints;
     let round_counter = 1;
     let guess_evaluation;
     let current_game_mode;
-    let reload = false;
+    let current_user_obj;
     const game_modes = {a: 'easy', b: 'super_easy', c: 'hard', d: 'super_hard'};
 
     useEffect(()=> {
@@ -55,14 +56,17 @@ const GuessSubmit = () => {
                 position: "bottom"
             });
         }
-
     }, []); 
 
     FetchRandomNumber(axios, setRandomNumber, toast);
+
+
     const clickHandler = async () => {
         checkValidInput(guess, toast, setLoading, 4);
         send_user_guess (guess, axios, config, guess_evaluation, currentGameDataArray, setCurrentGameDataArray);
     };
+
+
     const pullCurrentModeHints = async (mode) => {
         console.log(mode);
         current_game_mode = mode;
@@ -84,9 +88,11 @@ const GuessSubmit = () => {
         easy_mode_click_handler(current_game_mode, guess, axios, config, render_hints, hintsArray, setHintsArray);
     };
 
+
     return (
         <div>
             <GameModes func={pullCurrentModeHints} guess={guess} />
+            <StartGameButton />
             <VStack spacing="5px" color="black">
             <FormControl isRequired>
                 <FormLabel htmlFor='first-name'></FormLabel>
