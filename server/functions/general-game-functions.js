@@ -4,6 +4,7 @@ const fs = require('fs');
 const {game_modes, easy_mode, hard_mode, super_hard_mode, return_random_index} = require( "../functions/game-mode-functions");
 const Game = require("../models/game-model");
 const User = require("../models/user-model");
+const Admin = require("../models/admin-model");
 // const game = await Game.create({ is_2_player, random_number, game_mode, rounds_played, game_won, users });
 let test;
 function testGuess() {
@@ -35,10 +36,6 @@ const get_random_number_from_api = async (response, res) => {
     .then((response) => {
       success = true;
       convert_random_number(res, response);
-      // const game = await Game.create({ is_2_player, random_number, game_mode, rounds_played, game_won, users });
-      // game.update_random_number(random_number)
-      // await game.save()
-      // sewnd game id to client, store in session, access on later requests
       Object.assign(response_obj, {success : true, random_number: random_number, test_guess: test})
       return success
         ? res.json(response_obj)
@@ -52,112 +49,41 @@ const get_random_number_from_api = async (response, res) => {
 
 const get_and_evaluate_user_guess = async (req, res) => {
   const {guess, current_game_id, current_mode, current_random_number, passUserData} = req.body;
-
-  // console.log('done 4 the daaaaaaaaaaayyyyyyyyy, sike');
-  // console.log(req.body);
-  // console.log(current_game_id);
-  // console.log('done 4 the daaaaaaaaaaayyyyyyyyy, sike');
-
-
-  let new_current_game = JSON.parse(current_game_id)
-  let new_current_mode = current_mode
-
-
-  console.log("NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN: ---->");
-  // console.log(current_random_number);
-  let new_crn = Number(current_random_number)
-  console.log(new_crn);
-  console.log(random_number_string);
-  console.log("NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN: ---->");
-  
-  // console.log(current_mode);
-  // console.log(new_current_user._id);
-
-
+  let new_current_game = JSON.parse(current_game_id);
+  let new_crn = Number(current_random_number);
+  let round_results = {};
+  let correct_numbers_count_array = [];
+  let correct_numbers_count = 0;
+  let correct_locations_count = 0;
+  let user_guessed_all_correct_numbers;
 // Because sessionstore data persists through window reloads, but the random number doesnt so each time a guess has to be evaluated, i reassign the games rn to the current rn. then i check the current random number aginst the generated random number
 // . if they match, i know the user is still in the current game. If they dont match, I know the window has reloaded which
 // means a new random number has been generated and I have to create a new game
   let current_game = await Game.findOne( {_id: new_current_game.game_id} );
   current_game.random_number = new_crn;
   await current_game.save()
-  
-
-
-  console.log("currentGameAtIf");
-  console.log(current_game);
-  console.log(new_crn);
-  console.log(random_number_string);
-  console.log(current_game.random_number);
 
   if (current_game.random_number != random_number_string) {
-    console.log("IN  IF");
     let new_random_number = Number(random_number_string)
-    console.log(random_number_string);
-    console.log(current_game.random_number);
-    console.log("need to create new game");
-    console.log(passUserData);
     const current_user = JSON.parse(passUserData);
     const current_user_email = current_user.email;
     const current_user_id = current_user._id;
     const game_obj = {is_2_player:false, game_mode: current_mode, rounds_played: 0, game_won: false, user: current_user_id}
     const user = await User.findOne( {email: current_user_email} );
     current_game = await Game.create(game_obj);
-    console.log("currentGameNew Create");
-    
     await current_game.users.push(user);
-    console.log(current_game);
     current_game.random_number = new_random_number;
-
     current_game.save();
     await user.games.push(current_game);
     await user.save();
-    console.log("END OF IF");
-    console.log(current_game);
   }
 
-  current_game.rounds_played = current_game.rounds_played + 1
-  // console.log("RIGHTAFTER: ---->");
-  // console.log("cgrn");
-  // console.log(current_game.random_number);
-  // console.log("rn");
-  // console.log(random_number_string);
-  // console.log("rp");
-  // console.log(current_game.rounds_played);
-
-
-  
-  current_game.game_mode = current_mode;
-
-  
-  // console.log("RIGHTAFTER: ---->");
-
-
-  // console.log("POSTAFTER: ---->");
-
-  // console.log("cgrn");
-  // console.log(current_game.random_number);
-  // console.log("rn");
-  // console.log(random_number_string);
-  // console.log("rp");
-  // console.log(current_game.rounds_played);
-  
-  // console.log("POSTAFTER: ---->");
-
-
-  // console.log(current_game);
-  
-
-
-  let round_results = {};
-  let correct_numbers_count_array = [];
-  let correct_numbers_count = 0;
-  let correct_locations_count = 0;
-  let user_guessed_all_correct_numbers;
-
-
-  const correct_guess_all_four =  () => {
+  const correct_guess_all_four =  async () => {
     user_guessed_all_correct_numbers = guess == random_number_string ? true : false
     if (user_guessed_all_correct_numbers) {
+      const user = await User.findOne( {email: current_user_email} );
+      user.alltime_games_won = user.alltime_games_won + 1;
+      user.save()
       current_game.game_won = true;
       current_game.total_points = 20000;
       current_game.total_correct_locations = 4;
@@ -184,7 +110,6 @@ const get_and_evaluate_user_guess = async (req, res) => {
       guess.toString().charAt(i) == random_number_string.charAt(i) ? correct_locations_count++ : 0
       i++;
     }
-    // console.log(correct_locations_count);
     return correct_locations_count;
   }
 
@@ -192,13 +117,10 @@ const get_and_evaluate_user_guess = async (req, res) => {
   correct_numbers();
   correct_locations();
   console.log(round_results = correct_numbers_count > 0 ? {correct_numbers_return: correct_numbers_count, correct_locations_return: correct_locations_count, guess_attempt_return: guess} : {correct_numbers_return: 0, correct_locations_return: 0, guess_attempt: guess})
-  // console.log(current_game.total_correct_numbers )
 
-  // console.log("---->>>"); 
-  // console.log(current_game.rounds_played); 
-  // console.log("---->>>"); 
-
-  async function game_schema_calculator (increment) {
+  function game_schema_calculator (increment) {
+    current_game.rounds_played = current_game.rounds_played + 1
+    current_game.game_mode = current_mode;
     current_game.total_correct_locations = current_game.total_correct_locations + round_results.correct_locations_return
     current_game.total_correct_numbers = current_game.total_correct_numbers + round_results.correct_numbers_return
     if (correct_numbers_count > 0 || correct_locations_count > 0) {
@@ -208,10 +130,6 @@ const get_and_evaluate_user_guess = async (req, res) => {
       current_game.total_points = current_game.total_points + new_tp;
       current_game.save();
     }
-
-    // console.log(current_game.total_points);
-    // console.log("--currentGame-->>>"); 
-    // console.log(current_game); 
     return current_game.total_points
   }
 
@@ -233,7 +151,95 @@ const get_and_evaluate_user_guess = async (req, res) => {
       break;
   }
 
-  // console.log(current_game.total_correct_numbers )
+  async function user_schema_calculator(params) {
+    const user = await User.findOne( {email: current_user_email} );
+    user.alltime_games_played = user.alltime_games_played + 1
+    user.alltime_points_earned = user.alltime_points_earned + current_game.total_points
+    user.avg_ppg = user.alltime_points_earned / user.alltime_games_played
+    
+  }
+
+  let gpcount;
+  let gwcount;
+  let pecount;
+  let ppgcount;
+
+  async function weight_calc() {
+    const admin = await Admin
+    .find({})
+    console.log(admin);
+    ppgcount = 0;
+    gpcount = 0;
+    gwcount = 0;
+    pecount = 0;
+    let gpw = 100;
+    let gww = 8;
+    let pew = 6;
+    let ppgw = 5;
+
+    const users = await User
+    .find({})
+
+    console.log(users.length);
+    users.forEach((user) => {
+      console.log(user.email);
+      // user.alltime_games_played = Math.floor(Math.random() * 10) + 1
+      // user.alltime_games_won = Math.floor(Math.random() * 5) + 1
+      // user.alltime_points_earned = Math.floor(Math.random() * 2000) + 1
+      // user.avg_ppg = user.alltime_points_earned / user.alltime_games_played
+      user.gp_ranking = user.alltime_games_played * gpw
+      user.gw_ranking = user.alltime_games_won * gww
+      user.pe_ranking = user.alltime_points_earned * pew
+      user.ppg_ranking = user.avg_ppg * ppgw
+      
+      console.log("----rankings above---->>>");
+      user.save();
+      gpcount = gpcount + user.alltime_games_played;
+      gwcount = gwcount + user.alltime_games_won;
+      pecount = pecount + user.alltime_points_earned;
+      ppgcount = ppgcount + user.avg_ppg;
+
+    })
+    console.log(ppgcount);
+    console.log(gwcount);
+    console.log(pecount);
+    console.log(gpcount);
+    console.log("-------->>>");
+    // gpw is about 55x less than ppgw so i doublee to make it teiwce as importnt
+    let avatar_avg_ppg = ppgcount / users.length;
+    let avatar_avg_gw = gwcount / users.length;
+    let avatar_avg_pe = pecount / users.length;
+    let avatar_avg_gpc = gpcount / users.length;
+    avatar_avg_gpc = avatar_avg_gpc.toFixed(0)
+    avatar_avg_pe = avatar_avg_pe.toFixed(1)
+    avatar_avg_gw = avatar_avg_gw.toFixed(1)
+    avatar_avg_ppg = avatar_avg_ppg.toFixed(1)
+    
+
+    console.log(avatar_avg_ppg);
+    console.log(avatar_avg_gw);
+    console.log(avatar_avg_pe);
+    console.log(avatar_avg_gpc);
+    console.log("-------->>>");
+
+    let total_number_users = users.length;
+    admin.avatar_avg_ppg = avatar_avg_ppg;
+    admin.avatar_avg_gw = avatar_avg_gw;
+    admin.avatar_avg_pe = avatar_avg_pe;
+    admin.avatar_avg_gpc = avatar_avg_gpc;
+    admin.total_number_users = total_number_users
+    admin.save()
+    console.log(admin);
+    // average ppg of all users
+    // average gw of all users
+    // average gp of all users
+    // average atp of all users
+    
+  }
+
+
+  weight_calc();
+
   return res.json(
     user_guessed_all_correct_numbers
     ? 

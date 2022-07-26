@@ -13,6 +13,10 @@ const userSchema = mongoose.Schema({
         alltime_points_earned: number_default,
         avg_ppg: number_default,
         ranking: number_default,
+        ppg_ranking: number_default,
+        pe_ranking: number_default,
+        gw_ranking: number_default,
+        gp_ranking: number_default,
         games: [{ type: mongoose.Schema.Types.ObjectId, ref: "Game" }]
     },
     {timestamps: true}
