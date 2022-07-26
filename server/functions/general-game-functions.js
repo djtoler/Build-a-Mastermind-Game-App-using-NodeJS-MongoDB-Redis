@@ -50,12 +50,95 @@ const get_random_number_from_api = async (response, res) => {
     });
 }
 
-const get_and_evaluate_user_guess = (req, res) => {
-  const {guess, current_game_id} = req.body;
-  console.log('done 4 the daaaaaaaaaaayyyyyyyyy, sike');
-  console.log(req.body);
-  console.log(current_game_id);
-  console.log('done 4 the daaaaaaaaaaayyyyyyyyy, sike');
+const get_and_evaluate_user_guess = async (req, res) => {
+  const {guess, current_game_id, current_mode, current_random_number, passUserData} = req.body;
+
+  // console.log('done 4 the daaaaaaaaaaayyyyyyyyy, sike');
+  // console.log(req.body);
+  // console.log(current_game_id);
+  // console.log('done 4 the daaaaaaaaaaayyyyyyyyy, sike');
+
+
+  let new_current_game = JSON.parse(current_game_id)
+  let new_current_mode = current_mode
+
+
+  console.log("NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN: ---->");
+  // console.log(current_random_number);
+  let new_crn = Number(current_random_number)
+  console.log(new_crn);
+  console.log(random_number_string);
+   console.log("NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN: ---->");
+  
+  // console.log(current_mode);
+  // console.log(new_current_user._id);
+
+
+// Because sessionstore data persists through window reloads, but the random number doesnt so each time a guess has to be evaluated, i reassign the games rn to the current rn. then i check the current random number aginst the generated random number
+// . if they match, i know the user is still in the current game. If they dont match, I know the window has reloaded which
+// means a new random number has been generated and I have to create a new game
+  let current_game = await Game.findOne( {_id: new_current_game.game_id} );
+  current_game.random_number = new_crn;
+  current_game.save()
+  console.log("currentGameAtIf");
+  console.log(current_game);
+  if (current_game.random_number != random_number_string) {
+    console.log("IN  IF");
+    let new_random_number = Number(random_number_string)
+    console.log(random_number_string);
+    console.log(current_game.random_number);
+    console.log("need to create new game");
+    console.log(passUserData);
+    const current_user = JSON.parse(passUserData);
+    const current_user_email = current_user.email;
+    const current_user_id = current_user._id;
+    const game_obj = {is_2_player:false, game_mode: current_mode, rounds_played: 0, game_won: false, user: current_user_id}
+    const user = await User.findOne( {email: current_user_email} );
+    current_game = await Game.create(game_obj);
+    console.log("currentGameNew Create");
+    console.log(current_game);
+    await current_game.users.push(user);
+    current_game.random_number = new_random_number
+    await current_game.save();
+    await user.games.push(current_game);
+    await user.save();
+    console.log("END OF IF");
+    console.log(current_game);
+  }
+
+  current_game.rounds_played = current_game.rounds_played + 1
+  // console.log("RIGHTAFTER: ---->");
+  // console.log("cgrn");
+  // console.log(current_game.random_number);
+  // console.log("rn");
+  // console.log(random_number_string);
+  // console.log("rp");
+  // console.log(current_game.rounds_played);
+
+
+  
+  current_game.game_mode = current_mode;
+
+  
+  // console.log("RIGHTAFTER: ---->");
+
+
+  // console.log("POSTAFTER: ---->");
+
+  // console.log("cgrn");
+  // console.log(current_game.random_number);
+  // console.log("rn");
+  // console.log(random_number_string);
+  // console.log("rp");
+  // console.log(current_game.rounds_played);
+  
+  // console.log("POSTAFTER: ---->");
+
+
+  // console.log(current_game);
+  
+
+
   let round_results = {};
   let correct_numbers_count_array = [];
   let correct_numbers_count = 0;
@@ -63,8 +146,17 @@ const get_and_evaluate_user_guess = (req, res) => {
   let user_guessed_all_correct_numbers;
 
 
-  const correct_guess_all_four = () => {
-    return user_guessed_all_correct_numbers = guess == random_number_string ? true : false
+  const correct_guess_all_four = async () => {
+    user_guessed_all_correct_numbers = guess == random_number_string ? true : false
+    if (user_guessed_all_correct_numbers) {
+      current_game.game_won = true;
+      current_game.total_points = 20000;
+      current_game.total_correct_locations = 4;
+      current_game.total_correct_numbers = 4;
+      await current_game.save();
+      return current_game
+    }
+    return user_guessed_all_correct_numbers
   }  
 
   const correct_numbers = () => {
@@ -83,15 +175,56 @@ const get_and_evaluate_user_guess = (req, res) => {
       guess.toString().charAt(i) == random_number_string.charAt(i) ? correct_locations_count++ : 0
       i++;
     }
-    console.log(correct_locations_count);
+    // console.log(correct_locations_count);
     return correct_locations_count;
   }
 
   correct_guess_all_four();
   correct_numbers();
   correct_locations();
-  
   console.log(round_results = correct_numbers_count > 0 ? {correct_numbers_return: correct_numbers_count, correct_locations_return: correct_locations_count, guess_attempt_return: guess} : {correct_numbers_return: 0, correct_locations_return: 0, guess_attempt: guess})
+  // console.log(current_game.total_correct_numbers )
+
+  // console.log("---->>>"); 
+  // console.log(current_game.rounds_played); 
+  // console.log("---->>>"); 
+
+  async function game_schema_calculator (increment) {
+    current_game.total_correct_locations = current_game.total_correct_locations + round_results.correct_locations_return
+    current_game.total_correct_numbers = current_game.total_correct_numbers + round_results.correct_numbers_return
+    if (correct_numbers_count > 0 || correct_locations_count > 0) {
+      let cnp = correct_numbers_count * increment;
+      let clp = correct_locations_count * increment;
+      let new_tp = cnp + clp;
+      current_game.total_points = current_game.total_points + new_tp;
+      current_game.save();
+    }
+
+    // console.log(current_game.total_points);
+    // console.log("--currentGame-->>>"); 
+    // console.log(current_game); 
+    return current_game.total_points
+  }
+
+  switch (current_game.game_mode) {
+    case 'super_easy':
+      game_schema_calculator(10);
+      break;
+    case 'easy':
+      game_schema_calculator(20);
+      break;
+    case 'hard':
+      game_schema_calculator(100);
+      break;
+    case 'super_hard':
+      game_schema_calculator(200);
+      break;
+    default:
+      game_schema_calculator(50);
+      break;
+  }
+
+  // console.log(current_game.total_correct_numbers )
   return res.json(
     user_guessed_all_correct_numbers
     ? 
@@ -176,10 +309,11 @@ const send_hint_data = async (req, res,) => {
 const create_a_new_game = async (req, res, current_game_mode, user_guessed_all_correct_numbers) => {
   console.log('in create game route');
   const {passUserData} = req.body
+  console.log(passUserData);
   const current_user = JSON.parse(passUserData);
   const current_user_email = current_user.email;
   const current_user_id = current_user._id;
-  const game_obj = {is_2_player:false, game_mode: current_game_mode, rounds_played: 1, game_won: false, user: current_user_id}
+  const game_obj = {is_2_player:false, game_mode: current_game_mode, rounds_played: 0, game_won: false, user: current_user_id}
   const user = await User.findOne( {email: current_user_email} );
   const game = await Game.create(game_obj);
   await game.users.push(user);

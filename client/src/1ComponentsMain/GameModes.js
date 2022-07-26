@@ -4,9 +4,11 @@ import { Button } from "@chakra-ui/button";
 
 function GameModes(props) {
     const [gamemode, setGamemode] = useState();
+    const [currentMode, setCurrentMode] = useState();
     let current_game_mode;
 
     const easy_mode_button_handler = () => {
+        let current_game_id = sessionStorage.getItem("currentGameId")
         current_game_mode = props.func('easy');
         console.log(gamemode);
         console.log(current_game_mode);

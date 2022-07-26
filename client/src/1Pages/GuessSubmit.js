@@ -59,8 +59,6 @@ const GuessSubmit = (props) => {
     }, []); 
 
     FetchRandomNumber(axios, setRandomNumber, toast);
-
-
     const clickHandler = async () => {
         checkValidInput(guess, toast, setLoading, 4);
         send_user_guess (guess, axios, config, guess_evaluation, currentGameDataArray, setCurrentGameDataArray);
@@ -69,7 +67,10 @@ const GuessSubmit = (props) => {
 
     const pullCurrentModeHints = async (mode) => {
         console.log(mode);
+        sessionStorage.setItem("currentMode", (mode));
+        console.log(sessionStorage.getItem("currentMode"));
         current_game_mode = mode;
+        
         const easy_mode_click_handler = async (current_game_mode, guess, axios, config, render_hints, array, setArray) => {
             const data = await axios
               .post(
