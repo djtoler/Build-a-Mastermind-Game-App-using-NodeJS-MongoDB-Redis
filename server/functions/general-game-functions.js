@@ -68,7 +68,7 @@ const get_and_evaluate_user_guess = async (req, res) => {
   let new_crn = Number(current_random_number)
   console.log(new_crn);
   console.log(random_number_string);
-   console.log("NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN: ---->");
+  console.log("NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN: ---->");
   
   // console.log(current_mode);
   // console.log(new_current_user._id);
@@ -79,9 +79,16 @@ const get_and_evaluate_user_guess = async (req, res) => {
 // means a new random number has been generated and I have to create a new game
   let current_game = await Game.findOne( {_id: new_current_game.game_id} );
   current_game.random_number = new_crn;
-  current_game.save()
+  await current_game.save()
+  
+
+
   console.log("currentGameAtIf");
   console.log(current_game);
+  console.log(new_crn);
+  console.log(random_number_string);
+  console.log(current_game.random_number);
+
   if (current_game.random_number != random_number_string) {
     console.log("IN  IF");
     let new_random_number = Number(random_number_string)
@@ -96,10 +103,12 @@ const get_and_evaluate_user_guess = async (req, res) => {
     const user = await User.findOne( {email: current_user_email} );
     current_game = await Game.create(game_obj);
     console.log("currentGameNew Create");
-    console.log(current_game);
+    
     await current_game.users.push(user);
-    current_game.random_number = new_random_number
-    await current_game.save();
+    console.log(current_game);
+    current_game.random_number = new_random_number;
+
+    current_game.save();
     await user.games.push(current_game);
     await user.save();
     console.log("END OF IF");
@@ -146,14 +155,14 @@ const get_and_evaluate_user_guess = async (req, res) => {
   let user_guessed_all_correct_numbers;
 
 
-  const correct_guess_all_four = async () => {
+  const correct_guess_all_four =  () => {
     user_guessed_all_correct_numbers = guess == random_number_string ? true : false
     if (user_guessed_all_correct_numbers) {
       current_game.game_won = true;
       current_game.total_points = 20000;
       current_game.total_correct_locations = 4;
       current_game.total_correct_numbers = 4;
-      await current_game.save();
+      current_game.save();
       return current_game
     }
     return user_guessed_all_correct_numbers
