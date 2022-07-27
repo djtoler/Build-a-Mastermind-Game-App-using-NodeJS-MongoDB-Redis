@@ -41,5 +41,5 @@ GameSchema.methods.get_users = async function (current_user_id) {
     return this.get_users
 }
 
-const Game = mongoose.model("game", GameSchema);
+const Game = mongoose.model("Game", GameSchema);
 module.exports = Game;

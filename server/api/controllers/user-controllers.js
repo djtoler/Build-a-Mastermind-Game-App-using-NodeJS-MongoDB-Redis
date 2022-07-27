@@ -3,9 +3,12 @@ const axios = require('axios');
 const FormData = require('form-data');
 const fs = require('fs');
 const User = require("../../models/user-model");
+const Admin = require("../../models/admin-model");
 const generate_token = require("../../config/token");
 const cloudinary = require("cloudinary").v2;
-const options = {expires: new Date(Date.now) + 3000}
+const start = performance.now();
+const end = performance.now();
+const tte = end - start;
 
 // class ToastResponse {
 //   isClosable = true
@@ -28,9 +31,13 @@ let passwordTooShort = { title: "Password must be at least 4 characters", status
 let userAlreadyExists = { title: "User already exists", status: "warning", duration: 9000, isClosable: true, position: "bottom" };
 let registration_error = { title: "Error registering, try again", status: "warning", duration: 9000, isClosable: true, position: "bottom" };
 let successful_registration = { title: "Registration Successful", status: "success", duration: 9000, isClosable: true, position: "bottom" };
+let registration_count = 0;
 let errors;
+let new_users_array;
 
 const upload_profile_picture = asyncHandler (async (req, res) => {
+  start;
+  console.log( registration_count);
   const {image, name, email, password, confirmPassword} = req.body;
   errors = [];
   if (!name || !email || !password || !confirmPassword) {
@@ -43,9 +50,9 @@ const upload_profile_picture = asyncHandler (async (req, res) => {
     errors.push({ msg: passwordTooShort });
   }
   const userExists = await User.findOne({ email });
-    if (userExists) {
-      errors.push({msg: userAlreadyExists})
-    }
+  if (userExists) {
+    errors.push({msg: userAlreadyExists})
+  }
   if (errors.length > 0) {
     return res.json({errors, name, email, password, confirmPassword});
   }
@@ -66,6 +73,13 @@ const upload_profile_picture = asyncHandler (async (req, res) => {
     try {
       if (user) {
         console.log(user);
+        registration_count = registration_count + 1;
+        console.log( registration_count);
+        const admin = await Admin.findOne({id:'main'});
+        new_users_array = admin.total_new_users_daily;
+        new_users_array[new_users_array.length - 1].new_users_today = registration_count;
+        admin.save();
+        console.log(new_users_array[new_users_array.length - 1].new_users_today);
         res.status(201).json({msg: successful_registration, id: user._id, name: user.name, email: user.email, picture: user.picture, token: generate_token(user._id)});
       } 
     } 
@@ -74,6 +88,9 @@ const upload_profile_picture = asyncHandler (async (req, res) => {
       console.log(err);
       }
   })
+  end;
+  tte;
+  console.log("t:" + tte);
 });
 
 const registerUser = asyncHandler(async (req, res) => {
