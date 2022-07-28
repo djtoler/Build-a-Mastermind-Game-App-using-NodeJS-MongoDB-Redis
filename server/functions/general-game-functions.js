@@ -1,12 +1,16 @@
 const axios = require("axios");
 const redis = require("redis");
 const fs = require("fs");
+const {v4 : uuidv4} = require('uuid')
+const newId = uuidv4()
 const {gameobj} = require("../models/model-helpers")
 const {game_modes, easy_mode, hard_mode, super_hard_mode, return_random_index} = require("../functions/game-mode-functions");
 const Game = require("../models/game-model");
 const User = require("../models/user-model");
 const Admin = require("../models/admin-model");
+const {start, end, tte} = require('../functions/admin-test-functions')
 let test;
+let dummy_users = [];
 
 function testGuess() {
   return Math.floor(Math.random() * 9999) + 1;
@@ -30,6 +34,7 @@ const convert_guess_number = () => {
 };
 
 const get_random_number_from_api = async (response, res) => {
+  start;
   let response_obj = {};
   await axios
     .get(
@@ -51,10 +56,15 @@ const get_random_number_from_api = async (response, res) => {
       res.json({ error: "function error" });
       console.log(error);
     });
+    end;
+    tte;
+    console.log('treg:' + tte);
 };
 
 const get_and_evaluate_user_guess = async (req, res) => {
+  start;
   const {guess, current_game_id, current_mode, current_random_number, passUserData} = req.body;
+  console.log(req.body);
   let new_current_game = JSON.parse(current_game_id);
   let new_crn = Number(current_random_number);
   let round_results = {};
@@ -183,86 +193,117 @@ const get_and_evaluate_user_guess = async (req, res) => {
     user.avg_ppg = user.alltime_points_earned / user.alltime_games_played;
   }
 
-  let gpcount;
-  let gwcount;
-  let pecount;
-  let ppgcount;
+  // async function create_dummy_users() {
+  //   const users = await User.find({});
+  //   let i = 0;
+    // while (i < 2800) {
+    //   const user = await User.create({ 
+    //       name: `name--${newId}dd`,
+    //       email: `mail--${newId}dd${i}@mail.com`,
+    //       password: `pw--${newId}dd${testGuess()}`,
+    //       picture: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg" 
+    //   })
+    //   user.save();
+    //   i++;
+    //   dummy_users.push(user)
+    // }
+  //     let data = JSON.stringify(users)
+  //     fs.writeFile('dummydata.json', data, function(err) {
+  //         if(err) {
+  //             return console.log(err);
+  //         }
+  //         console.log("The file was saved!");
+  //     });
+  //   console.log(users.length);
+  //   console.log(users[4058]);
+  //   return users;
+  // }
+  // create_dummy_users();
 
-  async function weight_calc() {
-    ppgcount = 0;
-    gpcount = 0;
-    gwcount = 0;
-    pecount = 0;
-    let gpw = 100;
-    let gww = 8;
-    let pew = 6;
-    let ppgw = 5;
+  // let gpcount;
+  // let gwcount;
+  // let pecount;
+  // let ppgcount;
 
-    const users = await User.find({});
+  // async function weight_calc() {
+  //   ppgcount = 0;
+  //   gpcount = 0;
+  //   gwcount = 0;
+  //   pecount = 0;
+  //   let gpw = 100;
+  //   let gww = 8;
+  //   let pew = 6;
+  //   let ppgw = 5;
 
-    console.log(users.length);
-    users.forEach((user) => {
-      console.log(user.email);
-      user.alltime_games_played = Math.floor(Math.random() * 10) + 1
-      user.alltime_games_won = Math.floor(Math.random() * 5) + 1
-      user.alltime_points_earned = Math.floor(Math.random() * 2000) + 1
-      user.avg_ppg = user.alltime_points_earned / user.alltime_games_played
-      user.avg_ppg = user.avg_ppg.toFixed(1);
-      user.gp_ranking = user.alltime_games_played * gpw
-      user.gw_ranking = user.alltime_games_won * gww
-      user.pe_ranking = user.alltime_points_earned * pew
-      user.ppg_ranking = user.avg_ppg * ppgw
+  //   const users = await User.find({});
 
-      user.save();
-      gpcount = gpcount + user.alltime_games_played;
-      gwcount = gwcount + user.alltime_games_won;
-      pecount = pecount + user.alltime_points_earned;
-      ppgcount = ppgcount + user.avg_ppg;
-    });
-    console.log(ppgcount);
-    console.log(gwcount);
-    console.log(pecount);
-    console.log(gpcount);
-    console.log("-------->>>");
-    // gpw is about 55x less than ppgw so i doublee to make it teiwce as importnt
-    let avatar_avg_ppg = ppgcount / users.length;
-    let avatar_avg_gw = gwcount / users.length;
-    let avatar_avg_pe = pecount / users.length;
-    let avatar_avg_gpc = gpcount / users.length;
-    avatar_avg_gpc = avatar_avg_gpc.toFixed(0);
-    avatar_avg_pe = avatar_avg_pe.toFixed(1);
-    avatar_avg_gw = avatar_avg_gw.toFixed(1);
-    avatar_avg_ppg = avatar_avg_ppg.toFixed(1);
+  //   console.log(users.length);
+  //   users.forEach((user) => {
+  //     console.log(user.email);
+  //     user.alltime_games_played = Math.floor(Math.random() * 10) + 1
+  //     user.alltime_games_won = Math.floor(Math.random() * 5) + 1
+  //     user.alltime_points_earned = Math.floor(Math.random() * 2000) + 1
+  //     user.avg_ppg = user.alltime_points_earned / user.alltime_games_played
+  //     user.avg_ppg = user.avg_ppg.toFixed(1);
+  //     user.gp_ranking = user.alltime_games_played * gpw
+  //     user.gw_ranking = user.alltime_games_won * gww
+  //     user.pe_ranking = user.alltime_points_earned * pew
+  //     user.ppg_ranking = user.avg_ppg * ppgw
 
-    console.log(avatar_avg_ppg);
-    console.log(avatar_avg_gw);
-    console.log(avatar_avg_pe);
-    console.log(avatar_avg_gpc);
-    console.log("-------->>>");
+  //     user.save();
+  //     gpcount = gpcount + user.alltime_games_played;
+  //     gwcount = gwcount + user.alltime_games_won;
+  //     pecount = pecount + user.alltime_points_earned;
+  //     ppgcount = ppgcount + user.avg_ppg;
+  //   });
+  //   console.log(ppgcount);
+  //   console.log(gwcount);
+  //   console.log(pecount);
+  //   console.log(gpcount);
+  //   console.log("-------->>>");
+  //   // gpw is about 55x less than ppgw so i doublee to make it teiwce as importnt
+  //   let avatar_avg_ppg = ppgcount / users.length;
+  //   let avatar_avg_gw = gwcount / users.length;
+  //   let avatar_avg_pe = pecount / users.length;
+  //   let avatar_avg_gpc = gpcount / users.length;
+  //   avatar_avg_gpc = avatar_avg_gpc.toFixed(0);
+  //   avatar_avg_pe = avatar_avg_pe.toFixed(1);
+  //   avatar_avg_gw = avatar_avg_gw.toFixed(1);
+  //   avatar_avg_ppg = avatar_avg_ppg.toFixed(1);
 
-    let admin = await Admin.findOne({id:'main'})
-    console.log(admin);
-    console.log("++++++++++++++++++++++++++++");
-    let total_number_users = users.length;
+  //   console.log(avatar_avg_ppg);
+  //   console.log(avatar_avg_gw);
+  //   console.log(avatar_avg_pe);
+  //   console.log(avatar_avg_gpc);
+  //   console.log("-------->>>");
 
-    admin.avatar_avg_ppg = avatar_avg_ppg;
-    admin.avatar_avg_gw = avatar_avg_gw;
-    admin.avatar_avg_pe = avatar_avg_pe;
-    admin.avatar_avg_gpc = avatar_avg_gpc;
-    admin.total_number_users = total_number_users;
+  //   let admin = await Admin.findOne({id:'main'})
+  //   console.log(admin);
+  //   console.log("++++++++++++++++++++++++++++");
+  //   let total_number_users = users.length;
 
-    console.log(admin.avatar_avg_ppg);
-    console.log(admin.avatar_avg_gw);
-    console.log(admin.avatar_avg_pe);
-    console.log(admin.avatar_avg_gpc);
-    console.log(admin.total_number_users);
-    await admin.save();
-    console.log(admin);
-  }
+  //   admin.avatar_avg_ppg = avatar_avg_ppg;
+  //   admin.avatar_avg_gw = avatar_avg_gw;
+  //   admin.avatar_avg_pe = avatar_avg_pe;
+  //   admin.avatar_avg_gpc = avatar_avg_gpc;
+  //   admin.total_number_users = total_number_users;
 
-  weight_calc();
+  //   console.log(admin.avatar_avg_ppg);
+  //   console.log(admin.avatar_avg_gw);
+  //   console.log(admin.avatar_avg_pe);
+  //   console.log(admin.avatar_avg_gpc);
+  //   console.log(admin.total_number_users);
+  //   await admin.save();
+  //   console.log(admin);
+  // }
 
-  return res.json(
+  // weight_calc();
+  end;
+  tte;
+  console.log('tge:' + tte);
+  return res
+  .status(200)
+  .json(
     user_guessed_all_correct_numbers
       ? { guess_attempt_return: guess, all_four_correct: true }
       : (round_results =
@@ -278,6 +319,8 @@ const get_and_evaluate_user_guess = async (req, res) => {
                 guess_attempt: guess,
               })
   );
+  
+
 };
 
 const send_hint_data = async (req, res) => {
