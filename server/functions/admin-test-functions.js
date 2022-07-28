@@ -9,6 +9,7 @@ const autocannon = require("autocannon");
 const {v4 : uuidv4} = require('uuid')
 const newId = uuidv4()
 let dummy_users = [];
+let test_data;
 // const urls = ["http://127.0.0.1:9991/guess-evaluation"];
 // const fs = require('fs');
 
@@ -133,11 +134,14 @@ function startBench() {
     autocannon.track(instance);
 
     function finishedBench(err, res) {
-        console.log("Finished Bench", err, res.throughput);
+        console.log("Finished Bench", err, res);
+        test_data = res;
+        console.log(test_data.throughput.average);
     }
 }
 
 startBench();
+
 
 // module.exports = {
 //   start,

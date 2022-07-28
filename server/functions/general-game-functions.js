@@ -80,14 +80,15 @@ const get_and_evaluate_user_guess = async (req, res) => {
   await current_game.save();
 
   if (current_game.random_number != random_number_string) {
-    let new_random_number = Number(random_number_string);
+    // let new_random_number = Number(random_number_string);
     const current_user = JSON.parse(passUserData);
     const current_user_email = current_user.email;
     const current_user_id = current_user._id;
     const user = await User.findOne({ email: current_user_email });
     current_game = await Game.create(gameobj);
     await current_game.users.push(user);
-    current_game.random_number = new_random_number;
+    // current_game.random_number = new_random_number;
+    current_game.random_number = 1487;
     current_game.save();
     await user.games.push(current_game);
     await user.save();
@@ -162,7 +163,7 @@ const get_and_evaluate_user_guess = async (req, res) => {
       let clp = correct_locations_count * increment;
       let new_tp = cnp + clp;
       current_game.total_points = current_game.total_points + new_tp;
-      current_game.save();
+      // current_game.save();
     }
     return current_game.total_points;
   }
