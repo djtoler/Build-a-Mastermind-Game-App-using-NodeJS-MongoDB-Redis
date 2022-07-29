@@ -1,5 +1,6 @@
 // "use strict";
-// const Admin = require("../models/admin-model");
+const Admin = require("../models/admin-model");
+
 const User = require("../models/user-model");
 // const users = require("../admin/dummy-users");
 // const start = performance.now();
@@ -11,10 +12,10 @@ const newId = uuidv4()
 let dummy_users = [];
 let test_data;
 // const urls = ["http://127.0.0.1:9991/guess-evaluation"];
-// const fs = require('fs');
+const fs = require('fs');
 
 // async function dummy(params) {
-//     const admin = await Admin.findOne({id:'main'});
+    
 //     let array = JSON.stringify(admin.dummy_users)
 //     console.log(array.length);
 //     fs.writeFile('dummydata.txt', array, function(err) {
@@ -83,13 +84,13 @@ let test_data;
 
 // const autocannon = require("autocannon");
 
-const usersData = require("../admin/dummydata.json");
+// const usersData = require("../admin/dummydata.json");
 
 // function testGuess() {
 //     return Math.floor(Math.random() * 9999) + 1;
 //   }
 
-function startBench() {
+async function startBench() {
     const obj = {
         guess: '1649',
         current_game_id: '{"game_id":"62e1ea6c502b0c84c79fa803"}',
@@ -97,7 +98,6 @@ function startBench() {
         current_random_number: '1545', 
         passUserData: '{"_id":"624ea88e6b431a70d3c31556","name":"Guest","email":"notregistered@example.com","picture":"http://res.cloudinary.com/dcrwhj71h/image/upload/v1649322123/kws85pzdvm71aort5tcf.jpg","token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNGVhODhlNmI0MzFhNzBkM2MzMTU1NiIsImlhdCI6MTY1ODk3Mjc4MCwiZXhwIjoxNjYyODYwNzgwfQ.L0_9GpgMamsSn-O7jbbckWkAmqSHqMjdQUssjD0AgmQ"}'
     } 
-    // const url = "http://localhost:9991";
     const args = process.argv.slice(2);
     const numConnections = args[0] || 1000;
     const maxConnectionRequests = args[1] || 1000;
@@ -133,18 +133,28 @@ function startBench() {
 
     autocannon.track(instance);
 
-    function finishedBench(err, res) {
+    async function finishedBench(err, res) {
         console.log("Finished Bench", err, res);
-        test_data = res;
-        console.log(test_data.throughput.average);
+        test_data = JSON.stringify(res);
+        console.log(test_data.throughput);
+        fs.writeFile('LatestLoadTest.txt', test_data, function(err) {
+            if(err) {
+                return console.log(err);
+            }
+
+            console.log("The file was saved!");
+    });
     }
+ 
 }
 
-startBench();
+// startBench();
 
 
-// module.exports = {
+
+module.exports = {
 //   start,
 //   end,
 //   tte,
-// };
+  test_data
+};

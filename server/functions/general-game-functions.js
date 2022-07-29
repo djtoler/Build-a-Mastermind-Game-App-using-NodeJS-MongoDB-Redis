@@ -33,6 +33,11 @@ const convert_guess_number = () => {
   return (guess_conversion_string = test.toString());
 };
 
+
+
+// ---------------------------------------------------FUNCTION----------------------------
+// --------------------------------GET A RANDOM NUMBER FROM THE RANDOM.ORG API-------------------------------
+
 const get_random_number_from_api = async (response, res) => {
   start;
   let response_obj = {};
@@ -61,10 +66,18 @@ const get_random_number_from_api = async (response, res) => {
     console.log('treg:' + tte);
 };
 
+
+// ------------------------------------------FUNCTION---------------------------------
+// ----------------------------RECIEVE A USERS GUESS & EVALUATE IT-------------------------------
+
 const get_and_evaluate_user_guess = async (req, res) => {
+// ------------------------------------------------------------------------------------
+// Destructure request body & set variables
+// ------------------------------------------------------------------------------------
   start;
   const {guess, current_game_id, current_mode, current_random_number, passUserData} = req.body;
-  console.log(req.body);
+  // console.log(req.body);
+
   let new_current_game = JSON.parse(current_game_id);
   let new_crn = Number(current_random_number);
   let round_results = {};
@@ -72,9 +85,16 @@ const get_and_evaluate_user_guess = async (req, res) => {
   let correct_numbers_count = 0;
   let correct_locations_count = 0;
   let user_guessed_all_correct_numbers;
-  // Because sessionstore data persists through window reloads, but the random number doesnt so each time a guess has to be evaluated, i reassign the games rn to the current rn. then i check the current random number aginst the generated random number
-  // . if they match, i know the user is still in the current game. If they dont match, I know the window has reloaded which
-  // means a new random number has been generated and I have to create a new game
+
+  // ------------------------------------------------------------------------------------
+  // Because sessionstore data persists through window reloads, but the random number 
+  // doesnt, each time a guess is submitted, i reassign the current Games random 
+  // number to the current comng in from the request body. then i check the current 
+  // random number aginst the generated random number. If they match, i know the 
+  // user is still in the current game. If they dont match, I know the window has 
+  // reloaded which means a new random number has been generated and I have to 
+  // create a new game
+  // ------------------------------------------------------------------------------------
   let current_game = await Game.findOne({ _id: new_current_game.game_id });
   current_game.random_number = new_crn;
   await current_game.save();
@@ -93,7 +113,9 @@ const get_and_evaluate_user_guess = async (req, res) => {
     await user.games.push(current_game);
     await user.save();
   }
-
+// ------------------------------------------------------------------------------------
+// Check if the users has guessed all 4 numbers correct, save game and return if so
+// ------------------------------------------------------------------------------------
   const correct_guess_all_four = async () => {
     user_guessed_all_correct_numbers =
       guess == random_number_string ? true : false;
@@ -110,7 +132,9 @@ const get_and_evaluate_user_guess = async (req, res) => {
     }
     return user_guessed_all_correct_numbers;
   };
-
+// ------------------------------------------------------------------------------------
+// Count how many numbers the user got correct & return that value
+// ------------------------------------------------------------------------------------
   const correct_numbers = () => {
     let guess_digits_array = Array.from(guess);
     console.log(
@@ -120,7 +144,9 @@ const get_and_evaluate_user_guess = async (req, res) => {
     );
     correct_numbers_count = correct_numbers_count_array.length;
   };
-
+// ------------------------------------------------------------------------------------
+// Count how many locations the user got correct & return that value
+// ------------------------------------------------------------------------------------
   const correct_locations = () => {
     let i = 0;
     while (i < 4) {
@@ -131,10 +157,17 @@ const get_and_evaluate_user_guess = async (req, res) => {
     }
     return correct_locations_count;
   };
-
+// ------------------------------------------------------------------------------------
+// Call all 3 functions to evalue the users guess
+// ------------------------------------------------------------------------------------
   correct_guess_all_four();
   correct_numbers();
   correct_locations();
+// ------------------------------------------------------------------------------------
+// Set the round_results variable to a condition. If the number of correct numbers is
+// more than 0, return an object with the values for how many correct numbers, 
+// locations & what number they guessed... or return zeros
+// ------------------------------------------------------------------------------------
   console.log(
     (round_results =
       correct_numbers_count > 0
@@ -150,7 +183,11 @@ const get_and_evaluate_user_guess = async (req, res) => {
           })
   );
 
-  function game_schema_calculator(increment) {
+// ------------------------------------------------------------------------------------
+// Update the current games schema values set buy the 3 evaluation functions above. 
+// The param "increment" is determind by which mode the user played the game in.
+// ------------------------------------------------------------------------------------
+  function game_update_calculator(increment) {
     current_game.rounds_played = current_game.rounds_played + 1;
     current_game.game_mode = current_mode;
     current_game.total_correct_locations =
@@ -167,25 +204,30 @@ const get_and_evaluate_user_guess = async (req, res) => {
     }
     return current_game.total_points;
   }
-
+// ------------------------------------------------------------------------------------
+// Call game_update_calculator() in a switch case determined by with mode the user
+// played the game in.
+// ------------------------------------------------------------------------------------
   switch (current_game.game_mode) {
     case "super_easy":
-      game_schema_calculator(10);
+      game_update_calculator(10);
       break;
     case "easy":
-      game_schema_calculator(20);
+      game_update_calculator(20);
       break;
     case "hard":
-      game_schema_calculator(100);
+      game_update_calculator(100);
       break;
     case "super_hard":
-      game_schema_calculator(200);
+      game_update_calculator(200);
       break;
     default:
-      game_schema_calculator(50);
+      game_update_calculator(50);
       break;
   }
-
+// ------------------------------------------------------------------------------------
+// Update the current users stats based on the values of the current game
+// ------------------------------------------------------------------------------------
   async function user_schema_calculator(params) {
     const user = await User.findOne({ email: current_user_email });
     user.alltime_games_played = user.alltime_games_played + 1;
@@ -193,7 +235,9 @@ const get_and_evaluate_user_guess = async (req, res) => {
       user.alltime_points_earned + current_game.total_points;
     user.avg_ppg = user.alltime_points_earned / user.alltime_games_played;
   }
-
+// ------------------------------------------------------------------------------------
+// Create dummy users for testing
+// ------------------------------------------------------------------------------------
   // async function create_dummy_users() {
   //   const users = await User.find({});
   //   let i = 0;
@@ -221,11 +265,14 @@ const get_and_evaluate_user_guess = async (req, res) => {
   // }
   // create_dummy_users();
 
+
+// ------------------------------------------------------------------------------------
+// Update dummy users values with psudeo data for testing
+// ------------------------------------------------------------------------------------
   // let gpcount;
   // let gwcount;
   // let pecount;
   // let ppgcount;
-
   // async function weight_calc() {
   //   ppgcount = 0;
   //   gpcount = 0;
@@ -235,9 +282,7 @@ const get_and_evaluate_user_guess = async (req, res) => {
   //   let gww = 8;
   //   let pew = 6;
   //   let ppgw = 5;
-
   //   const users = await User.find({});
-
   //   console.log(users.length);
   //   users.forEach((user) => {
   //     console.log(user.email);
@@ -250,7 +295,6 @@ const get_and_evaluate_user_guess = async (req, res) => {
   //     user.gw_ranking = user.alltime_games_won * gww
   //     user.pe_ranking = user.alltime_points_earned * pew
   //     user.ppg_ranking = user.avg_ppg * ppgw
-
   //     user.save();
   //     gpcount = gpcount + user.alltime_games_played;
   //     gwcount = gwcount + user.alltime_games_won;
@@ -262,7 +306,7 @@ const get_and_evaluate_user_guess = async (req, res) => {
   //   console.log(pecount);
   //   console.log(gpcount);
   //   console.log("-------->>>");
-  //   // gpw is about 55x less than ppgw so i doublee to make it teiwce as importnt
+  //   // gpw is about 55x less than ppgw so i doublee to make it twice as importnt
   //   let avatar_avg_ppg = ppgcount / users.length;
   //   let avatar_avg_gw = gwcount / users.length;
   //   let avatar_avg_pe = pecount / users.length;
@@ -271,24 +315,20 @@ const get_and_evaluate_user_guess = async (req, res) => {
   //   avatar_avg_pe = avatar_avg_pe.toFixed(1);
   //   avatar_avg_gw = avatar_avg_gw.toFixed(1);
   //   avatar_avg_ppg = avatar_avg_ppg.toFixed(1);
-
   //   console.log(avatar_avg_ppg);
   //   console.log(avatar_avg_gw);
   //   console.log(avatar_avg_pe);
   //   console.log(avatar_avg_gpc);
   //   console.log("-------->>>");
-
   //   let admin = await Admin.findOne({id:'main'})
   //   console.log(admin);
   //   console.log("++++++++++++++++++++++++++++");
   //   let total_number_users = users.length;
-
   //   admin.avatar_avg_ppg = avatar_avg_ppg;
   //   admin.avatar_avg_gw = avatar_avg_gw;
   //   admin.avatar_avg_pe = avatar_avg_pe;
   //   admin.avatar_avg_gpc = avatar_avg_gpc;
   //   admin.total_number_users = total_number_users;
-
   //   console.log(admin.avatar_avg_ppg);
   //   console.log(admin.avatar_avg_gw);
   //   console.log(admin.avatar_avg_pe);
@@ -297,11 +337,16 @@ const get_and_evaluate_user_guess = async (req, res) => {
   //   await admin.save();
   //   console.log(admin);
   // }
-
   // weight_calc();
   end;
   tte;
   console.log('tge:' + tte);
+
+// ------------------------------------------------------------------------------------
+// Return 200 status & JSON based on a condition. If user guess all 4 numbers 
+// correct retrun an object or return and object based on wether or not the 
+// user guessed more than 0 correct numbers
+// ------------------------------------------------------------------------------------
   return res
   .status(200)
   .json(
@@ -320,8 +365,6 @@ const get_and_evaluate_user_guess = async (req, res) => {
                 guess_attempt: guess,
               })
   );
-  
-
 };
 
 const send_hint_data = async (req, res) => {
@@ -401,7 +444,7 @@ const send_hint_data = async (req, res) => {
 const create_a_new_game = async (req, res, current_game_mode, user_guessed_all_correct_numbers) => {
   console.log("in create game route");
   const { passUserData } = req.body;
-  console.log(passUserData);
+  // console.log(passUserData);
   const current_user = JSON.parse(passUserData);
   const current_user_email = current_user.email;
   const current_user_id = current_user._id;
