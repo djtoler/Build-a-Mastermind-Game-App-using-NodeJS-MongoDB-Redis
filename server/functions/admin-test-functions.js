@@ -1,94 +1,7 @@
-// "use strict";
-const Admin = require("../models/admin-model");
 
-const User = require("../models/user-model");
-// const users = require("../admin/dummy-users");
-// const start = performance.now();
-// const end = performance.now();
-// const tte = end - start;
 const autocannon = require("autocannon");
-const {v4 : uuidv4} = require('uuid')
-const newId = uuidv4()
-let dummy_users = [];
 let test_data;
-// const urls = ["http://127.0.0.1:9991/guess-evaluation"];
 const fs = require('fs');
-
-// async function dummy(params) {
-    
-//     let array = JSON.stringify(admin.dummy_users)
-//     console.log(array.length);
-//     fs.writeFile('dummydata.txt', array, function(err) {
-//         if(err) {
-//             return console.log(err);
-//         }
-//         console.log("The file was saved!");
-//     });
-// }
-// dummy();
-
-// function login_test() {
-//     let request_number = 0;
-
-// const url = "http://127.0.0.1:9991/guess-evaluation";
-//     const args = process.argv.slice(2);
-//     const number_of_connections = args[0] || 1000;
-//     const max_connection_requests = args[1] || 1000;
-
-//     const instance = autocannon({
-//         url: "http://localhost:9991/user/login/",
-//         connections: number_of_connections,
-//         duration: 10,
-//         max_connection_requests,
-//         headers: {'content-type': 'application/json'},
-//         requests: [{
-//                 method: "POST",
-//                 path: "",
-//                 setUpRequest: function (request) {
-//                     console.log("reqNum: ", request_number + 1);
-//                     request.body = JSON.stringify(users[request_number])
-//                     request_number++
-//                     console.log("hi");
-//                     return request
-//                 }
-//             }]
-//     }, finished_test)
-
-//     function finished_test(err, res) {
-//         console.log('Finished Test', err, res);
-//     }
-
-// }
-// login_test()
-
-// autocannon({
-//   url: 'http://localhost:3000',
-//   connections: 10, //default
-//   pipelining: 1, // default
-//   duration: 10 // default
-// }, )
-
-// async/await
-// async function foo () {
-//   const result = await autocannon({
-//     url: 'http://localhost:3000',
-//     connections: 10, //default
-//     pipelining: 1, // default
-//     duration: 10 // default
-//   })
-//   console.log(result)
-// }
-
-// foo()
-
-
-// const autocannon = require("autocannon");
-
-// const usersData = require("../admin/dummydata.json");
-
-// function testGuess() {
-//     return Math.floor(Math.random() * 9999) + 1;
-//   }
 
 async function startBench() {
     const obj = {
@@ -153,8 +66,5 @@ async function startBench() {
 
 
 module.exports = {
-//   start,
-//   end,
-//   tte,
   test_data
 };
