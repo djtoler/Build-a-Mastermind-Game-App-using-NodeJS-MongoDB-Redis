@@ -9,6 +9,9 @@ const Game = require("../models/game-model");
 const User = require("../models/user-model");
 const Admin = require("../models/admin-model");
 const {start, end, tte} = require('../functions/admin-test-functions')
+const { performance } = require('perf_hooks');
+const util = require('util');
+const debug = util.debuglog('performance');
 let test;
 let dummy_users = [];
 
@@ -74,7 +77,7 @@ const get_and_evaluate_user_guess = async (req, res) => {
 // ------------------------------------------------------------------------------------
 // Destructure request body & set variables
 // ------------------------------------------------------------------------------------
-  start;
+  performance.mark('begining')
   const {guess, current_game_id, current_mode, current_random_number, passUserData} = req.body;
   // console.log(req.body);
 
@@ -100,15 +103,15 @@ const get_and_evaluate_user_guess = async (req, res) => {
   await current_game.save();
 
   if (current_game.random_number != random_number_string) {
-    // let new_random_number = Number(random_number_string);
+    let new_random_number = Number(random_number_string); //block during load tests
     const current_user = JSON.parse(passUserData);
     const current_user_email = current_user.email;
     const current_user_id = current_user._id;
     const user = await User.findOne({ email: current_user_email });
     current_game = await Game.create(gameobj);
     await current_game.users.push(user);
-    // current_game.random_number = new_random_number;
-    current_game.random_number = 1487;
+    current_game.random_number = new_random_number;
+    // current_game.random_number = 1487;
     current_game.save();
     await user.games.push(current_game);
     await user.save();
@@ -190,11 +193,8 @@ const get_and_evaluate_user_guess = async (req, res) => {
   function game_update_calculator(increment) {
     current_game.rounds_played = current_game.rounds_played + 1;
     current_game.game_mode = current_mode;
-    current_game.total_correct_locations =
-      current_game.total_correct_locations +
-      round_results.correct_locations_return;
-    current_game.total_correct_numbers =
-      current_game.total_correct_numbers + round_results.correct_numbers_return;
+    current_game.total_correct_locations = current_game.total_correct_locations + round_results.correct_locations_return;
+    current_game.total_correct_numbers = current_game.total_correct_numbers + round_results.correct_numbers_return;
     if (correct_numbers_count > 0 || correct_locations_count > 0) {
       let cnp = correct_numbers_count * increment;
       let clp = correct_locations_count * increment;
@@ -228,13 +228,13 @@ const get_and_evaluate_user_guess = async (req, res) => {
 // ------------------------------------------------------------------------------------
 // Update the current users stats based on the values of the current game
 // ------------------------------------------------------------------------------------
-  async function user_schema_calculator(params) {
-    const user = await User.findOne({ email: current_user_email });
-    user.alltime_games_played = user.alltime_games_played + 1;
-    user.alltime_points_earned =
-      user.alltime_points_earned + current_game.total_points;
-    user.avg_ppg = user.alltime_points_earned / user.alltime_games_played;
-  }
+  // async function user_schema_calculator(params) {
+  //   const user = await User.findOne({ email: current_user_email });
+  //   user.alltime_games_played = user.alltime_games_played + 1;
+  //   user.alltime_points_earned =
+  //     user.alltime_points_earned + current_game.total_points;
+  //   user.avg_ppg = user.alltime_points_earned / user.alltime_games_played;
+  // }
 // ------------------------------------------------------------------------------------
 // Create dummy users for testing
 // ------------------------------------------------------------------------------------
@@ -347,7 +347,18 @@ const get_and_evaluate_user_guess = async (req, res) => {
 // correct retrun an object or return and object based on wether or not the 
 // user guessed more than 0 correct numbers
 // ------------------------------------------------------------------------------------
-  return res
+performance.mark('ending');
+performance.measure('inputs validation,', 'begining', 'ending'); 
+const measurements = performance.getEntriesByType('measure');
+console.log("m", measurements);
+measurements.forEach(measurement => {
+  console.log(measurement);
+  // debug(measurement.name, measurement.duration)
+  console.log( measurement.name, measurement.duration)
+})  
+
+
+  res
   .status(200)
   .json(
     user_guessed_all_correct_numbers

@@ -28,6 +28,18 @@ const Upload = () => {
   const handleClick = () => setShow(!show);
   const config = { headers: { "Content-Type": "application/json" } };
   let sessionData;
+  function start() {
+    console.log(performance.now()); 
+    return performance.now()
+  }
+  function end() {
+    console.log(performance.now()); 
+    return performance.now()
+  }
+  function tte() {
+    console.log(end() - start());
+    return end() - start()
+  }
 
   function previewFiles(file) {
     const reader = new FileReader();
@@ -47,6 +59,7 @@ const Upload = () => {
   };
 
     const handleSubmit = async (e, req, res) => {
+        start();
         e.preventDefault();
         const result = await axios.post(
         "http://localhost:9991/user/upload-profile-picture",
@@ -75,12 +88,11 @@ const Upload = () => {
             try {
                 const uploadedImg = result.data.picture;
                 setUploadedImg(uploadedImg);
-
                 const uploadedEmail = result.data.email;
                 setUploadedEmail(uploadedEmail)
-
                 console.log(uploadedEmail);
-                
+                end();
+                tte();
             } catch (error) {
                 setLoading(false);
             }

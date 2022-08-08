@@ -3,6 +3,7 @@ const boolean_default = { type: Boolean, default: false };
 const string_default = { type: String, unique: false, lowercase: true };
 const string_required = {type: String, unique: false, lowercase: true, required: true};
 const date_default = { type: Date, default: Date.now };
+const kpi_default = {avg: number_default, mean: number_default, min: number_default, max: number_default}
 const gameobj = {is_2_player: false, game_mode: 'waiting', rounds_played: 0, game_won: false, user: 'waiting'};
 const adminobj = {
   id: 'main',
@@ -72,6 +73,7 @@ module.exports = {
   string_default,
   string_required,
   date_default,
+  kpi_default,
   gameobj,
   adminobj
 };

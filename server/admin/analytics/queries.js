@@ -1,5 +1,5 @@
-const Admin = require("../models/admin-model");
-const User = require("../models/user-model");
+const Admin = require("../../models/admin-model");
+const User = require("../../models/user-model");
 
 const find_min_games_played = () => {
     const min_games_played = await User.find({})
