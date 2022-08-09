@@ -5,7 +5,7 @@ export const FetchRandomNumber = (axios, setRandomNumber, toast) => {
   useEffect(() => {
     try {
       const fetchData = async () => {
-        await axios.get("http://127.0.0.1:9991/random-number").then((res) => {
+        await axios.get("http://127.0.0.1:9991/game/random-number").then((res) => {
           setRandomNumber(res.data);
           sessionStorage.setItem("currentRandomNumber", res.data.random_number.toString())
           console.log(res.data);
@@ -66,7 +66,7 @@ export const send_user_guess = async (
   let current_random_number = sessionStorage.getItem("currentRandomNumber")
   let passUserData = sessionStorage.getItem("userData")
   const data = await axios
-    .post("http://127.0.0.1:9991/guess-evaluation", { guess, current_game_id, current_mode, current_random_number, passUserData }, config)
+    .post("http://127.0.0.1:9991/game/guess-evaluation", { guess, current_game_id, current_mode, current_random_number, passUserData }, config)
     .then((res) => {
       console.log(res.data);
       guess_evaluation = res.data;

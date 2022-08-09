@@ -75,7 +75,7 @@ const Login = (props) => {
             });
             setLoading(false);
             const {result} = await axios.post(
-                "http://localhost:9991/create-game",
+                "http://localhost:9991/game/create-game",
                 {passUserData},
                 config
             ).then((result) => {

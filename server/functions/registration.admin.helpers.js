@@ -19,8 +19,7 @@ const updateTodaysNewUserCount = async () => {
 
 const dailyUserRegistrationUpdate = async () => {
     const admin = await Admin.findOne({ id: "main" });
-    console.log("1");
-
+    
     let mostRecentDailyRegisteredUsersObjID = admin.total_new_users_weekly[admin.total_new_users_weekly.length - 1]._id;
     let dailyRegistrationCount;
     let dailyRegistrationArray = admin.total_new_users_daily;
@@ -34,13 +33,13 @@ const dailyUserRegistrationUpdate = async () => {
 
 const weeklyUserRegistrationUpdate = async () => {
     const admin = await Admin.findOne({ id: "main" });
-    console.log("2");
-
+    
     const restartFromDay1Plus1 = 2 
     let weekly_count_array = admin.total_new_users_weekly;
-    
+
     admin.weekly_tracker = restartFromDay1Plus1; //the additional 1 is added when restarting weekly_tracker because dailyRegistrationArray keeps 1 empty obj inside at all time
     weekly_count_array.push(weekly_registered_users_obj);
+    
     admin.total_new_users_daily[admin.total_new_users_daily.length - 1].save({suppressWarning: true});
     admin.total_new_users_daily.splice(1, admin.total_new_users_daily.length - 1);
     admin.save();

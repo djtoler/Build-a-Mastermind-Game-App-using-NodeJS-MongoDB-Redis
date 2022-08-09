@@ -34,7 +34,7 @@ const GuessSubmit = (props) => {
                 console.log('in fetch');
                 const { data } = await axios({
                     method: 'put',
-                    url: 'http://127.0.0.1:9991/update-vars',
+                    url: 'http://127.0.0.1:9991/game/update-vars',
                     data: {
                         hi_num_reset: '9999',
                         low_num_reset: '0000',
@@ -74,7 +74,7 @@ const GuessSubmit = (props) => {
         const easy_mode_click_handler = async (current_game_mode, guess, axios, config, render_hints, array, setArray) => {
             const data = await axios
               .post(
-                "http://localhost:9991/get-hints",
+                "http://localhost:9991/game/get-hints",
                   {guess, current_game_mode},
                   config
               )

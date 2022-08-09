@@ -17,7 +17,7 @@ const StartGameButton = () => {
 
     const StartGameButtonHandler = async (res, req) => {
         const {data} = await axios.post(
-            "http://localhost:9991/create-game",
+            "http://localhost:9991/game/create-game",
             // {userEmail, userId},
             // config
         ).then((data) => {

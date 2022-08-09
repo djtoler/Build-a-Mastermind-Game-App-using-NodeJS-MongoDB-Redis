@@ -21,7 +21,7 @@ async function startBench() {
     const instance = autocannon(
         {
         title: 'Guess Test',
-        url: "http://localhost:9991/guess-evaluation",
+        url: "http://localhost:9991/game/guess-evaluation",
         connections: numConnections,
         duration: 10,
         maxConnectionRequests,
@@ -31,7 +31,7 @@ async function startBench() {
         requests: [
             {
             method: "POST",
-            path: "http://localhost:9991/guess-evaluation",
+            path: "http://localhost:9991/game/guess-evaluation",
             setupRequest: function (request) {
                 console.log("Request Number: ", requestNumber + 1);
                 request.body = JSON.stringify(obj);
