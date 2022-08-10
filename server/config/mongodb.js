@@ -5,7 +5,8 @@ const connectMongo = async() => {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         });
-        console.log( `MongoDB is now connected:  ${mongoConnection.connection.host}` );
+        console.log( `YOU ARE NOW CONNECTED TO --> MONGODB  ${mongoConnection.connection.host}` );
+        return mongoConnection
     }
     catch (error) {
         console.log("Error: " + error.message);

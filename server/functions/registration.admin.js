@@ -1,5 +1,4 @@
 const Admin = require("../models/admin-model");
-const cron = require("node-cron");
 const { setTotalUsersToUsersArrayLength, updateTodaysNewUserCount, weeklyUserRegistrationUpdate, dailyUserRegistrationUpdate} = require("./registration.admin.helpers");
 
 const UpdateUsersCountsAfterSuccessfulRegistration = async () => {

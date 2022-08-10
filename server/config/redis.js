@@ -4,7 +4,7 @@ const connectRedis = () => {
     const client = redis.createClient({ return_buffers : true });
     client.connect();
     client.on('connect', function() {
-        console.log('Connected!');
+        console.log('YOU ARE NOW CONNECTED TO -----> REDIS');
     });
 }
 

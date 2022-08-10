@@ -8,10 +8,6 @@ const doAutomatedRegistrationDataUpdater = () => {
         AutomatedNightlyRefreshOfRegistrationCounts()
     })
 }
-
 // doAutomatedRegistrationDataUpdater();
 
-
-module.exports = {
-    doAutomatedRegistrationDataUpdater
-}
+module.exports = {doAutomatedRegistrationDataUpdater}
