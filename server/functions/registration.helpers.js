@@ -1,4 +1,4 @@
-const User = require("../models/user-model")
+const User = require("../databases/mongodb/user-model")
 
 const errors_array = [];
 
@@ -12,8 +12,8 @@ const validation_helpers = {
 };
 
 const user_creation_helpers = {
-    user_created : validation_helpers.successful_registration,
-    user_not_created : validation_helpers.registration_error,
+    registrationSucceded : validation_helpers.successful_registration,
+    registrationFailed : validation_helpers.registration_error,
     user_profile_image_settings : {upload_preset: 'mm-game', allowed_formats : ['png', 'jpg', 'svg', 'ico', 'jfif', 'webp']},
     return_image: function(error, result) {error ? console.log(error) : console.log(result)}
 };

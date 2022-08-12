@@ -1,4 +1,4 @@
-const Admin = require("../models/admin-model");
+const Admin = require("../databases/mongodb/admin-model");
 const { setTotalUsersToUsersArrayLength, updateTodaysNewUserCount, weeklyUserRegistrationUpdate, dailyUserRegistrationUpdate} = require("./registration.admin.helpers");
 
 const UpdateUsersCountsAfterSuccessfulRegistration = async () => {

@@ -1,5 +1,5 @@
-const User = require("../models/user-model");
-const Admin = require("../models/admin-model");
+const User = require("../databases/mongodb/user-model");
+const Admin = require("../databases/mongodb/admin-model");
 const {daily_registered_users_obj, weekly_registered_users_obj} = require("./registration.helpers");
 
 const setTotalUsersToUsersArrayLength = async () => {

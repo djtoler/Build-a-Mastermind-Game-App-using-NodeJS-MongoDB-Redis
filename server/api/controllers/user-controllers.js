@@ -1,6 +1,6 @@
 const asyncHandler = require("express-async-handler");
-const User = require("../../models/user-model");
-const Admin = require("../../models/admin-model");
+const User = require("../../databases/mongodb/user-model");
+const Admin = require("../../databases/mongodb/admin-model");
 const generate_token = require("../../config/token");
 const cloudinary = require("cloudinary").v2;
 // const {registration_validation} = require('../../functions/registration_functions');
@@ -33,23 +33,23 @@ const upload_profile_picture = asyncHandler (async ({name, email, password, conf
 
   // if (errors.length > 0) {return res.json({errors, name, email, password, confirmPassword})}
 
-  registration.on('create_user', async () => {
-    const uploadedImage = await cloudinary.uploader
-    .upload(image, {upload_preset: 'mm-game', allowed_formats : ['png', 'jpg', 'svg', 'ico', 'jfif', 'webp']},
-      function(error, result) {error ? console.log(error) : console.log(result)})
-    .then(async (uploadedImage) => {
-      let picture = uploadedImage.public_id;
-      const user = await User.create({ name, email, password, picture });
-      user 
-        ? res.status(201).json({msg: validation_helpers.successful_registration, id: user._id, name: user.name, email: user.email, picture: user.picture, token: generate_token(user._id)}) 
-        : res.json({msg: validation_helpers.registration_error})
-      }
-    )
-  })
+  // registration.on('create_user', async () => {
+  //   const uploadedImage = await cloudinary.uploader
+  //   .upload(image, {upload_preset: 'mm-game', allowed_formats : ['png', 'jpg', 'svg', 'ico', 'jfif', 'webp']},
+  //     function(error, result) {error ? console.log(error) : console.log(result)})
+  //   .then(async (uploadedImage) => {
+  //     let picture = uploadedImage.public_id;
+  //     const user = await User.create({ name, email, password, picture });
+  //     user 
+  //       ? res.status(201).json({msg: validation_helpers.successful_registration, id: user._id, name: user.name, email: user.email, picture: user.picture, token: generate_token(user._id)}) 
+  //       : res.json({msg: validation_helpers.registration_error})
+  //     }
+  //   )
+  // })
 
-  registration.emit('update_admin', async () => {
-    console.log('tt update');
-  })
+  // registration.emit('update_admin', async () => {
+  //   console.log('tt update');
+  // })
 
   // registration.on('validate_input');
   // registration.on('create_user');
@@ -105,12 +105,12 @@ const registerUser = asyncHandler(async (req, res) => {
 
 const authUser = asyncHandler(async (req, res) => {
     console.log("in  log route");
-    const {email, password} = req.body;
+    const {email, password} = req.body; // move to api.routes
 
-    const user = await User.findOne( {email} );
+    const user = await User.findOne( {email} ); //move to login.helpers
     // console.log(user);
 
-    if (user && (await user.matchPassword)) {
+    if (user && (await user.matchPassword)) { //move to login.functions
         console.log("in pw match");
         res
         .status(200)
