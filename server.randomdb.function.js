@@ -1,11 +1,9 @@
 const crypto = require("crypto");
-const databases = require('./server/databases/database.connections')
+const dbSettings = require('./server/databases/settings/database.settings.function')
 
-const randomDatabaseImplementation = () => {
-    let testingDatabases = false
-    const randomDBArrayIndex = crypto.randomInt(3)
-    if(!testingDatabases) {return databases[0]}
-    return databases[randomDBArrayIndex]
+const deployDatabaseImplementation = async () => {
+    const databaseDeployment = await dbSettings()
+    return databaseDeployment
 }
 
-module.exports = randomDatabaseImplementation
+module.exports = deployDatabaseImplementation

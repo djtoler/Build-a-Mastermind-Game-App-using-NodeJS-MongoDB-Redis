@@ -1,0 +1,6 @@
+const appFaultToleranceObject = {
+    loginDefaults: {
+        redirectToGuessLogin: () => {}
+    }
+
+}

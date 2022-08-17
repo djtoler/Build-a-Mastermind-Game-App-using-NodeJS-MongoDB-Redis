@@ -11,6 +11,9 @@ const {
   runCreateAndReturnNewUser
 } = require("../../functions/registration.route.helpers");
 
+const loginValidation = require ('../../functions/login.functions')
+const createItem = require('../../databases/dynamodb/dynamodb')
+
 const { errors_array } = require("../../functions/registration.helpers");
 const users = express.Router();
 const { registration } = require("../../functions/event-emitters");
@@ -24,7 +27,7 @@ users.post("/upload-profile-picture", async (req, res) => {
   if (validationFailed) {return res.json(validationFailed)}
   
   const userCreated = await runCreateAndReturnNewUser(image, name, email, password) 
-  userCreated.newUser ? res.json({msg: userCreated.registrationSucceded, newUser: userCreated.newUser, token: userCreated.token}) : res.json({msg: userCreated.registrationSucceded})
+  userCreated.newUser ? res.json({msg: userCreated.registrationSucceded, newUser: userCreated.newUser, token: userCreated.token}) : res.json({msg: userCreated.registrationFailed})
 
   registration.emit("update_admin");
 
@@ -36,7 +39,11 @@ users.post("/upload-profile-picture", async (req, res) => {
 users.post("/register", registerUser);
 
 
-users.post("/login", authUser);
+// users.post("/login", authUser);
+
+users.post("/login", async (req, res) => {
+
+});
 
 
 

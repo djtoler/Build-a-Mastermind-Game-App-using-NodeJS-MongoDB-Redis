@@ -1,5 +1,5 @@
 const validateInput = require('./registration.functions.tests')
-const User = require ('../models/user-model')
+const User = require ('../databases/mongodb/user-model')
 User.create = jest.fn()
 User.find = jest.fn()
 

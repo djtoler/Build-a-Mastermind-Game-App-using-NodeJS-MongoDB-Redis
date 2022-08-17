@@ -1,17 +1,17 @@
 const {
   DynamoDBClient,
-  BatchExecuteStatementCommand,
+  CreateTableCommand
 } = require("@aws-sdk/client-dynamodb");
 
 const connectDynamoDB = async () => {
   try {
     const dynamoConnection = await new DynamoDBClient({
       region: "us-east-1",
-      accessKeyId: "AKIA4XS6OGG5ZHSUDLTM",
-      secretAccessKey: "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",
+      aws_access_key_id:'AKIA4XS6OGG5ZHSUDLTM',
+      aws_secret_access_key:'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',
     });
     console.log(`YOU ARE NOW CONNECTED TO --> DYNAMODB`);
-    console.log(dynamoConnection);
+    // console.log(dynamoConnection);
     return dynamoConnection;
   } 
   catch (error) {
@@ -19,5 +19,6 @@ const connectDynamoDB = async () => {
     process.exit();
   }
 };
+
 
 module.exports = connectDynamoDB;
