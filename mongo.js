@@ -1,7 +1,7 @@
-const botK = (username, email) => {
+const returnUserFromLoginRequest = (username, email) => {
     let body = {username, email}
     return body;
 }
 
-module.exports = {returnUser: botK}
+module.exports = {returnUserNameAndPassword: returnUserFromLoginRequest}
 

@@ -50,8 +50,18 @@ const solutions = {
                         }
                     }},
                     {storage : {
+                        modeling: {
+                            entityRelationshipDiagram: '',
+                            singleTableDesign: {
+                                table: 'whole table',
+                                items: 'items equate to rows in a table',
+                                attributes: 'items are created with attributes',
+                                partitionKey: 'mandataory value that uniquely ids an item same as mongodb _id',
+                                sorkKey: 'optional grouping id, for multiple sort keys you have to make a local secondary index, sort keys get turned to indexes the opened up for querying',
+                            }
+                        },
                         accessMethods: 'block, file or obj',
-                        accessPatterns: 'sequential or random or read-only, rom vs sam vs ram',
+                        accessPatterns: 'list of ways database will be acessed... exp: get user by email or create game with userid,    sequential or random or read-only, rom vs sam vs ram, ',
                         accessFrequency:'hot: online, warm: offline, cold: archived',
                         updateFrequency: 'write once, read many or dynamic',
                         accessAvailability: 'availability when required',

@@ -1,6 +1,6 @@
 const currentDatabaseInUse = require('../databases/settings/database.currentdatabase')
 
-const validateLoginInput = (requestBodyObj = {email, password}) => {
+const validateVisitorLoginInput = (requestBodyObj = {email, password}) => {
     let isInputValid = false
     if (Object.keys(requestBodyObj).length < 1) {return 'err: must include name and pw'} 
     if (requestBodyObj.email.length < 8) {return 'err: email invalid'}
@@ -9,22 +9,26 @@ const validateLoginInput = (requestBodyObj = {email, password}) => {
     return isInputValid
 }
 
-const validateUsernameAndPassword = async (currentDatabase, requestBodyObj = {email: "debobill@yahoo.com", password: "mypassword1"}) => {
-    let isValidUser = false
-    const cdb = await process.env.CURRENTDATABASE
-    currentDatabase = await currentDatabaseInUse()
-    const getUsernameAndPassword = currentDatabase.returnUser(requestBodyObj.email, requestBodyObj.password)
-    console.log(getUsernameAndPassword);
-    if (requestBodyObj.email && requestBodyObj.password === null || requestBodyObj.email && requestBodyObj.password === null ) {
+const doVerificationAndAuthentication = async (requestBodyObj = {email: "debobill@yahoo.com", password: "mypassword1"}) => {
+    if (requestBodyObj.email && requestBodyObj.password === null || requestBodyObj.email && requestBodyObj.password === undefined ) {
         console.log('error: user not found');
         return "error: couldnt find you"
     }
+}
+
+const verifyAndAuthenticateVisitorLoginCredentials = async (currentDatabase, requestBodyObj = {email: "debobill@yahoo.com", password: "mypassword1"}) => {
+    let isValidUser = false
+    const cdb = await process.env.CURRENTDATABASE
+    currentDatabase = await currentDatabaseInUse()
+    const getUsernameAndPassword = currentDatabase.returnUserNameAndPassword(requestBodyObj.email, requestBodyObj.password)
+    doVerificationAndAuthentication(requestBodyObj = {email: "debobill@yahoo.com", password: "mypassword1"})
     isValidUser = true
     return getUsernameAndPassword
 }
 
+const authorizeUserToStartGame = async (currentDatabase, requestBodyObj = {email: "debobill@yahoo.com", password: "mypassword1"}) => {
+    validateVisitorLoginInput(requestBodyObj = {email: "debobill@yahoo.com", password: "mypassword1"})
+    verifyAndAuthenticateVisitorLoginCredentials(currentDatabase, requestBodyObj = {email: "debobill@yahoo.com", password: "mypassword1"})
+}
 
-
-validateUsernameAndPassword()
-
-module.exports = validateUsernameAndPassword
+module.exports = authorizeUserToStartGame

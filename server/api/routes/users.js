@@ -13,6 +13,7 @@ const {
 
 const loginValidation = require ('../../functions/login.functions')
 const createItem = require('../../databases/dynamodb/dynamodb')
+const accessPatternMatrixContainer = require('../accessPatternMatrix')
 
 const { errors_array } = require("../../functions/registration.helpers");
 const users = express.Router();
