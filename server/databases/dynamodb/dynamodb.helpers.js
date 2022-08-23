@@ -13,7 +13,7 @@ const returnNewDynamoDBUser = async () => {
         TableName: 'Games', 
         Item: {
             UserPartitionKey: createThisUser.user.email,
-            GameSortKey: `${createThisUser.user.username}_${createThisUser.games[createThisUser.games.length - 1].gameID}`,
+            GameSortKey: createThisUser.user.password,
             ...createThisUser,
     }};
     return newDynamoUser

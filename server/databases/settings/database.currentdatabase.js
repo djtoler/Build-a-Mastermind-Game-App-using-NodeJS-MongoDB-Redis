@@ -1,5 +1,5 @@
 const currentDatabaseInUse = async () => {
-    const useDefaultDatabase = await require('../../../mongo')
+    const useDefaultDatabase = await require('../mongodb/mongodb')
     // const useRandomDatabase = await require(`../../../${process.env.CURRENTDATABASE}`) 
     // if (useRandomDatabase === undefined) {
     //     return useDefaultDatabase

@@ -62,7 +62,7 @@ const Upload = () => {
         start();
         e.preventDefault();
         const result = await axios.post(
-        "http://localhost:9991/user/upload-profile-picture",
+        "http://localhost:9991/user/register",
         {image: image, name, email, password, confirmPassword}, config
         ).then(async (result)=>{
             console.log('in then');

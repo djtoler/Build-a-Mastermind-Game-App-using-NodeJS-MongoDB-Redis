@@ -1,5 +1,6 @@
 const createNewTableInDynamoDB = require('./dynamodb.createTable')
 const createNewDynamoDBUser = require('./dynamodb.createUser')
+const getDynamoDBUser = require('./dyanmodb.getUser')
 
 async function createDocumentOrTable() {
     const returnNewDynamoDBTable = createNewTableInDynamoDB()
@@ -11,6 +12,12 @@ async function createNewUser () {
     return returnNewDynamoDBUser
 }
 
-createNewUser()
+async function getUser () {
+    const returnDynamoDBUser = await getDynamoDBUser()
+    return returnDynamoDBUser
+}
 
-module.exports = createDocumentOrTable, createNewUser
+// getUser()
+// createNewUser()
+
+module.exports = createDocumentOrTable, createNewUser, getUser

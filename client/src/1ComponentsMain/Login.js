@@ -66,13 +66,7 @@ const Login = (props) => {
             setUserData(sessionStorage.getItem("userData", data));
             passUserData = sessionStorage.getItem("userData", data)
             console.log(passUserData);
-            toast({
-                title: 'Login Successful',
-                status: 'success',
-                duration: 9000,
-                isClosable: true,
-                position: "bottom"
-            });
+            toast(data.msg);
             setLoading(false);
             const {result} = await axios.post(
                 "http://localhost:9991/game/create-game",

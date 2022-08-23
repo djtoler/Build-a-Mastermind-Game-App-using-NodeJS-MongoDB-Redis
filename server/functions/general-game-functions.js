@@ -455,18 +455,23 @@ const send_hint_data = async (req, res) => {
 const create_a_new_game = async (req, res, current_game_mode, user_guessed_all_correct_numbers) => {
   console.log("in create game route");
   const { passUserData } = req.body;
+
+  // console.log(req.body, '+++++++++++++game req body++++++++++++++');
   // console.log(passUserData);
-  const current_user = JSON.parse(passUserData);
-  const current_user_email = current_user.email;
-  const current_user_id = current_user._id;
+  const currentUser = JSON.parse(passUserData);
+  // console.log(currentUser, 'CURRENT  USER');
+  // const current_user_email = current_user.email;
+  console.log(  currentUser.user.email, '------------email form current game<----------');
+  const currentUserEmail = currentUser.user.email
+  const currentUserID = currentUser.user._id
   const game_obj = {
     is_2_player: false,
     game_mode: current_game_mode,
     rounds_played: 0,
     game_won: false,
-    user: current_user_id,
+    user: currentUserID,
   };
-  const user = await User.findOne({ email: current_user_email });
+  const user = await User.findOne({ email: currentUserEmail });
   const game = await Game.create(gameobj);
   await game.users.push(user);
   await game.save();

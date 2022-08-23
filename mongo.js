@@ -1,7 +1,7 @@
-const returnUserFromLoginRequest = (username, email) => {
+const getUser = (username, email) => {
     let body = {username, email}
     return body;
 }
 
-module.exports = {returnUserNameAndPassword: returnUserFromLoginRequest}
+module.exports = {getUser: getUser}
 

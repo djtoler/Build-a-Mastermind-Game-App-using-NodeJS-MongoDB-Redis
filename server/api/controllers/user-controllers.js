@@ -115,11 +115,11 @@ const authUser = asyncHandler(async (req, res) => {
         res
         .status(200)
         .json({
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            picture: user.picture,
-            token: generate_token(user._id)
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          picture: user.picture,
+          token: generate_token(user._id)
         })
     }
     else {
@@ -129,7 +129,10 @@ const authUser = asyncHandler(async (req, res) => {
 
 const logoutUser = asyncHandler(async (req, res) => {
   res.cookie('jwt', '', {maxAge: 1});
+  console.log('user logged out');
+  
   res.status(200).redirect('http://localhost:3000/');
+  console.log('user logged out11111111111111');
 })
 
 module.exports = { registerUser, authUser, upload_profile_picture, logoutUser, registration };

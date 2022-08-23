@@ -1,4 +1,7 @@
 const User = require("../databases/mongodb/user-model")
+// const bcrypt = require('bcryptjs');
+const Cryptr = require('cryptr');
+const cryptr = new Cryptr('myTotallySecretKey');
 
 const errors_array = [];
 
@@ -28,12 +31,19 @@ const dl_NotAlreadyRegistered = async (email) => {
 const dl_CreateNewUser = async (name, email, password, uploadedImage) => {
     let picture = uploadedImage.public_id; 
     const user = await User.create({ name, email, password, picture });
+    console.log(user.password);
+    // const salt = await bcrypt.genSalt(10);
+    // user.password = await bcrypt.hash(user.password, salt);
+    const encryptedString = cryptr.encrypt(user.password);
+    user.password = encryptedString
+    console.log(user.password);
     console.log(user);
     return user;
 };
   
 const dl_ReturnNewlyCreatedUser = async (email) => {
     const new_user = await User.findOne({ email: email });
+    
     console.log("from datalayer3", new_user);
     return new_user;
 };
