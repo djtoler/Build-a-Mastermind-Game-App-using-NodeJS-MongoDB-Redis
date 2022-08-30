@@ -21,15 +21,16 @@ const GuessSubmit = (props) => {
     const [hintsArray, setHintsArray] = useState([]);
     const [hints, setHints] = useState([]);
     const toast = useToast();
-    let render_hints;
+    let renderHints;
     let round_counter = 1;
     let guess_evaluation;
-    let current_game_mode;
+    let theCurrentGamesMode;
     let current_user_obj;
     const game_modes = {a: 'easy', b: 'super_easy', c: 'hard', d: 'super_hard'};
 
     useEffect(()=> {
         try {
+            sessionStorage.removeItem("currentMode");
             const fetchData = async() => {
                 console.log('in fetch');
                 const { data } = await axios({
@@ -69,24 +70,26 @@ const GuessSubmit = (props) => {
         console.log(mode);
         sessionStorage.setItem("currentMode", (mode));
         console.log(sessionStorage.getItem("currentMode"));
-        current_game_mode = mode;
+        theCurrentGamesMode = mode;
+        let theCurrentGamesRandomNumber = sessionStorage.getItem("currentRandomNumber")
         
-        const easy_mode_click_handler = async (current_game_mode, guess, axios, config, render_hints, array, setArray) => {
+        const easy_mode_click_handler = async (theCurrentGamesMode, guess, axios, config, renderHints, array, setArray) => {
             const data = await axios
               .post(
                 "http://localhost:9991/game/get-hints",
-                  {guess, current_game_mode},
+                  {guess, theCurrentGamesMode, theCurrentGamesRandomNumber},
                   config
               )
               .then((res)=> {
                 console.log('in then');
                 console.log(res.data);  
-                render_hints = res.data
-                console.log(current_game_mode);
-                setArray(array => [... array, render_hints])        
+                renderHints = res.data.hintForCurrentGameMode.hint
+                console.log(theCurrentGamesMode);
+                console.log(res.data.hintForCurrentGameMode.hint);
+                setArray(array => [... array, renderHints])        
             })
         } 
-        easy_mode_click_handler(current_game_mode, guess, axios, config, render_hints, hintsArray, setHintsArray);
+        await easy_mode_click_handler(theCurrentGamesMode, guess, axios, config, renderHints, hintsArray, setHintsArray);
     };
 
 
@@ -119,7 +122,7 @@ const GuessSubmit = (props) => {
             </Button>
             </VStack>
             <div>
-                {render_hint_data(hintsArray, hints, setHints, current_game_mode)}
+                {render_hint_data(hintsArray, hints, setHints, theCurrentGamesMode)}
             </div>
             <div>
                 {render_guess_data(currentGameDataArray, round_counter, 4)}

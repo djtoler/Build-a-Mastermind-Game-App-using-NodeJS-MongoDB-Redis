@@ -9,5 +9,4 @@ const doAutomatedRegistrationDataUpdater = () => {
     })
 }
 // doAutomatedRegistrationDataUpdater();
-
 module.exports = {doAutomatedRegistrationDataUpdater}

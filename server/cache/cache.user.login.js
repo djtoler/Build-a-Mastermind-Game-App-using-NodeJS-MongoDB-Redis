@@ -11,17 +11,17 @@ const findUserFromLoginInCache = async (email, password) => {
     const cacheEngine = (await currentCacheEngine()).client
     const findUserInCache = await cacheEngine.get(email);
 
-    if (findUserInCache) {
-        user = JSON.parse(findUserInCache);
-        return {msg: loginValidationHelpers.successfulLogin, user: user, token:generate_token(user._id)}
-    }
+    // if (findUserInCache) {
+    //     console.log('from cache <---------');
+    //     user = JSON.parse(findUserInCache);
+    //     return {msg: loginValidationHelpers.successfulLogin, user: user, token:generate_token(user._id)}
+    // }
 
     const authorizeUser = await authorizeUserToStartGame(email, password)
-        if (authorizeUser.isAuthenticated === true) { 
-            const setUserInCache = await cacheEngine.set(email, JSON.stringify(authorizeUser.user));
-            return {user: authorizeUser.user, token: authorizeUser.token, msg: authorizeUser.loginSucceded}}
-        else {return { msg: authorizeUser.passwordIncorrect}}
-
+    if (authorizeUser.user) {const setUserInCache = await cacheEngine.set(email, JSON.stringify(authorizeUser.user))}
+    return {authorizeUser}
+    
+    // return {user: authorizeUser.user, token: authorizeUser.token, msg: authorizeUser.loginSucceded}}
 }
 
 module.exports = findUserFromLoginInCache

@@ -21,13 +21,13 @@ function GameModes(props) {
         return current_game_mode;
     }
     const super_hard_mode_button_handler = () => {
-        current_game_mode = props.func('super_hard');
+        current_game_mode = props.func('superHard');
         console.log(gamemode);
         console.log(current_game_mode);
         return current_game_mode;
     }
     const super_easy_mode_button_handler = () => {
-        current_game_mode = props.func('super_easy');
+        current_game_mode = props.func('superEasy');
         console.log(gamemode);
         console.log(current_game_mode);
         return current_game_mode;

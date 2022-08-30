@@ -68,9 +68,6 @@ const solutions = {
                         accessDurability: 'reliability of data store to minimize any data loss',
                         accesThroughput: 'iops & r/w ps in MBs',
                         raidConfiguration: 'spreadng data across multiple disks and presenting as 1 logical drive',
-
-
-                        
                     }}
                 ],
                 performance: [
@@ -85,7 +82,6 @@ const solutions = {
                                 geoProximity: 'geolocation but with ability to go to other nearby locations if necessary',
                                 latencyPolicy: 'serve traffic from region where lowest latency can be achieved',
                                 weightedPolicy: 'ab testing for establishing a control region',
-
                             }
                         },
                         CDN:{},
