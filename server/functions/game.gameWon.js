@@ -1,4 +1,3 @@
-
 const didUserGuessAll4NumbersCorrect = async () => {
     userGuessedAll4NumbersCorrect =
       guess == randomNumberFromRequestBodyString ? true : false;

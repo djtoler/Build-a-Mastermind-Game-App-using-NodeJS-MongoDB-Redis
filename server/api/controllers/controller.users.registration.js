@@ -1,16 +1,21 @@
 const asyncHandler = require("express-async-handler");
 const {runIsUserValidated, runCreateAndReturnNewUser} = require("../../functions/registration.route.helpers");
-const { errors_array } = require("../../functions/registration.helpers");
+const { errorsArray } = require("../../functions/game.helpers");
 const { registration } = require("../../functions/event-emitters");
 
 const runUserRegistrationService = asyncHandler(async (req, res) => {
     const { image, name, email, password, confirmPassword } = req.body;
-    const validationFailed = await runIsUserValidated(errors_array, name, email, password, confirmPassword);
+    
+    const validationFailed = await runIsUserValidated(errorsArray, name, email, password, confirmPassword);
     const isUserCreated = await runCreateAndReturnNewUser(image, name, email, password) 
     
-    if (validationFailed) {return res.json(validationFailed)}
+    if (validationFailed) 
+        {return res.json(validationFailed)}
     
-    isUserCreated.newUser ? res.json({msg: isUserCreated.registrationSucceded, newUser: isUserCreated.newUser, token: isUserCreated.token}) : res.json({msg: isUserCreated.registrationFailed})
+    isUserCreated.newUser ? 
+        res.json({msg: isUserCreated.registrationSucceded, newUser: isUserCreated.newUser, token: isUserCreated.token}) 
+        : 
+        res.json({msg: isUserCreated.registrationFailed})
     
     registration.emit("update_admin");
 })

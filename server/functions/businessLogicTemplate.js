@@ -42,8 +42,10 @@ const defaultGameFromRequestBodyID = '6306aec8c2ffd53ceb9ad902';
 const defaultRandomNumberGeneratorArray = [4516, 3516, 2703, 5545]
 const defaultRandomNumberGenerator = defaultRandomNumberGeneratorArray[Math.floor(Math.random() * (defaultRandomNumberGeneratorArray.length + 1))];
 const defaultCurrentRandomNumberFromRequestBody = 4516
+const defaultCurrentModeFromRequestBody = 'superEasy'
 
-const defaultCorrectGuessNumber = 1234
+
+const defaultCorrectGuessNumber = 4516
 const defaultWrongGuessNumberFromRequestBody = 4567
 
 const defaultRandomNumberOptions = {
@@ -79,5 +81,6 @@ module.exports = {
     defaultRandomNumberOptions,
     defaultGameRoundIncrementer,
     defaultCorrectGuessNumber,
-    defaultWrongGuessNumberFromRequestBody
+    defaultWrongGuessNumberFromRequestBody,
+    defaultCurrentModeFromRequestBody
 }

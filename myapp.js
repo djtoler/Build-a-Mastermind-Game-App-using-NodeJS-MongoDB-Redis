@@ -1,5 +1,6 @@
 const makeApp = require('./index')
 const deployDatabaseImplementation = require('./server.randomdb.function')
+
 const configs = require('./server/config/configs')
 configs.forEach(config => eval(config))
 

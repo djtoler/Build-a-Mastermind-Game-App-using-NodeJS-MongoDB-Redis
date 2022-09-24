@@ -36,14 +36,16 @@ const verifiyVisitorLoginCredentials = async (currentDatabase, email, password) 
 }
 
 const authenticateVisitorLoginCredentials = async (user, password) => {
-    let isAuthenticated = false
-    const passwordEnteredByUser = password 
-    const actualUserPassword =  user.password === 'test' ? user.password : cryptr.decrypt(user.password);
+    let isAuthenticated =                   false
+    const passwordEnteredByUser =           password 
+    const actualUserPassword =              user.password === 'test' ? user.password : cryptr.decrypt(user.password);
 
-    if (passwordEnteredByUser != actualUserPassword) {return {isAUthenticated: isAuthenticated, passwordIncorrect: loginValidationHelpers.passwordIncorrect}}
+    if (passwordEnteredByUser != actualUserPassword) 
+        {return {isAUthenticated: isAuthenticated, passwordIncorrect: loginValidationHelpers.passwordIncorrect}}
 
-    isAuthenticated = true
-    const userAuthenticationSuccessful = {isAuthenticated: isAuthenticated, user: user, token:generate_token(user._id), loginSucceded: loginValidationHelpers.successfulLogin}
+    isAuthenticated =                       true
+    const userAuthenticationSuccessful =    {isAuthenticated: isAuthenticated, user: user, token:generate_token(user._id), loginSucceded: loginValidationHelpers.successfulLogin}
+    
     console.log('from db', loginValidationHelpers.successfulLogin);
     return userAuthenticationSuccessful
 }

@@ -7,9 +7,8 @@ async function randomImageIDSelector(numberOfRandomDigitsToLoopThrough) {
 
 async function returnRandomHintImageKeysFromCache (numberOfRandomDigitsToLoopThrough, theCurrentGamesRandomNumber) {
     const cacheEngine = (await currentCacheEngine()).client
-    let arrayUsedAsCachedKeyStringValue = [];
-    let arrayHoldingNewlyGeneratedCachedImageObjects = [];
-    let i = 0;
+    let arrayUsedAsCachedKeyStringValue = [],  arrayHoldingNewlyGeneratedCachedImageObjects = [], i = 0;
+
     const imageIDReferenceNumberToSelectARandomImage = await randomImageIDSelector(numberOfRandomDigitsToLoopThrough);
     while (i < numberOfRandomDigitsToLoopThrough) {
         arrayUsedAsCachedKeyStringValue[i] = `hintData_${theCurrentGamesRandomNumber.charAt(i)}${imageIDReferenceNumberToSelectARandomImage}`;

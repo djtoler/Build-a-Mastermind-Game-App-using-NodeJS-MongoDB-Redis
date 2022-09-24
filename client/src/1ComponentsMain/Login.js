@@ -31,7 +31,7 @@ const Login = (props) => {
     const toast = useToast();
     const history = useHistory();
     let passToken;
-    let passUserData;
+    let currentUserData;
     let passGameId;
 
     const submitHandler = async () => {
@@ -65,19 +65,19 @@ const Login = (props) => {
             console.log(typeof(data));
             sessionStorage.setItem("userData", JSON.stringify(data))
             setUserData(sessionStorage.getItem("userData", data));
-            passUserData = sessionStorage.getItem("userData", data)
-            console.log(passUserData);
+            currentUserData = sessionStorage.getItem("userData", data)
+            console.log(currentUserData);
             console.log(typeof(data), '<-------------DATA');
             console.log(data.authorizeUser.loginSucceded);
             toast(data.authorizeUser.loginSucceded);
             setLoading(false);
             const {result} = await axios.post(
                 "http://localhost:9991/game/create-game",
-                {passUserData},
+                {currentUserData},
                 config
             ).then((result) => {
-                console.log(result.data.game_id);
-                sessionStorage.setItem("currentGameID", JSON.stringify(result.data.game_id))
+                console.log(result.data.currentGameID);
+                sessionStorage.setItem("currentGameID", JSON.stringify(result.data.currentGameID))
                 setGameId(sessionStorage.getItem("currentGameID", result.data));
                 passGameId = sessionStorage.getItem("currentGameID", result.data)
                 console.log(passGameId);

@@ -1,99 +1,161 @@
 const runReturnRandomNumberFromBackup = require('./game.backup')
 const returnRandomNumberFromBackup = runReturnRandomNumberFromBackup()
 const convertRandomNumber = require('./game.components.convertRandomNumber')
-const runNewRandomNumberFromAPIEvent = require('./game.events')
+const {evaluateGuess} = require('./event-emitters')
 
-const gameModes = { easy: "easy", superEasy: "superEasy", hard: "hard", superHard: "superHard" };
+const gameModes = { easy: "easy", superEasy: "superEasy", hard: "hard", superHard: "superHard", default: "default" };
 const defaultGameObj = {is2Player: false, gameMode: 'waiting', randomNumber: 0, roundsPlayed: 0, gameWon: false, user: []};
 
+const returnDigitCalculations = async (theCurrentGamesRandomNumber, exponentForCubedCalculation) => {
+    return digitCalculations = { 
+        0: theCurrentGamesRandomNumber / 2, 
+        1: theCurrentGamesRandomNumber * 2, 
+        2: Math.pow(theCurrentGamesRandomNumber, exponentForCubedCalculation)
+}}
 
 const RANDOM_NUMBER_API_RELIABILITY_MODE = (responseObj) => {
     responseObj = {};
-    console.log('FROOOMMM RELIAB');
-
     const randomNumberFromBackup = Number(returnRandomNumberFromBackup);
     Object.assign(responseObj, {success: false, randomNumber: randomNumberFromBackup});
     process.env.RANDOM_NUMBER = responseObj.randomNumber
-    
     return responseObj
 }
 
 const returnRandomNumber = async (apiResponse) => {
-    responseObj = {};
-    // console.log('FROM DEFAULT!!');
-
+    let responseObj = {};
     const randomNumber = await convertRandomNumber(apiResponse);
     Object.assign(responseObj, {success: true, randomNumber: randomNumber.randomNumber});
     process.env.RANDOM_NUMBER = responseObj.randomNumber
-    
-    // console.log(randomNumber, 'randomnumber');
-    // console.log(responseObj, '<----- responseobject');
     return responseObj
+}
+    
+const limitRoundsPerGame = async(currentGame, currentUser) => {
+    let runCreateNewGame = false
+    if (currentGame.roundsPlayed === 4) {runCreateNewGame = true}
+    console.log('limitRoundsPerGame:==> ', runCreateNewGame);
+    return runCreateNewGame
+}
+
+const didUserGuessAll4NumbersCorrect = async (currentRandomNumberFromRequestBody, guessFromRequestBody, currentUser) => {
+    console.log('INSIDE DID-USER-GUESS-ALL-4-CORRECT');
+
+    const userGuessedAll4NumbersCorrect =
+    await guessFromRequestBody === currentRandomNumberFromRequestBody ? true : false;
+    
+    console.log('userGuessedAll4NumbersCorrect: ==>', userGuessedAll4NumbersCorrect, );
+    return userGuessedAll4NumbersCorrect;
+};
+
+const rankUsers = (arrayOfUsers, lengthOfArray) => {
+    let indexValue, currentUser, j;  
+    for (indexValue = 1; i < lengthOfArray; indexValue++) {  
+        currentUser = arrayOfUsers[indexValue];  
+        j = indexValue - 1;  
+
+        while (j >= 0 && arrayOfUsers[j] > currentUser) {  
+            arrayOfUsers[j + 1] = arrayOfUsers[j];  
+            j = j - 1;  
+        }  
+        arrayOfUsers[j + 1] = currentUser;  
+    }  
+}
+
+const updateCurrentGamesUserData = async (currentUser, correctLocationPoints, correctDigitsPoints) => {
+
+    currentUser.alltimePointsEarned = currentUser.alltimePointsEarned + correctLocationPoints + correctDigitsPoints
+    currentUser.avgPPG = currentUser.alltimePointsEarned / currentUser.alltimeGamesPlayed
+                
+    currentUser.ranking = 0
+    currentUser.ppgRanking = 0
+    currentUser.peRanking = 0
+    currentUser.gwRanking = 0
+    currentUser.gpRanking = 0
+   
+    console.log('USER FROM UPDATE HELPER FUNC --->af',     
+    currentUser.alltimeGamesPlayed,
+    currentUser.alltimeGamesWon,
+    currentUser.alltimePointsEarned,
+    currentUser.avgPPG,
+    currentUser.ranking,
+    currentUser.ppgRanking,
+    currentUser.peRanking,
+    currentUser.gwRanking,
+    currentUser.gpRanking,);
+    
+    return currentUser
 }
 
 
-// async function randomImageIDSelector(index) {
-//     let randomImageIDNumber = Math.floor(Math.random() * index) + 1;
-//     return randomImageIDNumber;
-// }
-
-// async function returnRandomHintImageKeysFromCache (numberOfRandomDigitsToLoopThrough, theCurrentGamesRandomNumber) {
-    
-//     let arrayUsedAsCachedKeyStringValue = [];
-//     let i = 0;
-//     const imageIDReferenceNumberToSelectARandomImage = randomImageIDSelector(numberOfRandomDigitsToLoopThrough);
-    
-//     while (i < numberOfRandomDigitsToLoopThrough) {
-//         arrayUsedAsCachedKeyStringValue[i] = `hintData_${theCurrentGamesRandomNumber.charAt(i)}${imageIDReferenceNumberToSelectARandomImage}`;
-//         i++;
-//     }
-
-//     const hint_key1 = await client.get(arrayUsedAsCachedKeyStringValue[0]);
-//     const hint_key2 = await client.get(arrayUsedAsCachedKeyStringValue[1]);
-//     const hint_key3 = await client.get(arrayUsedAsCachedKeyStringValue[2]);
-//     const hint_key4 = await client.get(arrayUsedAsCachedKeyStringValue[3]);
-
-//     let arrayHoldingNewlyGeneratedCachedImageHintKeys = [hint_key1, hint_key2, hint_key3, hint_key4];
-//     return arrayHoldingNewlyGeneratedCachedImageHintKeys
-// }
-
-// async function returnSuperEasyHints (numberOfRandomDigitsToLoopThrough, theCurrentGamesRandomNumber) {
-    
-//     const arrayOfRandomHintImageKeys = returnRandomHintImageKeysFromCache(numberOfRandomDigitsToLoopThrough, theCurrentGamesRandomNumber)
-    
-//     let arrayToHoldCachedImageObjects = [];
-    
-//     for (let index = 0; index < arrayOfRandomHintImageKeys.length; index++) {
-
-//         let chachedImageObject = new Object();
-
-//         let parsedHintImageObject = JSON.parse(arrayOfRandomHintImageKeys[index]);
-
-//         let b64StringOfHintImage = parsedHintImageObject.image;
+const updateCurrentGamesData = async (currentGame, correctLocationPoints, correctDigitsPoints, guessEvaluationResults, currentRandomNumberFromRequestBody) => {  
         
-//         // let hintImageDisplayTag = `data:image/jpeg;base64,${b64StringOfHintImage}`;
-//         let hintImageDisplayTag = `${b64StringOfHintImage}`;
-
-//         chachedImageObject = { caption: parsedHintImageObject.caption, img: hintImageDisplayTag };
-        
-//         arrayToHoldCachedImageObjects.push(chachedImageObject);
-//     }
-
-//     console.log(arrayToHoldCachedHintKeys.length);
-
-//     let hintEvaluation = { game_mode: "super_easy", hint: arrayToHoldCachedImageObjects };
-//     console.log(hintEvaluation);
-
-//     return hintEvaluation
-// }
+    let newRoundObject = {
+        totalCorrectNumbersCount: guessEvaluationResults.totalCorrectNumbersCount,
+        totalCorrectLocationsCount: guessEvaluationResults.totalCorrectLocationsCount,
+        guessAttempt: guessEvaluationResults.guess_attempt_return,
+        date: new Date(Date.now()).toString()
+    }
+    currentGame.gameData.totalPoints = currentGame.gameData.totalPoints + correctLocationPoints + correctDigitsPoints;
+    currentGame.gameData.guesses.push(newRoundObject)
+    // console.log(currentGame.gameData.guesses);
+    return currentGame
+}
 
 
+const updateCurrentGameData = async (currentUser, currentGame, theCurrentGamesMode, guessEvaluationResults, currentRandomNumberFromRequestBody, guessFromRequestBody) => {
+    let correctLocationPoints;
+    let correctDigitsPoints;
+
+    switch (theCurrentGamesMode) {
+
+        case "superEasy":
+            correctLocationPoints = 500
+            correctDigitsPoints = 1000
+            break;
+
+        case "easy":
+            correctLocationPoints = 1000
+            correctDigitsPoints = 2000
+            break;
+
+        case "hard":
+            correctLocationPoints = 5000
+            correctDigitsPoints = 10000
+            break;
+
+        case "superHard":
+            correctLocationPoints = 10000
+            correctDigitsPoints = 20000
+            break;
+
+        default:
+            correctLocationPoints = 2000
+            correctDigitsPoints = 4000
+            break;
+    }
+
+    correctDigitsPoints = correctDigitsPoints * guessEvaluationResults.totalCorrectNumbersCount
+    correctLocationPoints = correctLocationPoints * guessEvaluationResults.totalCorrectLocationsCount
+
+    await updateCurrentGamesUserData(currentUser, correctLocationPoints, correctDigitsPoints)
+    await updateCurrentGamesData(currentGame, correctLocationPoints, correctDigitsPoints, guessEvaluationResults, theCurrentGamesMode, currentRandomNumberFromRequestBody)
+    
+    // console.log('helping guess event!!!!: ', theCurrentGamesMode, correctLocationPoints, correctDigitsPoints, guessEvaluationResults);
+    
+    evaluateGuess.emit("updateAdminAfterGuessEvaluation", theCurrentGamesMode, correctLocationPoints, correctDigitsPoints, guessEvaluationResults);
+}
 
 module.exports = {
     RANDOM_NUMBER_API_RELIABILITY_MODE,
     returnRandomNumber,
+    returnDigitCalculations,
     defaultGameObj,
-    gameModes
+    gameModes,
+    updateCurrentGamesUserData,
+    updateCurrentGamesData,
+    limitRoundsPerGame,
+    didUserGuessAll4NumbersCorrect,
+    updateCurrentGameData,
+    rankUsers
 }
 
 

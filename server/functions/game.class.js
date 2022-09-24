@@ -35,7 +35,7 @@ class NewGameBuilder {
                 date: this.date
             },
             {
-                gusses: this.guesses,
+                guesses: this.guesses,
                 roundsPlayed: this.roundsPlayed ,
                 totalPoints: this.totalPoints ,
                 totalCorrectNumbers: this.totalCorrectNumbers,

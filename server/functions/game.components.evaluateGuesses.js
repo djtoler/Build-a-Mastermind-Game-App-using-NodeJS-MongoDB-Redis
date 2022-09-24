@@ -1,82 +1,87 @@
-const runGetRandomNumber = require('./game.components.getRandomNumber')
-const NewGameBuilder = require('./game.class')
-const {defaultGameObj} = require('./game.helpers')
-const { v4: uuidv4 } = require("uuid");
-const gameID = uuidv4()
-
+const businessLogicTemplate = require('./businessLogicTemplate')
+const {limitRoundsPerGame, didUserGuessAll4NumbersCorrect} = require('./game.helpers')
 const currentDatabaseInUse = require('../databases/settings/database.currentdatabase')
 
-const updateAndReturnTheGameThatsCurrentlyInUse = async (currentGame, currentGamesRequestBodyID, currentRandomNumberFromRequestBody) => {
-    currentDatabase = await currentDatabaseInUse()
-    currentGame = await currentDatabase.getCurrentGame({ id: currentGamesRequestBodyID});
+const returnTotalCountOfCorrectNumbers = (guessFromRequestBody, currentRandomNumberFromRequestBody, arrayToStoreCorrectNumbersCount) => {
     
-    totalRoundsPlayedDuringCurrentGame = currentGame.roundsPlayed + 1
-    randomNumberOfTheCurrentGame = currentRandomNumberFromRequestBody;
-    return currentGame
-}
+    let totalCountOfCorrectNumbers              = 0
+    let arrayCreatedFromEachDigitOfUsersGuess   = Array.from(String(guessFromRequestBody));
+    const randomNumberFromRequestBodyToArray    = Array.from(String(currentRandomNumberFromRequestBody));
 
-const didUserGuessAll4NumbersCorrect = async (userGuessedAll4NumbersCorrect, guessFromRequestBody, currentRandomNumberFromRequestBody, currentGame) => {
-    guessFromRequestBody = guess
-    userGuessedAll4NumbersCorrect =
-    guess == currentRandomNumberFromRequestBody.toString() ? true : false;
+    arrayToStoreCorrectNumbersCount = 
+    arrayCreatedFromEachDigitOfUsersGuess.filter((comparison) => {
+        return randomNumberFromRequestBodyToArray.includes(comparison);
+    })
 
-    if (userGuessedAll4NumbersCorrect) {
-        currentGame = await returnTheGameThatsCurrentlyInUse()
-        const confirmedCurrentUser = await currentDatabase.getUser(currentGame.users[0])
-        
-        confirmedCurrentUser.alltime_games_won = confirmedCurrentUser.alltime_games_won + 1;
-        currentGame.game_won = true;
-        currentGame.total_points = 20000;
-        currentGame.total_correct_locations = 4;
-        currentGame.total_correct_numbers = 4;
-    }
-    return userGuessedAll4NumbersCorrect;
-};
-
-const returnTotalCountOfCorrectNumbers = (guessFromRequestBody, arrayToStoreCorrectNumbersCount, currentRandomNumberFromRequestBody) => {
-    let totalCountOfCorrectNumbers = 0;
-    let arrayCreatedFromEachDigitOfUsersGuess = Array.from(guessFromRequestBody);
-    const randomNumberFromRequestBodyToArray = Array.from(String(currentRandomNumberFromRequestBody));
-
-    console.log(
-      (arrayToStoreCorrectNumbersCount =
-        arrayCreatedFromEachDigitOfUsersGuess.filter((comparison) => {
-          return randomNumberFromRequestBodyToArray.includes(comparison);
-        }))
-    );
     totalCountOfCorrectNumbers = arrayToStoreCorrectNumbersCount.length;
     return totalCountOfCorrectNumbers
-  };
+};
 
-const returnTotalCountOfCorrectLocations = (guessFromRequestBody, randomNumberFromRequestBodyString) => {
-    let totalCountOfCorrectLocations = 0;
-    let i = 0;
+
+
+
+const returnTotalCountOfCorrectLocations = (guessFromRequestBody, randomNumberFromRequestBody) => {
+    let totalCountOfCorrectLocations    = 0;
+    let i                               = 0;
+    const incorrectLocation             = 0;
+    
     while (i < 4) {
-        guessFromRequestBody.toString().charAt(i) == randomNumberFromRequestBodyString.charAt(i)
-        ? totalCountOfCorrectLocations++ : 0; i++;
+        guessFromRequestBody.toString().charAt(i) === randomNumberFromRequestBody.toString().charAt(i)
+        ? totalCountOfCorrectLocations++ : incorrectLocation; 
+        i++;
     }
     return totalCountOfCorrectLocations;
 };
 
-const returnGuessEvaluationObject = (guessEvaluationObject) => {
-    const userGuessedAll4NumbersCorrect = didUserGuessAll4NumbersCorrect();
-    if (userGuessedAll4NumbersCorrect === true) { return guessEvaluationObject = { guess_attempt_return: guessFromRequestBody, all_four_correct: true }}
-    
-    const totalCountOfCorrectNumbers = returnTotalCountOfCorrectNumbers()
-    const totalCountOfCorrectLocations = returnTotalCountOfCorrectLocations()
+
+const returnGuessEvaluationObject = async (currentRandomNumberFromRequestBody, guessFromRequestBody) => {
+    let guessEvaluationObject;
+
+    const totalCountOfCorrectNumbers = returnTotalCountOfCorrectNumbers(
+        currentRandomNumberFromRequestBody,
+        guessFromRequestBody
+    )
+
+    const totalCountOfCorrectLocations = returnTotalCountOfCorrectLocations(
+        currentRandomNumberFromRequestBody,
+        guessFromRequestBody
+    )
+
+    const finalEvaluation= {
+        totalCorrectNumbersCount:       totalCountOfCorrectNumbers,
+        totalCorrectLocationsCount:     totalCountOfCorrectLocations,
+        guess_attempt_return:           businessLogicTemplate.defaultWrongGuessNumberFromRequestBody,
+    }
+    console.log(finalEvaluation);
     
     return guessEvaluationObject = {
-        correct_numbers_return: totalCountOfCorrectNumbers,
-        correct_locations_return: totalCountOfCorrectLocations,
-        guess_attempt_return: guess,
-        currentGameID: currentGame._id
+        totalCorrectNumbersCount:       totalCountOfCorrectNumbers,
+        totalCorrectLocationsCount:     totalCountOfCorrectLocations,
+        guess_attempt_return:           businessLogicTemplate.defaultWrongGuessNumberFromRequestBody,
+    }
+}
+
+const setAndReturnCurrentGameVariables = async (currentGamesRequestBodyID, currentRandomNumberFromRequestBody, guessFromRequestBody, theCurrentGamesMode) => {
+    console.log('in update current game');
+    currentDatabase = await currentDatabaseInUse()
+
+    let 
+    currentGame =           await currentDatabase.getCurrentGame({ id: currentGamesRequestBodyID}),
+    currentUserEmail =      currentGame.userEmail
+    currentUser =           await currentDatabase.getUser(currentUserEmail)
+
+    const 
+    userReachedRoundsLimit =        await limitRoundsPerGame(currentGame, currentUser),
+    userGuessedCorrectAndWon =      await didUserGuessAll4NumbersCorrect(currentRandomNumberFromRequestBody, guessFromRequestBody, currentUser)
+
+    return {
+        currentDatabase, currentGame, currentUserEmail, 
+        currentUser, userReachedRoundsLimit,
+        userGuessedCorrectAndWon
     }
 }
 
 module.exports = {
-    updateAndReturnTheGameThatsCurrentlyInUse,
-    didUserGuessAll4NumbersCorrect,
-    returnTotalCountOfCorrectNumbers,
-    returnTotalCountOfCorrectLocations,
-    returnGuessEvaluationObject,
+    setAndReturnCurrentGameVariables,
+    returnGuessEvaluationObject
 }

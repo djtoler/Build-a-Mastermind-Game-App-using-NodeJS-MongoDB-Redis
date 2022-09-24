@@ -1,32 +1,16 @@
 const express = require('express');
 const game = express.Router();
-const { getRandomNumberFromAPI, get_and_evaluate_user_guess, send_hint_data, create_a_new_game} = require('../../functions/general-game-functions');
-const sendHints = require('../../functions/game.sendHints')
-const {reset_easy_hint_numbers} = require('../../functions/game-mode-functions');
-
-game.get('/random-number', getRandomNumberFromAPI)
-
-game.post('/create-game', (req, res) => {
-  create_a_new_game(req, res);
-})
-
-game.post('/guess-evaluation', (req, res, next) => {
-  get_and_evaluate_user_guess(req, res);
-})
-
-game.post('/get-hints', async (req, res, next) => {
-  console.log('in hints route', req.body);
-
-  const {theCurrentGamesMode, theCurrentGamesRandomNumber} = req.body
-  const runSendHints = await sendHints(theCurrentGamesMode, theCurrentGamesRandomNumber)
-  res.json(runSendHints)
-  
+const { runGetRandomNumberFromAPIService, get_and_evaluate_user_guess, send_hint_data, create_a_new_game} = require('../../functions/general-game-functions');
+const runSendHintsService = require('../controllers/controller.game.sendHints')
+const runPlayGameService = require('../controllers/controller.games.guessEvaluation') 
+const runCreateNewGameService = require('../controllers/controller.game.sendHints')
+const resetEasyHintNumbers = require('../controllers/controller.game.resetEasyHintNumbers')
 
 
-})
-
-game.put('/update-vars', (req, res, next) => {
-  reset_easy_hint_numbers(req);
-})
+game.get('/random-number', runGetRandomNumberFromAPIService)
+game.post('/get-hints', runSendHintsService)
+game.post('/create-game', runCreateNewGameService)
+game.post('/guess-evaluation', runPlayGameService)
+game.put('/update-vars', resetEasyHintNumbers)
 
 module.exports = game;

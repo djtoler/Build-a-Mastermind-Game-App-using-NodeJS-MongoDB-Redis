@@ -4,13 +4,13 @@ const fs = require("fs");
 const { v4: uuidv4 } = require("uuid");
 const newId = uuidv4();
 const { defaultGameObj } = require("../databases/mongodb/model-helpers");
-const {
-  game_modes,
-  easy_mode,
-  hard_mode,
-  super_hard_mode,
-  return_random_index,
-} = require("../functions/game-mode-functions");
+// const {
+//   game_modes,
+//   easy_mode,
+//   hard_mode,
+//   super_hard_mode,
+//   return_random_index,
+// } = require("../functions/game-mode-functions");
 const Game = require("../databases/mongodb/game-model");
 const User = require("../databases/mongodb/user-model");
 
@@ -24,7 +24,7 @@ let random_number;
 // ---------------------------------------------------FUNCTION----------------------------
 // --------------------------------GET A RANDOM NUMBER FROM THE RANDOM.ORG API-------------------------------
 
-const getRandomNumberFromAPI = async (response, res) => {
+const runGetRandomNumberFromAPIService = async (response, res) => {
   const randomNumber = await runGetRandomNumber(res);
   return randomNumber;
 };
@@ -281,7 +281,7 @@ const create_a_new_game = async (
 };
 
 module.exports = {
-  getRandomNumberFromAPI,
+  runGetRandomNumberFromAPIService,
   get_and_evaluate_user_guess,
   send_hint_data,
   create_a_new_game,
