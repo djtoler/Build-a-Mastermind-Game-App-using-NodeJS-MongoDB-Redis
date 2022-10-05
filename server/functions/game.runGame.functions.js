@@ -14,7 +14,7 @@ const currentGameFunction = async (currentGamesRequestBodyID, currentRandomNumbe
         const guessEvaluationResults = await returnGuessEvaluationObject(currentRandomNumberFromRequestBody, guessFromRequestBody)
         await updateCurrentGameData(currentUser, currentGame, theCurrentGamesMode, guessEvaluationResults, currentRandomNumberFromRequestBody, guessFromRequestBody)               
         currentGame.gameData.roundsPlayed = currentGame.gameData.roundsPlayed + 1
-        return {currentGuessEvaluationData: guessEvaluationResults, currentGameID: currentGame.gameI }
+        return {currentGuessEvaluationData: guessEvaluationResults, currentGameID: currentGame.game }
     }
 
     if ((userGuessedCorrectAndWon === true && userReachedRoundsLimit === true) || userGuessedCorrectAndWon === true ) {

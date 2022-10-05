@@ -32,17 +32,17 @@ const returnRandomNumber = async (apiResponse) => {
 const limitRoundsPerGame = async(currentGame, currentUser) => {
     let runCreateNewGame = false
     if (currentGame.roundsPlayed === 4) {runCreateNewGame = true}
-    console.log('limitRoundsPerGame:==> ', runCreateNewGame);
+    // console.log('limitRoundsPerGame:==> ', runCreateNewGame);
     return runCreateNewGame
 }
 
 const didUserGuessAll4NumbersCorrect = async (currentRandomNumberFromRequestBody, guessFromRequestBody, currentUser) => {
-    console.log('INSIDE DID-USER-GUESS-ALL-4-CORRECT');
+    // console.log('INSIDE DID-USER-GUESS-ALL-4-CORRECT');
 
     const userGuessedAll4NumbersCorrect =
     await guessFromRequestBody === currentRandomNumberFromRequestBody ? true : false;
     
-    console.log('userGuessedAll4NumbersCorrect: ==>', userGuessedAll4NumbersCorrect, );
+    // console.log('userGuessedAll4NumbersCorrect: ==>', userGuessedAll4NumbersCorrect, );
     return userGuessedAll4NumbersCorrect;
 };
 
@@ -71,16 +71,16 @@ const updateCurrentGamesUserData = async (currentUser, correctLocationPoints, co
     currentUser.gwRanking = 0
     currentUser.gpRanking = 0
    
-    console.log('USER FROM UPDATE HELPER FUNC --->af',     
-    currentUser.alltimeGamesPlayed,
-    currentUser.alltimeGamesWon,
-    currentUser.alltimePointsEarned,
-    currentUser.avgPPG,
-    currentUser.ranking,
-    currentUser.ppgRanking,
-    currentUser.peRanking,
-    currentUser.gwRanking,
-    currentUser.gpRanking,);
+    // console.log('USER FROM UPDATE HELPER FUNC --->af',     
+    // currentUser.alltimeGamesPlayed,
+    // currentUser.alltimeGamesWon,
+    // currentUser.alltimePointsEarned,
+    // currentUser.avgPPG,
+    // currentUser.ranking,
+    // currentUser.ppgRanking,
+    // currentUser.peRanking,
+    // currentUser.gwRanking,
+    // currentUser.gpRanking,);
     
     return currentUser
 }
@@ -91,7 +91,7 @@ const updateCurrentGamesData = async (currentGame, correctLocationPoints, correc
     let newRoundObject = {
         totalCorrectNumbersCount: guessEvaluationResults.totalCorrectNumbersCount,
         totalCorrectLocationsCount: guessEvaluationResults.totalCorrectLocationsCount,
-        guessAttempt: guessEvaluationResults.guess_attempt_return,
+        guessAttempt: guessEvaluationResults.guessAttempt,
         date: new Date(Date.now()).toString()
     }
     currentGame.gameData.totalPoints = currentGame.gameData.totalPoints + correctLocationPoints + correctDigitsPoints;

@@ -1,23 +1,28 @@
 const returnHintFunctions = require('./game.sendHints.functions')
 const {gameModes} = require('./game.helpers')
 
-async function sendHints (theCurrentGameMode, theCurrentGamesRandomNumber, mostCurrentUserGuess) {
+async function sendHints (theCurrentGamesMode, theCurrentGamesRandomNumber, mostCurrentUserGuess, easyHintButtonClickCounter) {
     let hintsToReturnToUser;
-    const hintFunctions = returnHintFunctions(theCurrentGamesRandomNumber, mostCurrentUserGuess)
+    const hintFunctions = returnHintFunctions(theCurrentGamesMode, theCurrentGamesRandomNumber, mostCurrentUserGuess, easyHintButtonClickCounter)
+    console.log(theCurrentGamesMode, ',<--- the current games mode from game.sendhints');
+    
+    await theCurrentGamesMode === gameModes.default
+    ? hintsToReturnToUser = console.log('Game in default mode') : 
 
-    theCurrentGameMode === gameModes.superEasy 
+    await theCurrentGamesMode === gameModes.superEasy 
         ? hintsToReturnToUser = (await hintFunctions).superEasyHints : 
     
-    theCurrentGameMode === gameModes.easy 
+    await theCurrentGamesMode === gameModes.easy 
         ? hintsToReturnToUser = (await hintFunctions).easyHints : 
     
-    theCurrentGameMode === gameModes.hard 
+    await theCurrentGamesMode === gameModes.hard 
         ? hintsToReturnToUser = (await hintFunctions).hardHints :
     
-    theCurrentGameMode === gameModes.superHard 
+    await theCurrentGamesMode === gameModes.superHard 
         ? hintsToReturnToUser = (await hintFunctions).superHardHints : 
     
     hintsToReturnToUser = `GAME CURRENTLY IN ${gameModes.default} MODE`
+    console.log(theCurrentGamesMode, ',<--- the current games mode from game.sendhints2');
 
     return hintsToReturnToUser
 }

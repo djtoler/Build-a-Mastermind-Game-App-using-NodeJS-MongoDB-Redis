@@ -46,23 +46,16 @@ const returnGuessEvaluationObject = async (currentRandomNumberFromRequestBody, g
         currentRandomNumberFromRequestBody,
         guessFromRequestBody
     )
-
-    const finalEvaluation= {
-        totalCorrectNumbersCount:       totalCountOfCorrectNumbers,
-        totalCorrectLocationsCount:     totalCountOfCorrectLocations,
-        guess_attempt_return:           businessLogicTemplate.defaultWrongGuessNumberFromRequestBody,
-    }
-    console.log(finalEvaluation);
     
     return guessEvaluationObject = {
         totalCorrectNumbersCount:       totalCountOfCorrectNumbers,
         totalCorrectLocationsCount:     totalCountOfCorrectLocations,
-        guess_attempt_return:           businessLogicTemplate.defaultWrongGuessNumberFromRequestBody,
+        guessAttempt:                   guessFromRequestBody,
     }
 }
 
 const setAndReturnCurrentGameVariables = async (currentGamesRequestBodyID, currentRandomNumberFromRequestBody, guessFromRequestBody, theCurrentGamesMode) => {
-    console.log('in update current game');
+    // console.log('in update current game');
     currentDatabase = await currentDatabaseInUse()
 
     let 

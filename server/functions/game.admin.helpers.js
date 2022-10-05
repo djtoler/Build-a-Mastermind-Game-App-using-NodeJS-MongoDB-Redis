@@ -1,6 +1,6 @@
 const AdminBuilder = require('./admin.class');
 const adminDateDefault = new Date(Date.now()).toString()
-console.log('adminbuilder', AdminBuilder);
+// console.log('adminbuilder', AdminBuilder);
 const gameModesMap = {superEasy: 0, easy: 1, hard: 2, superHard: 3, default: 4} 
 
 
@@ -26,31 +26,31 @@ const gameModesMap = {superEasy: 0, easy: 1, hard: 2, superHard: 3, default: 4}
                             .trackEvaluateGuessTests(adminDateDefault, '', '', 0, 0, 0, 0, 0, 0, 0, 0, {}, '', 0, 0,)
                             .buildAdminObject();
 
-console.log('adminObject: ==>', adminObject);
+// console.log('adminObject: ==>', adminObject);
 
 
 async function updatePointsAndCounts (theCurrentGamesMode, correctLocationPoints, correctDigitsPoints, guessEvaluationResults) {
     
-    const 
-    locationPointsKey =     'locationPoints_' +  theCurrentGamesMode,
-    locationCountKey =      'locationCount_' +  theCurrentGamesMode,
-    digitPointsKey =        'digitPoints_' +  theCurrentGamesMode,
-    digitCountKey =         'digitCount_' +  theCurrentGamesMode
+    // const 
+    // locationPointsKey =     'locationPoints_' +  theCurrentGamesMode,
+    // locationCountKey =      'locationCount_' +  theCurrentGamesMode,
+    // digitPointsKey =        'digitPoints_' +  theCurrentGamesMode,
+    // digitCountKey =         'digitCount_' +  theCurrentGamesMode
     
-    let
-    totalCurrentPoints, 
-    locationPoints =        adminObject.totalPointsByMode[gameModesMap[theCurrentGamesMode]][theCurrentGamesMode][locationPointsKey],
-    digitPoints =           adminObject.totalPointsByMode[gameModesMap[theCurrentGamesMode]][theCurrentGamesMode][digitPointsKey],
-    locationCount =         adminObject.totalCountsByMode[gameModesMap[theCurrentGamesMode]][theCurrentGamesMode][locationCountKey],
-    digitCount =            adminObject.totalCountsByMode[gameModesMap[theCurrentGamesMode]][theCurrentGamesMode][digitCountKey]
+    // let
+    // totalCurrentPoints, 
+    // locationPoints =        adminObject.totalPointsByMode[gameModesMap[theCurrentGamesMode]][theCurrentGamesMode][locationPointsKey],
+    // digitPoints =           adminObject.totalPointsByMode[gameModesMap[theCurrentGamesMode]][theCurrentGamesMode][digitPointsKey],
+    // locationCount =         adminObject.totalCountsByMode[gameModesMap[theCurrentGamesMode]][theCurrentGamesMode][locationCountKey],
+    // digitCount =            adminObject.totalCountsByMode[gameModesMap[theCurrentGamesMode]][theCurrentGamesMode][digitCountKey]
 
-    locationPoints =        locationPoints + correctLocationPoints;
-    digitPoints =           digitPoints + correctDigitsPoints;
-    totalCurrentPoints =    locationPoints + digitPoints
-    locationCount =         locationCount + guessEvaluationResults.totalCorrectLocationsCount;
-    digitCount =            digitCount + guessEvaluationResults.totalCorrectNumbersCount
+    // locationPoints =        locationPoints + correctLocationPoints;
+    // digitPoints =           digitPoints + correctDigitsPoints;
+    // totalCurrentPoints =    locationPoints + digitPoints
+    // locationCount =         locationCount + guessEvaluationResults.totalCorrectLocationsCount;
+    // digitCount =            digitCount + guessEvaluationResults.totalCorrectNumbersCount
 
-    return totalCurrentPoints
+    // return totalCurrentPoints
 }
 
 async function updateGamesPlayedByMode (theCurrentGamesMode) {

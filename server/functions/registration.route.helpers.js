@@ -1,5 +1,5 @@
 const verifyVisitorRegistrationCredentials = require('./registration.components.validateUserInput')
-const runCreateAndReturnNewUser = require('./registration.components.createNewUser')
+const createAndReturnNewUser = require('./registration.components.createNewUser')
 
 const runIsUserValidated = async (array, name, email, password, confirmPassword) => {
     const returnValidationObj = await verifyVisitorRegistrationCredentials(array, name, email, password, confirmPassword)
