@@ -4,10 +4,10 @@ import { Button } from "@chakra-ui/button";
 
 function GameModes(props) {
     let currentGameMode;
-    const easyModeButtonHandler = async () => {return currentGameMode = await props.func('easy')}
-    const hardModeButtonHandler = async () => {return currentGameMode = await props.func('hard')}
-    const superHardModeButtonHandler = async () => {return currentGameMode = await props.func('superHard')}
-    const superEasyModeButtonHandler = async () => {return currentGameMode = await props.func('superEasy')}
+    const easyModeButtonHandler = async () => {sessionStorage.setItem("currentMode", ('easy')); return currentGameMode = await props.func('easy')}
+    const hardModeButtonHandler = async () => {sessionStorage.setItem("currentMode", ('hard')); return currentGameMode = await props.func('hard')}
+    const superHardModeButtonHandler = async () => {sessionStorage.setItem("currentMode", ('superHard')); return currentGameMode = await props.func('superHard')}
+    const superEasyModeButtonHandler = async () => {sessionStorage.setItem("currentMode", ('superEasy')); return currentGameMode = await props.func('superEasy')}
 
     return (
         <Container maxWidth="xl" centerContent>

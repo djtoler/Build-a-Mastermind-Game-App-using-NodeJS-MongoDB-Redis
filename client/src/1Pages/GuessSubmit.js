@@ -8,12 +8,12 @@ import { useToast } from '@chakra-ui/react';
 import SliderInput from '../1ComponentHelper/SliderInput';
 import GameModes from "../1ComponentsMain/GameModes";
 import StartGameButton from "../1ComponentHelper/StartGameButton";
-import { checkValidInput, sendUserGuessToServer, clickHandler, FetchRandomNumber, render_guess_data, returnHintForCurrentGameMode, easy_mode_click_handler} from "../1Functions/ClientFunctions";
+import { checkValidInput, sendUserGuessToServer, FetchRandomNumber, displayGuessAttemptData, returnHintForCurrentGameMode, easy_mode_click_handler} from "../1Functions/ClientFunctions";
 import './GuessSubmitCSS.css'
 
 const GuessSubmit = (props) => {
     const [loading, setLoading] = useState();
-    const [guess, setGuess] = useState();
+    const [mostCurrentUserGuess, setMostCurrentUserGuess] = useState();
     const [takeaguess, setTakeAGuess] = useState();
     const [randomNumber, setRandomNumber] = useState();
     const config = {"Content-type": "application/json"};
@@ -22,46 +22,64 @@ const GuessSubmit = (props) => {
     const [hints, setHints] = useState([]);
     const toast = useToast();
     let renderHints;
-    let round_counter = 1;
+    let numberOfRoundsPlayed = 1;
+    let easyHintButtonClickCounter = 0;
     let guess_evaluation;
     let theCurrentGamesMode;
     let current_user_obj;
     const game_modes = {a: 'easy', b: 'super_easy', c: 'hard', d: 'super_hard'};
     
-    const requestObjectToResetNums = {method: 'put', url: 'http://127.0.0.1:9991/game/update-vars', data: {resetHighestNumberBackTo9999: '9999', resetLowestNumberBackTo0000: '0000',}, config}
+    const requestObjectToResetNums = {method: 'put', url: 'http://127.0.0.1:9991/game/update-vars', data: {resetHighestNumberBackTo7777: '7777', resetLowestNumberBackTo0000: '0000',}, config}
     const toastResponseError = {title: 'Error Occured!',  status: 'error', duration: 9000, isClosable: true, position: "bottom"}
     
     const resetEasyModeNumbers = async() => {
         console.log('in fetch');
         const { data } = await axios(requestObjectToResetNums)
-            .then((res) => {console.log('in the then, RESPONSE DATA ==>', res.data)})
+            .then((res) => {
+                console.log('in the resetEasyModeNumbers then, RESPONSE DATA ==>', res.data); 
+                alert('game over resetting easy hint numbers')
+            })
     }
 
+    // useEffect(()=> {
+    //     try {sessionStorage.setItem("currentMode", "default"); resetEasyModeNumbers();}
+    //     catch (errors) {toast(toastResponseError)}
+    // },[]); 
     useEffect(()=> {
-        try {sessionStorage.removeItem("currentMode"); resetEasyModeNumbers();}
+        try {
+            sessionStorage.setItem("currentMode", "default"); 
+            console.log(sessionStorage.getItem("currentMode")); 
+            resetEasyModeNumbers()
+        }
         catch (errors) {toast(toastResponseError)}
     },[]); 
 
     FetchRandomNumber(axios, setRandomNumber, toast);
     
     const clickHandler = async () => {
-        checkValidInput(guess, toast, setLoading, 4);
-        sendUserGuessToServer (guess, axios, config, guess_evaluation, currentGameDataArray, setCurrentGameDataArray);
+        checkValidInput(mostCurrentUserGuess, toast, setLoading, 4);
+        sendUserGuessToServer (mostCurrentUserGuess, axios, config, guess_evaluation, currentGameDataArray, setCurrentGameDataArray);
     };
 
 
     const returnHintsFromCurrentGamesMode = async (mode) => {
         console.log(mode);
-        sessionStorage.setItem("currentMode", (mode));
+        easyHintButtonClickCounter++
+        sessionStorage.setItem("easyHintButtonClickCounter", easyHintButtonClickCounter);
+        // sessionStorage.setItem("currentMode", (mode));
         console.log(sessionStorage.getItem("currentMode"));
-        theCurrentGamesMode = mode;
+        console.log(sessionStorage.getItem("easyHintButtonClickCounter"));
+        
+        let theCurrentGamesMode = sessionStorage.getItem("currentMode");
+        console.log(mode, theCurrentGamesMode);
+        console.log("easyHintButtonClickCounter-->", easyHintButtonClickCounter);
         let theCurrentGamesRandomNumber = sessionStorage.getItem("currentRandomNumber")
         
-        const easy_mode_click_handler = async (theCurrentGamesMode, guess, axios, config, renderHints, array, setArray) => {
+        const easy_mode_click_handler = async (theCurrentGamesMode, mostCurrentUserGuess, axios, config, renderHints, array, setArray) => {
             const data = await axios
               .post(
                 "http://localhost:9991/game/get-hints",
-                  {guess, theCurrentGamesMode, theCurrentGamesRandomNumber},
+                  {mostCurrentUserGuess, theCurrentGamesMode, theCurrentGamesRandomNumber, easyHintButtonClickCounter},
                   config
               )
               .then((res)=> {
@@ -73,14 +91,14 @@ const GuessSubmit = (props) => {
                 setArray(array => [... array, renderHints])        
             })
         } 
-        await easy_mode_click_handler(theCurrentGamesMode, guess, axios, config, renderHints, hintsArray, setHintsArray);
+        await easy_mode_click_handler(theCurrentGamesMode, mostCurrentUserGuess, axios, config, renderHints, hintsArray, setHintsArray);
     };
 
 
     return (
         <div>
-            <GameModes func={returnHintsFromCurrentGamesMode} guess={guess} />
-            <StartGameButton />
+            <GameModes func={returnHintsFromCurrentGamesMode} mostCurrentUserGuess={mostCurrentUserGuess} />
+            {/* <StartGameButton /> */}
             <VStack spacing="5px" color="black">
             <FormControl isRequired>
                 <FormLabel htmlFor='first-name'></FormLabel>
@@ -90,11 +108,11 @@ const GuessSubmit = (props) => {
                     id='takeaguess' 
                     type='number'
                     placeholder='Enter a 4 Digit Number From 0000 to 9999' 
-                    value={guess} 
-                    onChange={(e) => setGuess(e.target.value)}
+                    value={mostCurrentUserGuess} 
+                    onChange={(e) => setMostCurrentUserGuess(e.target.value)}
                 />
             </FormControl>
-            <SliderInput guess={guess}/>
+            <SliderInput mostCurrentUserGuess={mostCurrentUserGuess}/>
             <Button
                 colorScheme="green"
                 width="100%"
@@ -106,10 +124,10 @@ const GuessSubmit = (props) => {
             </Button>
             </VStack>
             <div>
-                {returnHintForCurrentGameMode(hintsArray, hints, setHints, theCurrentGamesMode)}
+                {returnHintForCurrentGameMode(hintsArray, theCurrentGamesMode)}
             </div>
             <div>
-                {render_guess_data(currentGameDataArray, round_counter, 4)}
+                {displayGuessAttemptData(currentGameDataArray, numberOfRoundsPlayed, 4)}
             </div>
         </div>
     );

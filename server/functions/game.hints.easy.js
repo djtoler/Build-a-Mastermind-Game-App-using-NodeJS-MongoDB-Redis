@@ -29,5 +29,4 @@ async function returnEasyHints (theCurrentGamesRandomNumber, mostCurrentUserGues
   return hintEvaluation
 };
 
-module.exports = returnEasyHints
-  
+module.exports = returnEasyHints 

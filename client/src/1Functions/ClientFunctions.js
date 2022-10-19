@@ -67,83 +67,95 @@ export const sendUserGuessToServer = async (
 };
 
 
-export const render_guess_data = (
-  array,
-  round_counter,
-  limited_number_of_rounds
-) => {
-  let guesses_left = limited_number_of_rounds - 1;
-  let render = (
+export const displayGuessAttemptData = (array, numberOfRoundsPlayed, maxNumberOfRoundsAllowed) => {
+  let numberOfGuessAttemptsLeft = maxNumberOfRoundsAllowed - 1;
+  console.log(numberOfRoundsPlayed, maxNumberOfRoundsAllowed);
+  let returnDisplayGuessData = (
     <div>
       {array.map((round, i) => {
-        // console.log(round);
         return (
           <div className="guess-data" key={i}>
-            Round #:{" "}
-            {round_counter >= limited_number_of_rounds
-              ? game_reload(round.currentGameID)
-              : round_counter++}{" "}
-            <br />
-            Your Guess: {round.guess_attempt_return} <br />
-            Correct Numbers:{" "}
-            {round.correct_numbers_return < 4
-              ? round.correct_numbers_return
-              : all_four_correct_reload("you won")}{" "}
-            <br />
-            Correct Locations: {round.correct_locations_return} <br />
-            Guesses Left: {guesses_left--}
+            Round#: 
+              {numberOfRoundsPlayed >= maxNumberOfRoundsAllowed ? reloadIfUserReachesGuessAttemptLimit(round.currentGuessEvaluationData.currentGameID) : numberOfRoundsPlayed++}<br />
+            Your Guess: 
+              {round.currentGuessEvaluationData.guessAttempt} <br />
+            Correct Numbers: 
+              {round.currentGuessEvaluationData.totalCorrectNumbersCount < 4 ? round.currentGuessEvaluationData.totalCorrectNumbersCount : reloadIfUserGuessesAll4CorrectNumbers("you won")}<br />
+            Correct Locations: 
+              {round.currentGuessEvaluationData.totalCorrectLocationsCount} <br />
+            Guesses Left: 
+              {numberOfGuessAttemptsLeft--}
           </div>
         );
       })}
     </div>
   );
-  return render;
+  return returnDisplayGuessData;
 };
 
 
 export const returnHintForCurrentGameMode = (array, theCurrentGamesMode) => {
   theCurrentGamesMode = sessionStorage.getItem("currentMode")
+  console.log(theCurrentGamesMode);
 
-  if (array.length > 0 && theCurrentGamesMode === 'superEasy') {
-    let arrayOfImageHintObjects = array[0] 
-    let renderSuperEasyHints = [
-      <div> {
-        arrayOfImageHintObjects.map((round, i) => {
-          return (
-          <div className="guess-data" key={i}> 
-            Caption: {round.caption} 
-            <br /> 
-            <img src={round.image} />
-          </div>)
-        })}
-      </div>
-    ];
-    return renderSuperEasyHints;
-  }
-
-  if (array.length > 0 && theCurrentGamesMode === 'easy') {
-    return <div className="guess-data" > Range: {' ' + array[0]} <br /> </div>;
-  }
-
+  
   if (array.length > 0 && theCurrentGamesMode === 'superHard' ) {
+    setTimeout(() => {window.location.reload()}, 30000)
     return <div className="guess-data"> Your number is hidden in this set of numbers: {'-' + array[0]} <br /></div>;
   }
 
   if (array.length > 0 && theCurrentGamesMode === 'hard' ) {
     return <div className="guess-data"> Your number is either 1/2, Double or the Cubed value of this number : {'' + array[0]} <br /></div>;
   }
+
+  if (array.length > 0 && theCurrentGamesMode === 'superEasy') {
+    let arrayOfImageHintObjects = array[0] 
+    let renderSuperEasyHints = [
+                                  <div> {
+                                    arrayOfImageHintObjects.map((round, i) => {
+                                      return (
+                                      <div className="guess-data" key={i}> 
+                                        Caption: {round.caption} 
+                                        <br /> 
+                                        <img src={round.image} />
+                                      </div>)})}
+                                  </div>
+                                ];
+    return renderSuperEasyHints;
+  }
+
+  if (array.length > 0 && theCurrentGamesMode === 'easy') {
+    let arrayOfEasyHints  = array;
+    let renderEasyHints   = [
+                              <div> {
+                                arrayOfEasyHints.map((currentNumberRange, i) => {
+                                  return (
+                                  <div className="guess-data" key={i}> 
+                                    Range: {currentNumberRange} 
+                                    <br /> 
+                                  </div>)})}
+                              </div>
+                            ];
+    return renderEasyHints
+  }
 };
 
-export const all_four_correct_reload = (game_won_response, reload, config) => {
-  // update_server_variables (axios, config, reload)
+export const reloadIfUserGuessesAll4CorrectNumbers = (gameWonResponseMessage, reload) => {
   reload = true;
   return setTimeout(() => {
-    game_won_response && window.location.reload();
+    gameWonResponseMessage && window.location.reload();
   }, 5000);
 };
 
-export const game_reload = async (currentGameID) => {
+export const reloadIfUserReachesGuessAttemptLimit = async (currentGameID) => {
+  console.log('reloadIfUserReachesGuessAttemptLimit');
+  sessionStorage.removeItem('currentMode');
   sessionStorage.removeItem("currentGameId");
-  window.location.reload();
-  return sessionStorage.setItem("currentGameId", JSON.stringify(currentGameID))
+  sessionStorage.setItem('currentMode', 'default')
+  console.log(sessionStorage.getItem('currentMode'));
+  setTimeout(() => {
+    window.location.reload();
+  }, 8000)
+  alert('out of guesses')
+  // return sessionStorage.setItem("currentGameId", JSON.stringify(currentGameID))
 };
