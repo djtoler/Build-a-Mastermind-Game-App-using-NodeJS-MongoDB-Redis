@@ -16,36 +16,39 @@ const HomePage = () => {
   }
   
   return (
-    <Container maxWidth="xl" centerContent>
-      <button onClick={LandingPageClickHandler}>Click me!</button>
-      
-      <Box d="flex" justifyContent="center" p={3} bg="white" w="100%" m="40px 0 15px 0" borderRadius="lg" borderWidth="1px" >
-        <Text fontSize="4xl" fontFamily="Work sans" color="black">MasterMind Game</Text>
-      </Box>
-      <Box
-        bg="white"
-        w="100%"
-        p={4}
-        borderRadius="lg"
-        borderWidth="1px"
-        color="black"
-      >
-        <Tabs variant="soft-rounded" colorScheme="green">
-          <TabList mb="1em">
-            <Tab width="50%">Login</Tab>
-            <Tab width="50%">Register</Tab>
-          </TabList>
-          <TabPanels>
-            <TabPanel>
-              <Login />
-            </TabPanel>
-            <TabPanel>
-              <Register />
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
-      </Box>
-    </Container>
+<div style={{ backgroundColor: "#000", color: "#00FF00", fontFamily: "'Courier New', monospace" }}>
+  <Container maxWidth="xl" centerContent>
+    <button onClick={LandingPageClickHandler} style={{ backgroundColor: "#00FF00", color: "#000", border: "2px solid #00FF00", borderRadius: "5px" }}>Click me!</button>
+
+    <Box d="flex" justifyContent="center" p={3} bg="#00FF00" w="100%" m="40px 0 15px 0" borderRadius="lg" borderWidth="1px" boxShadow="2px 2px 10px 0px #000">
+      <Text fontSize="4xl" fontFamily="'Courier New', monospace" color="#000">MasterMind Game</Text>
+    </Box>
+    <Box
+      bg="#00FF00"
+      w="100%"
+      p={4}
+      borderRadius="lg"
+      borderWidth="1px"
+      color="#000"
+      boxShadow="2px 2px 10px 0px #00FF00"
+    >
+      <Tabs variant="soft-rounded" colorScheme="#00FF00">
+        <TabList mb="1em">
+          <Tab width="50%" backgroundColor="black" color="green">Login</Tab>
+          <Tab width="50%" backgroundColor="black" color="green">Register</Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel>
+            <Login />
+          </TabPanel>
+          <TabPanel>
+            <Register />
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
+    </Box>
+  </Container>
+</div>
   );
 };
 

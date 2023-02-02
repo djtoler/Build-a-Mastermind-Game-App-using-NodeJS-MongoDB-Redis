@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect } from "react";
+import './DisplayGuessAttemptData.css';
 
 const toastResponseInputTooShort = {
   title: "Please Enter A 4-Digit Number The Field Before Clicking Submit",
@@ -39,31 +40,12 @@ export const FetchRandomNumber = (axios, setRandomNumber, toast) => {
   }, []);
 };
 
-export const clickHandler = async (
-  currentGuess,
-  toast,
-  setLoading,
-  axios,
-  config,
-  guess_evaluation,
-  setCurrent_Game_Data
-) => {
+export const clickHandler = async (  currentGuess,  toast,  setLoading,  axios,  config,  guess_evaluation,  setCurrent_Game_Data) => {
   checkValidInput(currentGuess, toast, setLoading);
-  sendUserGuessToServer(
-    currentGuess,
-    axios,
-    config,
-    guess_evaluation,
-    setCurrent_Game_Data
-  );
+  sendUserGuessToServer(  currentGuess,  axios,  config,  guess_evaluation,  setCurrent_Game_Data);
 };
 
-export const checkValidInput = (
-  currentGuess,
-  toast,
-  setLoading,
-  minimumGuessInputLength
-) => {
+export const checkValidInput = (  currentGuess,  toast,  setLoading,  minimumGuessInputLength) => {
   let invalidGuessInput =
     undefined || currentGuess.length < minimumGuessInputLength
       ? toast(toastResponseInputTooShort) && setLoading(false)
@@ -71,35 +53,16 @@ export const checkValidInput = (
   return invalidGuessInput;
 };
 
-export const sendUserGuessToServer = async (
-  currentGuess,
-  axios,
-  config,
-  guess_evaluation,
-  array,
-  setArray
-) => {
+export const sendUserGuessToServer = async (  currentGuess,  axios,  config,  guess_evaluation,  array,  setArray) => {
   let currentGameID = sessionStorage.getItem("currentGameID");
   console.log("currentGameID", currentGameID);
 
   let currentGameMode = sessionStorage.getItem("currentMode");
   console.log(currentGameMode);
-  let currentRandomNumberFromRequestBody = sessionStorage.getItem(
-    "currentRandomNumber"
-  );
+  let currentRandomNumberFromRequestBody = sessionStorage.getItem(  "currentRandomNumber");
   let currentUsersData = sessionStorage.getItem("userData");
   const data = await axios
-    .post(
-      "http://127.0.0.1:9991/game/guess-evaluation",
-      {
-        currentGuess,
-        currentGameID,
-        currentGameMode,
-        currentRandomNumberFromRequestBody,
-        currentUsersData,
-      },
-      config
-    )
+    .post(  "http://127.0.0.1:9991/game/guess-evaluation",  {    currentGuess,    currentGameID,    currentGameMode,    currentRandomNumberFromRequestBody,    currentUsersData,  },  config)
     .then((res) => {
       console.log(res.data);
       guess_evaluation = res.data;
@@ -107,36 +70,23 @@ export const sendUserGuessToServer = async (
     });
 };
 
-export const displayGuessAttemptData = (
-  array,
-  numberOfRoundsPlayed,
-  maxNumberOfRoundsAllowed
-) => {
+export const displayGuessAttemptData = (  array,  numberOfRoundsPlayed,  maxNumberOfRoundsAllowed) => {
   let numberOfGuessAttemptsLeft = maxNumberOfRoundsAllowed - 1;
   console.log(numberOfRoundsPlayed, maxNumberOfRoundsAllowed);
   let returnDisplayGuessData = (
-    <div>
+    <div className="guess-attempt-container">
       {array.map((round, i) => {
         return (
           <div className="guess-data" key={i}>
-            Round#:
-            {numberOfRoundsPlayed >= maxNumberOfRoundsAllowed
-              ? reloadIfUserReachesGuessAttemptLimit(
-                  round.currentGuessEvaluationData.currentGameID
-                )
-              : numberOfRoundsPlayed++}
-            <br />
-            Your Guess:
-            {round.currentGuessEvaluationData.guessAttempt} <br />
-            Correct Numbers:
-            {round.currentGuessEvaluationData.totalCorrectNumbersCount < 4
-              ? round.currentGuessEvaluationData.totalCorrectNumbersCount
-              : reloadIfUserGuessesAll4CorrectNumbers("you won")}
-            <br />
-            Correct Locations:
-            {round.currentGuessEvaluationData.totalCorrectLocationsCount} <br />
-            Guesses Left:
-            {numberOfGuessAttemptsLeft--}
+            <div className="round-number">Round#: <span style={{fontWeight: 'bold', fontSize: '30px'}}>{numberOfRoundsPlayed++}</span></div>
+            <div className="your-guess">Your Guess: <span style={{fontWeight: 'bold', fontSize: '30px'}}>{round.currentGuessEvaluationData.guessAttempt}</span></div>
+            <div className="correct-numbers">
+              Correct Numbers: <span style={{fontWeight: 'bold', fontSize: '30px'}}>{round.currentGuessEvaluationData.totalCorrectNumbersCount < 4
+                ? round.currentGuessEvaluationData.totalCorrectNumbersCount
+                : reloadIfUserGuessesAll4CorrectNumbers("you won")}</span>
+            </div>
+            <div className="correct-locations">Correct Locations: <span style={{fontWeight: 'bold', fontSize: '30px'}}>{round.currentGuessEvaluationData.totalCorrectLocationsCount}</span></div>
+            <div className="guesses-left">Guesses Left: <span style={{fontWeight: 'bold', fontSize: '30px'}}>{numberOfGuessAttemptsLeft--}</span></div>
           </div>
         );
       })}
@@ -173,12 +123,13 @@ export const returnHintForCurrentGameMode = (array, theCurrentGamesMode) => {
 
   if (array.length > 0 && theCurrentGamesMode === "superEasy") {
     let arrayOfImageHintObjects = array[0];
+    console.log(array);
     let renderSuperEasyHints = [
       <div>
         {" "}
         {arrayOfImageHintObjects.map((round, i) => {
           return (
-            <div className="guess-data" key={i}>
+            <div className="hint-data-super-easy" key={i}>
               Caption: {round.caption}
               <br />
               <img src={round.image} />
@@ -192,20 +143,22 @@ export const returnHintForCurrentGameMode = (array, theCurrentGamesMode) => {
 
   if (array.length > 0 && theCurrentGamesMode === "easy") {
     let arrayOfEasyHints = array;
+    let j = 1;
     let renderEasyHints = [
       <div>
         {" "}
         {arrayOfEasyHints.map((currentNumberRange, i) => {
+          j=j+1
           return (
-            <div className="guess-data" key={i}>
-              Range: {currentNumberRange}
+            <div className="hint-data" key={i}>
+              Round # {i}: {currentNumberRange}
               <br />
             </div>
           );
         })}
       </div>,
     ];
-    return;
+    return renderEasyHints;
   }
 };
 

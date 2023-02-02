@@ -98,37 +98,38 @@ const GuessSubmit = (props) => {
 
 
     return (
-        <div>
-            <GameModes func={returnHintsFromCurrentGamesMode} mostCurrentUserGuess={mostCurrentUserGuess} />
-            {/* <StartGameButton /> */}
-            <VStack spacing="5px" color="black">
-            <FormControl isRequired>
-                <FormLabel htmlFor='first-name'></FormLabel>
-                <Input 
-                    min={0} max={9999}
+        <div style={{ backgroundColor: "white" }}>
+            <div>
+                <GameModes func={returnHintsFromCurrentGamesMode} mostCurrentUserGuess={mostCurrentUserGuess} />
+                <VStack spacing="5px" color="black">
+                <FormControl isRequired>
+                    <FormLabel htmlFor='first-name'></FormLabel>
+                    <Input 
+                    min={0} max={9999} width={500} color={"black"}
                     className='guessInput' 
                     id='takeaguess' 
                     type='number'
                     placeholder='Enter a 4 Digit Number From 0000 to 9999' 
                     value={mostCurrentUserGuess} 
                     onChange={(e) => setMostCurrentUserGuess(e.target.value)}
-                />
-            </FormControl>
-            <Button
-                colorScheme="green"
-                width="100%"
-                style={{ marginTop: 15 }}
-                onClick={clickHandler}
-                isLoading={loading}
+                    />
+                </FormControl>
+                <Button
+                    colorScheme="green"
+                    width="50%"
+                    style={{ marginTop: 15 }}
+                    onClick={clickHandler}
+                    isLoading={loading}
                 >
-                Submit Your Guess
-            </Button>
-            </VStack>
-            <div>
+                    Submit Your Guess
+                </Button>
+                </VStack>
+                <div>
                 {returnHintForCurrentGameMode(hintsArray, theCurrentGamesMode)}
-            </div>
-            <div>
+                </div>
+                <div>
                 {displayGuessAttemptData(currentGameDataArray, numberOfRoundsPlayed, 4)}
+                </div>
             </div>
         </div>
     );
