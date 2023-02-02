@@ -98,14 +98,14 @@ const GuessSubmit = (props) => {
 
 
     return (
-        <div style={{ backgroundColor: "white" }}>
+        <div style={{ backgroundColor: "black", border: "2px round solid", color: "green"}}>
             <div>
                 <GameModes func={returnHintsFromCurrentGamesMode} mostCurrentUserGuess={mostCurrentUserGuess} />
                 <VStack spacing="5px" color="black">
                 <FormControl isRequired>
                     <FormLabel htmlFor='first-name'></FormLabel>
                     <Input 
-                    min={0} max={9999} width={500} color={"black"}
+                    min={0} max={9999} width={500} color={"green"}
                     className='guessInput' 
                     id='takeaguess' 
                     type='number'
