@@ -21,7 +21,7 @@ const Login = (props) => {
     const [token, setToken] = useState()
     const [userData, setUserData] = useState()
     const [redirect, setRedirect] = useState(false)
-    const [user, setUser] = useState("");
+    const [avatar, setAvatar] = useState("");
     const [gameId, setGameId] = useState();
 
     const handleClick = () => setShow(!show)
@@ -60,7 +60,12 @@ const Login = (props) => {
                 console.log(result.data.currentGameID);
                 console.log(result.data);
                 sessionStorage.setItem("currentGameID", JSON.stringify(result.data.currentGameID))
+                let picture = JSON.parse(currentUserData).authorizeUser.user.picture;
+                console.log(picture);
                 setGameId(sessionStorage.getItem("currentGameID", result.data));
+                sessionStorage.setItem("avatar", picture)
+                setAvatar(sessionStorage.getItem("avatar"))
+                
                 passGameId = sessionStorage.getItem("currentGameID", result.data)
                 console.log(passGameId);
                 history.push("/game")

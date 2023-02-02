@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useState } from "react";
 import {Container, Box, Text, Tab, TabList, TabPanel, TabPanels, Tabs} from '@chakra-ui/react';
 import { Button } from "@chakra-ui/button";
+import ProfileAvatar from "../1ComponentsMain/ProfileAvatar";
+import ProfileBadge from '../1ComponentHelper/ProfileBadge';
+import UserAvatarBadge from '../1ComponentHelper/UserAvatarBadge';
 
 function GameModes(props) {
     let currentGameMode;
@@ -12,11 +15,12 @@ function GameModes(props) {
     return (
         <div style={{ background: "black" }}>
             <Container maxWidth="xl" centerContent>
-
-                <Box d="flex" justifyContent="center" p={3} bg="black" w="100%" m="40px 0 15px 0" borderRadius="lg" borderWidth="1px" marginTop="20px" > 
-                <Text fontSize="4xl" fontFamily="Work sans" color="green"> Mastermind Game </Text>
+            <div style={{ background: "black", border:"#27a102 2px solid", borderRadius: "10px" }}>
+                <Box d="flex" justifyContent="center" p={3} bg="black" w="900px" m="40px 0 15px 0" borderRadius="lg"  marginTop="20px" > 
+                <ProfileBadge uploadedImg="User_Avatars/jhzsmkeuixvhcs4gnetb.jpg" />
+                <Text fontSize="7xl"  fontFamily="Work sans" color="green"> Mastermind Game </Text>
                 </Box>
-
+            </div>
                 <Box bg="black" w="100%" p={4} borderRadius="lg" borderWidth="1px" color="green" >
                 <Tabs variant="soft-rounded" colorScheme="green">
                     <TabList mb="1em">
