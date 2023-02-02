@@ -1,5 +1,5 @@
 const asyncHandler = require("express-async-handler");
-const {resetEasyHintNumbersEvent} = require('../../functions/event-emitters')
+const {resetEasyHintNumbersEvent} = require('../../functions/game-events/event-emitters')
 
 const resetEasyHintNumbers = asyncHandler(async (req) => {
     console.log('inside reset easy hint event');

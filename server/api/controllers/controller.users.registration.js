@@ -1,7 +1,7 @@
 const asyncHandler = require("express-async-handler");
-const {runIsUserValidated, runCreateAndReturnNewUser} = require("../../functions/registration.route.helpers");
-const { errorsArray } = require("../../functions/game.helpers");
-const { registration } = require("../../functions/event-emitters");
+const {runIsUserValidated, runCreateAndReturnNewUser} = require("../../functions/registration/registration.route.helpers");
+const { errorsArray } = require("../../functions/game-helpers/game.helpers.functions");
+const { registration } = require("../../functions/game-events/event-emitters");
 
 const runUserRegistrationService = asyncHandler(async (req, res) => {
     const { image, name, email, password, confirmPassword } = req.body;

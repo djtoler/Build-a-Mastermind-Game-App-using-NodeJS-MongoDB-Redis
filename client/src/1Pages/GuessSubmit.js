@@ -10,6 +10,8 @@ import GameModes from "../1ComponentsMain/GameModes";
 import StartGameButton from "../1ComponentHelper/StartGameButton";
 import { checkValidInput, sendUserGuessToServer, FetchRandomNumber, displayGuessAttemptData, returnHintForCurrentGameMode, easy_mode_click_handler} from "../1Functions/ClientFunctions";
 import './GuessSubmitCSS.css'
+import UserAvatarBadge from "../1ComponentHelper/UserAvatarBadge";
+import ProfileBadge from "../1ComponentHelper/ProfileBadge";
 
 const GuessSubmit = (props) => {
     const [loading, setLoading] = useState();
@@ -31,7 +33,7 @@ const GuessSubmit = (props) => {
     
     const requestObjectToResetNums = {method: 'put', url: 'http://127.0.0.1:9991/game/update-vars', data: {resetHighestNumberBackTo7777: '7777', resetLowestNumberBackTo0000: '0000',}, config}
     const toastResponseError = {title: 'Error Occured!',  status: 'error', duration: 9000, isClosable: true, position: "bottom"}
-    
+
     const resetEasyModeNumbers = async() => {
         console.log('in fetch');
         const { data } = await axios(requestObjectToResetNums)
@@ -112,7 +114,6 @@ const GuessSubmit = (props) => {
                     onChange={(e) => setMostCurrentUserGuess(e.target.value)}
                 />
             </FormControl>
-            <SliderInput mostCurrentUserGuess={mostCurrentUserGuess}/>
             <Button
                 colorScheme="green"
                 width="100%"

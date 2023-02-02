@@ -1,5 +1,5 @@
 const cron = require('node-cron');
-const {AutomatedNightlyRefreshOfRegistrationCounts} = require('../../functions/registration.admin')
+const {AutomatedNightlyRefreshOfRegistrationCounts} = require('../../functions/registration/registration.admin')
 console.log('in reg cron');
 
 const doAutomatedRegistrationDataUpdater = () => {

@@ -1,10 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
-const {
-  number_default,
-  string_default,
-  string_required,
-} = require("./model-helpers");
+const {  number_default,  string_default,  string_required,} = require("./model-helpers");
 
 const userSchema = mongoose.Schema(
   {

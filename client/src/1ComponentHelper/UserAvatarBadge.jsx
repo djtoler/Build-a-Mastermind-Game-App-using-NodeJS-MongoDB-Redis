@@ -25,10 +25,6 @@ const UserAvatarBadge = ({ uploadedImg }) => {
     <AdvancedImage cldImg={myImage} />
       <Flex>
         <Box borderRadius='md' bg='#C1FFD5' color='black' px={100} h={50}>
-          <Text fontWeight="bold">
-            {userName}
-          </Text>
-          <Text fontSize="sm">{userEmail}</Text>
         </Box>
       </Flex>
     </>

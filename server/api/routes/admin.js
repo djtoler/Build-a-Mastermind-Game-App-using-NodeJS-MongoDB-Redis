@@ -7,7 +7,7 @@ const {doUpdateGameDataAfterSuccessfulGuess} = require("../../admin/events/admin
 const uploadImages = require("../../cache/cache.uploadImage");
 const setImageFilePath = require("../../cache/cache.uploadImage")
 const storeHintImagesInRedis = require("../../cache/cache.uploadImage");
-const returnNewAdmin = require('../../functions/admin.class')
+const returnNewAdmin = require('../../admin/admin.template')
 
 admin.use("/update-admin", (req, res) => {
   doUpdateUsersCountsAfterSuccessfulRegistration();

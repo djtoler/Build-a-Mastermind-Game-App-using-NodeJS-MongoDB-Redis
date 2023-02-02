@@ -2,8 +2,7 @@ import { useHistory } from 'react-router';
 import React, { useState } from "react";
 import { Container, Box, Text, Tab, TabList, TabPanel, TabPanels, Tabs} from "@chakra-ui/react";
 import Redis from "../../src/1ComponentsMain/Redis";
-import Memcached from "../../src/1ComponentsMain/Memcached";
-import AWSS3 from "../../src/1ComponentsMain/AWSS3";
+
 
 const AdminUploadHint = () => {
   const history = useHistory();
@@ -46,12 +45,6 @@ const AdminUploadHint = () => {
           <TabPanels>
             <TabPanel>
               <Redis />
-            </TabPanel>
-            <TabPanel>
-              <Memcached />
-            </TabPanel>
-            <TabPanel>
-              <AWSS3 />
             </TabPanel>
           </TabPanels>
         </Tabs>

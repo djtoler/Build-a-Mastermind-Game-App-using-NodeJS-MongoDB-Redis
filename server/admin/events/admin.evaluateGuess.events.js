@@ -1,5 +1,5 @@
-const {updateAdminDataAfterSuccessfulGuessEvaluation} = require('../../functions/game.admin')
-const {evaluateGuess} = require("../../functions/event-emitters");
+const {updateAdminDataAfterSuccessfulGuessEvaluation} = require('../game.admin')
+const {evaluateGuess} = require("../../functions/game-events/event-emitters");
 console.log('hey');
 
 const doUpdateGameDataAfterSuccessfulGuess = async () => {

@@ -11,28 +11,12 @@ function GameModes(props) {
 
     return (
         <Container maxWidth="xl" centerContent>
-            <Box
-                d="flex"
-                justifyContent="center"
-                p={3}
-                bg="white"
-                w="100%"
-                m="40px 0 15px 0"
-                borderRadius="lg"
-                borderWidth="1px"
-                marginTop="20px"
-            > 
+
+            <Box d="flex" justifyContent="center" p={3} bg="white" w="100%" m="40px 0 15px 0" borderRadius="lg" borderWidth="1px" marginTop="20px" > 
                 <Text fontSize="4xl" fontFamily="Work sans" color="black"> Mastermind Game </Text>
             </Box>
 
-            <Box
-                bg="white"
-                w="100%"
-                p={4}
-                borderRadius="lg"
-                borderWidth="1px"
-                color="black"
-            >
+            <Box bg="white" w="100%" p={4} borderRadius="lg" borderWidth="1px" color="black" >
                 <Tabs variant="soft-rounded" colorScheme="green">
                     <TabList mb="1em">
                         <Tab width="50%">SuperEasy</Tab>
@@ -41,6 +25,7 @@ function GameModes(props) {
                         <Tab width="50%">Hard</Tab>
                         <Tab width="50%">SuperHard</Tab>
                     </TabList>
+
                     <TabPanels>
                         <TabPanel><Button colorScheme="green" width="30%" style={{ marginTop: 15 }} onClick={superEasyModeButtonHandler} isLoading={false}>Super Easy Hints</Button></TabPanel>
                         <TabPanel><Button colorScheme="green" width="30%" style={{ marginTop: 15 }} onClick={easyModeButtonHandler} isLoading={false}>Easy Hints</Button></TabPanel>
@@ -50,6 +35,7 @@ function GameModes(props) {
                     </TabPanels>
                 </Tabs>
             </Box>
+            
         </Container>
     );
 }

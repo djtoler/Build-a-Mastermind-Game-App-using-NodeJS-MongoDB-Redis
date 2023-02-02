@@ -1,4 +1,4 @@
-const sendHints = require('../../functions/game.sendHints')
+const sendHints = require('../../functions/game-hints/game.sendHints')
 
 const runSendHintsService = async (req, res) => {
     const {theCurrentGamesMode, theCurrentGamesRandomNumber, mostCurrentUserGuess, easyHintButtonClickCounter} = req.body

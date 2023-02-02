@@ -23,9 +23,6 @@ const Login = (props) => {
     const [redirect, setRedirect] = useState(false)
     const [user, setUser] = useState("");
     const [gameId, setGameId] = useState();
-    // console.log(user);
-    // const [userEmail, setUserEmail] = useState(user.email);
-    // const [userId, setUserId] = useState(user._id);
 
     const handleClick = () => setShow(!show)
     const toast = useToast();
@@ -37,31 +34,17 @@ const Login = (props) => {
     const submitHandler = async () => {
         setLoading(true);
         if (!email || !password) {
-          toast({
-            title: "Please Fill all the Feilds",
-            status: "warning",
-            duration: 5000,
-            isClosable: true,
-            position: "bottom",
-          });
+          toast({title: "Please Fill all the Feilds", status: "warning", duration: 5000, isClosable: true, position: "bottom", });
           setLoading(false);
           return;
         }
         try {
-            const config = {
-                headers: {
-                    "Content-type":"application/json",
-                },
-            };
-            const {data} = await axios.post(
-                "http://localhost:9991/user/login",
-                {email, password},
-                config
-            );
+            const config = {headers: {"Content-type":"application/json"}};
+            const {data} = await axios.post("http://localhost:9991/user/login", {email, password}, config);
             setToken(data.token);
             passToken = data.token;
             console.log(data);
-            console.log(data.msg, '<<<------------DATAMSG');
+            // console.log(data.msg, '<<<------------DATAMSG');
             console.log(typeof(data));
             sessionStorage.setItem("userData", JSON.stringify(data))
             setUserData(sessionStorage.getItem("userData", data));
@@ -71,75 +54,51 @@ const Login = (props) => {
             console.log(data.authorizeUser.loginSucceded);
             toast(data.authorizeUser.loginSucceded);
             setLoading(false);
-            const {result} = await axios.post(
-                "http://localhost:9991/game/create-game",
-                {currentUserData},
-                config
-            ).then((result) => {
+            const {result} = await axios.post("http://localhost:9991/game/create-game",{currentUserData},config
+            )
+            .then((result) => {
                 console.log(result.data.currentGameID);
+                console.log(result.data);
                 sessionStorage.setItem("currentGameID", JSON.stringify(result.data.currentGameID))
                 setGameId(sessionStorage.getItem("currentGameID", result.data));
                 passGameId = sessionStorage.getItem("currentGameID", result.data)
                 console.log(passGameId);
                 history.push("/game")
-            })
-            
-            
+            })  
         }
         catch (error ){
             console.log(error.response.data);
-            toast({
-                title: 'Error Occured!',
-                status: 'error',
-                duration: 9000,
-                isClosable: true,
-                position: "bottom",
-            });
+            console.log('Problem');
+            toast({title: 'Error Occured!',status: 'error',duration: 9000,isClosable: true,position: "bottom",});
             setLoading(false);
         }   
     }
     return (
         <VStack spacing="5px" color="black">
+
             <FormControl id="emailLog" isRequired>
                 <FormLabel>Email</FormLabel>
                 <Input placeholder="Enter Your Email" value={email} onChange={(e) => setEmail(e.target.value)}/>
             </FormControl>
+
             <FormControl id="passwordLog" isRequired>
                 <FormLabel>Password</FormLabel>
                 <InputGroup>
-                    <Input
-                    type={show ? "text" : "password"}
-                    placeholder="Enter Your Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)} //Set password to whats entered in password field
-                    />
+                    <Input type={show ? "text" : "password"} placeholder="Enter Your Password" value={password} onChange={(e) => setPassword(e.target.value)}/>
                     <InputRightElement width="4.5rem">
-                    <Button h="1.75rem" size="sm" onClick={handleClick}>
-                        {show ? "Hide" : "Show"}
-                    </Button>
+                        <Button h="1.75rem" size="sm" onClick={handleClick}>{show ? "Hide" : "Show"}</Button>
                     </InputRightElement>
                 </InputGroup>
             </FormControl>
-            <Button
-                colorScheme="green"
-                width="100%"
-                style={{ marginTop: 15 }}
-                onClick={submitHandler}
-                isLoading={loading}
-            >
-                Login1
+
+            <Button colorScheme="green" width="100%" style={{ marginTop: 15 }} onClick={submitHandler} isLoading={loading} >
+                Login
             </Button>
-            <Button
-                variant="solid"
-                colorScheme="green"
-                width="100%"
-                onClick={() => {
-                    setEmail("notregistered@example.com");
-                    setPassword("test");
-                }}
-            >
+
+            <Button variant="solid" colorScheme="green" width="100%" onClick={() => {setEmail("notregistered@example.com"); setPassword("test");}}>
                 Sign In Using Guest Credentials
             </Button>
+
         </VStack>
     );
 }

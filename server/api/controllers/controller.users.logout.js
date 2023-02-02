@@ -1,4 +1,4 @@
-const logoutUser = require('../../functions/logout.functions')
+const logoutUser = require('../../functions/login/logout.functions')
 
 const runUserLogoutService = () => {
     const runUserLogout = logoutUser()

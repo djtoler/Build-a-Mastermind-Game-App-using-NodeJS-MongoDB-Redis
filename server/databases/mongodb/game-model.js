@@ -1,20 +1,18 @@
 const mongoose = require("mongoose");
-const {
-  number_default,
-  boolean_default,
-  string_default,
-} = require("./model-helpers");
+const {  number_default,  boolean_default,  string_default,} = require("./model-helpers");
 
 const GameSchema = mongoose.Schema(
   {
     is_2_player: boolean_default,
-    game_mode: string_default,
+    // game_mode: string_default,
     random_number: { type: Number, immutable: (doc) => doc.rounds_played > 0 },
     rounds_played: number_default,
-    total_points: number_default,
-    total_correct_numbers: number_default,
-    total_correct_locations: number_default,
+    // total_points: number_default,
+    // total_correct_numbers: number_default,
+    // total_correct_locations: number_default,
     game_won: boolean_default,
+    rounds: [{game_mode: string_default, total_round_points: number_default, total_correct_numbers: number_default, total_correct_locations: number_default, }],
+    total_game_points: number_default,
     users: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   },
   { timestamps: true }

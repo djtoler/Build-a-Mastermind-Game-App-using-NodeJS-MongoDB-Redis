@@ -3,7 +3,7 @@ const fs = require('fs');
 const image = express.Router();
 const redis = require('redis');
 const path = require('path');
-const testImg  = require("../../output" );
+// const testImg  = require("../../output" );
 let file;
 let blob;
 

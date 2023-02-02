@@ -1,6 +1,6 @@
 const currentDatabaseInUse = async () => {
-    // const useDefaultDatabase = await require('../mongodb/mongodb')
-    const useBusinessLogicDB = await require('../mock/mockdb')
+    const useDefaultDatabase = await require('../mongodb/mongodb')
+    // const useBusinessLogicDB = await require('../mock/mockdb')
     // const useRandomDatabase = await require(`../../../${process.env.CURRENTDATABASE}`) 
     // if (useRandomDatabase === undefined) {
     //     return useDefaultDatabase
@@ -8,7 +8,7 @@ const currentDatabaseInUse = async () => {
     // console.log(typeof useRandomDatabase, 'TYPPPPEEEOOOFFFFF DB');
     // return useRandomDatabase
     // return useDefaultDatabase
-    return useBusinessLogicDB
+    return useDefaultDatabase
 }
 
 module.exports = currentDatabaseInUse
