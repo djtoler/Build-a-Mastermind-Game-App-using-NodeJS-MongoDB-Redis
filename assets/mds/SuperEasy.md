@@ -4,11 +4,11 @@
 
 The pictures are used as a representation of each digit in the random 4-digit number sequence. 
 
-![supereasy.PNG](supereasy.png)
+![MM-superEasy](https://github.com/djtoler/v1-mern/blob/main/assets/images/MM-superEasy.PNG)
 
 For example, in the picture above, the random 4-digit number generated was 4616 and there's an accompanying photo representation for each digit in the 4616 number sequence.
 
-![Untitled](Untitled%2023.png)
+![MM-superEasy1](https://github.com/djtoler/v1-mern/blob/main/assets/images/MM-superEasy1.png)
 
 To implement this feature, we use the [Redis cache engine](https://redis.io/docs/about/) to store the images in memory for optimizing speed of retrieval using the base64 encoding of the image since Redis doesn't actually store image files.
 
@@ -25,13 +25,13 @@ For example, since the images in the the photo above are related to digits 4, 6,
 
 When returning data keys in the Redis CLI, you can see our data keys are built using the above format. “hintData”, followed by an “_”, followed by *the digit that related to an image* and *a digit representing the number of images stored for that digit*.
 
-![Untitled](Untitled%2024.png)
+![MM-superEasy2](https://github.com/djtoler/v1-mern/blob/main/assets/images/MM-superEasy2.png)
 
 After the data keys are stored, hint images are retrieved using 3 small functions in the game.hints.superEasy.js file.
 
 ---
 
-![Untitled](Untitled%2025.png)
+![MM-superEasy3](https://github.com/djtoler/v1-mern/blob/main/assets/images/MM-superEasy3.png)
 
 The 1st function starting at line 3 is called **[“randomImageIDSelector”](https://github.com/djtoler/v1-mern/blob/8d536bb23cf1f59a736fba02426b111a5fd5e7aa/server/functions/game-hints/game.hints.superEasy.js#L3)**. 
 
@@ -39,7 +39,7 @@ It returns a random number between 1 and 3 (the total number of images stored fo
 
 ---
 
-![Untitled](Untitled%2026.png)
+![MM-superEasy4](https://github.com/djtoler/v1-mern/blob/main/assets/images/MM-superEasy4.png)
 
 ---
 
@@ -75,7 +75,7 @@ At line 19, we run a  [“GET” command](https://redis.io/commands/get/) on our
 
 Finally on line 22 after loop finishes, our function returns the “***arrayHoldingNewlyGeneratedCachedImageObjects***” array that we pushed the random Redis keys intro.
 
-![Untitled](Untitled%2027.png)
+![MM-superEasy5](https://github.com/djtoler/v1-mern/blob/main/assets/images/MM-superEasy5.png)
 
 The 3rd function in this file is called **[“returnSuperEasyHints”.](https://github.com/djtoler/v1-mern/blob/8d536bb23cf1f59a736fba02426b111a5fd5e7aa/server/functions/game-hints/game.hints.superEasy.js#L21)**  
 

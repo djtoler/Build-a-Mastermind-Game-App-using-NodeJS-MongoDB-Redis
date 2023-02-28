@@ -4,7 +4,7 @@ Hard**:** When the game is played in “Hard” mode, a user is provided with a 
 
 That number is either the 1/2, doubled or the cubed value of the random number
 
-![hard.PNG](hard.png)
+![MM-hard](https://github.com/djtoler/v1-mern/blob/main/assets/images/MM-hard.PNG)
 
 For example, in the picture above, the number sent to the user is 12544. 
 
@@ -14,7 +14,7 @@ For example, in the picture above, the number sent to the user is 12544.
 
 Our user has 10 seconds to guess the value of the random number before they lose the game and the page reloads
 
-![Untitled](Untitled%2028.png)
+![MM-hard1](https://github.com/djtoler/v1-mern/blob/main/assets/images/MM-hard1.PNG)
 
 This feature is implemented in the code below.
 
@@ -26,7 +26,7 @@ The keys of the object properties are numbers so that a function can be ran on t
 - The second object property multiplies the *“currentRandomNumber”* parameter by 2.
 - The third object property cubes the *“currentRandomNumber”.*
 
-![Untitled](Untitled%2029.png)
+![MM-hard2](https://github.com/djtoler/v1-mern/blob/main/assets/images/MM-hard2.PNG)
 
 We then export and require it in the ***“game.hints.hard.js”*** file. 
 
