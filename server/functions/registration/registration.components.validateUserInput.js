@@ -21,12 +21,12 @@ const verifyVisitorRegistrationCredentials = async ( errorArray,  name,  email, 
     array.push({ msg: validation_helpers.userAlreadyExists });
   }
 
-  console.log("end of input checks");
+  console.log("end of input checks, this function is running");
   if (array.length > 0) {
     console.log(array[0].msg);
   }
 
-  console.log(name, email, password, confirmPassword);
+  console.log(name, email, password, confirmPassword, "<<===== from seperate");
 
   return { array, name, email, password, confirmPassword };
 };

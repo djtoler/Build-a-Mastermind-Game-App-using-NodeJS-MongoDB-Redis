@@ -9,8 +9,7 @@ const runUserRegistrationService = asyncHandler(async (req, res) => {
     const validationFailed = await runIsUserValidated(errorsArray, name, email, password, confirmPassword);
     const isUserCreated = await runCreateAndReturnNewUser(image, name, email, password) 
     
-    if (validationFailed) 
-        {return res.json(validationFailed)}
+    if (validationFailed) {return res.json(validationFailed)}
     
     isUserCreated.newUser ? 
         res.json({msg: isUserCreated.registrationSucceded, newUser: isUserCreated.newUser, token: isUserCreated.token}) 

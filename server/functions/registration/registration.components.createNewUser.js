@@ -6,35 +6,23 @@ const cloudinary = require("cloudinary").v2;
 
 const createAndReturnNewUser = async (image, name, email, password, token) => {
   const uploadedImage = await cloudinary.uploader
-    .upload(
-      image,
-      userCreationHelpers.userProfilePictureSettings,
-      userCreationHelpers.returnImage
-    )
-
+    .upload(image, userCreationHelpers.userProfilePictureSettings, userCreationHelpers.returnImage )
     .then(async (uploadedImage) => {
       let currentDatabase = async () => await currentDatabaseInUse();
-      console.log(await currentDatabase());
+      console.log(await currentDatabase(), "cdb from line7");
       let getCurrentDatabase = await currentDatabase()
       const user = await getCurrentDatabase.createNewUser(  name,  email,  password,  uploadedImage);
     });
   
     let currentDatabase1 = async () => await currentDatabaseInUse();
-    // console.log(await currentDatabase());
+    console.log('await currentDatabase()<<<==== at db');
     let getCurrentDatabase1 = await currentDatabase1()
     const newUserCreated = await getCurrentDatabase1.getUser(email);
 
   async function passwordMatch(enteredPassword) {
-    const match2 = await bcrypt.compare(
-      enteredPassword,
-      newUserCreated.password
-    );
-    console.log(
-      enteredPassword,
-      " input <-------------> hash",
-      newUserCreated.password
-    );
-    console.log(match2);
+    const match2 = await bcrypt.compare(enteredPassword, newUserCreated.password);
+    console.log(  enteredPassword,  " input <-------------> hash",  newUserCreated.password);
+    console.log(match2, "<==== match2");
     return match2;
   }
 

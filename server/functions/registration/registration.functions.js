@@ -1,20 +1,8 @@
-const {
-  validation_helpers,
-  userCreationHelpers,
-  dl_NotAlreadyRegistered,
-  dl_CreateNewUser,
-  dl_ReturnNewlyCreatedUser,
-} = require("./registration.helpers");
+const {  validation_helpers,  userCreationHelpers,  dl_NotAlreadyRegistered,  dl_CreateNewUser,  dl_ReturnNewlyCreatedUser,} = require("./registration.helpers");
 const cloudinary = require("cloudinary").v2;
 const generate_token = require("../../config/token");
 
-const input_validation = async (
-  array,
-  name,
-  email,
-  password,
-  confirmPassword
-) => {
+const input_validation = async (  array,  name,  email,  password,  confirmPassword) => {
   array = Array.from(array);
 
   if (!name || !email || !password || !confirmPassword) {
@@ -45,28 +33,19 @@ const input_validation = async (
 
 const createAndReturnNewUser = async (image, name, email, password, token) => {
   const uploadedImage = await cloudinary.uploader
-    .upload(
-      image,
-      userCreationHelpers.userProfilePictureSettings,
-      userCreationHelpers.returnImage
-    )
+    .upload(image, userCreationHelpers.userProfilePictureSettings, userCreationHelpers.returnImage)
     .then(async (uploadedImage) => {
       const user = await dl_CreateNewUser(name, email, password, uploadedImage);
       user.save();
-    });
+  });
 
+  console.log('created new user');
+  
   const newUserCreated = await dl_ReturnNewlyCreatedUser(email);
 
   async function passwordMatch(enteredPassword) {
-    const match2 = await bcrypt.compare(
-      enteredPassword,
-      newUserCreated.password
-    );
-    console.log(
-      enteredPassword,
-      " input <-------------> hash",
-      newUserCreated.password
-    );
+    const match2 = await bcrypt.compare(enteredPassword, newUserCreated.password);
+    console.log(enteredPassword, " input <-------------> hash", newUserCreated.password);
     console.log(match2);
     return match2;
   }

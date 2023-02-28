@@ -132,11 +132,12 @@ const updateCurrentGameData = async (  currentUser,  currentGame,  theCurrentGam
   correctDigitsPoints = correctDigitsPoints * guessEvaluationResults.totalCorrectNumbersCount;
   correctLocationPoints = correctLocationPoints * guessEvaluationResults.totalCorrectLocationsCount;
   totalPoints = correctDigitsPoints + correctLocationPoints;
-
-  console.log(correctDigitsPoints, correctLocationPoints, totalPoints, '<<<------, points');
-
-  // await updateCurrentGamesUserData(  currentUser,  correctLocationPoints,  correctDigitsPoints);
   const gameRoundObject = await updateCurrentGamesData(  currentGame,  correctLocationPoints,  correctDigitsPoints,  guessEvaluationResults,  theCurrentGamesMode,  currentRandomNumberFromRequestBody);
+  
+  
+  
+  
+  
   console.log(gameRoundObject, 'game roundobj!!!!: ',);
   console.log('helping guess event!!!!: ', theCurrentGamesMode, correctLocationPoints, correctDigitsPoints, guessEvaluationResults);
 

@@ -32,10 +32,8 @@ const verifiyVisitorLoginCredentials = async (  currentDatabase,  email,  passwo
   let isValidUserEmail = null;
   const user = await currentDatabase.getUser(email);
 
-  if (!user) {
-    isValidUserEmail = false;
-    return { isValidUserEmail,  couldntFindUser: loginValidationHelpers.couldntFindUser};
-  }
+  if (!user) {isValidUserEmail = false;
+    return { isValidUserEmail,  couldntFindUser: loginValidationHelpers.couldntFindUser};}
   return user;
 };
 
@@ -61,13 +59,9 @@ const authenticateVisitorLoginCredentials = async (user, password) => {
 const authorizeUserToStartGame = async (email, password) => {
   const runUserValidation = await validateVisitorLoginInput(email, password);
   if (runUserValidation.isValidLoginInput == false) { return;}
-
   let currentDatabase = await currentDatabaseInUse();
-
   let runUserVerification = await verifiyVisitorLoginCredentials(  currentDatabase,  email,  password);
-  
   const user = runUserVerification;
-
   const isAuthorizedUser = await authenticateVisitorLoginCredentials(  user,  password);
   return isAuthorizedUser;
 };

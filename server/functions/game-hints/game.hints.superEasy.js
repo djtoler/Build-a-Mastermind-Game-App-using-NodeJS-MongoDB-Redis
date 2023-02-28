@@ -7,11 +7,15 @@ async function randomImageIDSelector(numberOfRandomDigitsToLoopThrough) {
 
 async function returnRandomHintImageKeysFromCache (numberOfRandomDigitsToLoopThrough, theCurrentGamesRandomNumber) {
     const cacheEngine = (await currentCacheEngine()).client
-    let arrayUsedAsCachedKeyStringValue = [],  arrayHoldingNewlyGeneratedCachedImageObjects = [], i = 0;
+    let arrayUsedAsCachedKeyStringValue = []
+    let arrayHoldingNewlyGeneratedCachedImageObjects = [] 
+    let i = 0;
 
     const imageIDReferenceNumberToSelectARandomImage = await randomImageIDSelector(numberOfRandomDigitsToLoopThrough);
     while (i < numberOfRandomDigitsToLoopThrough) {
-        arrayUsedAsCachedKeyStringValue[i] = `hintData_${theCurrentGamesRandomNumber.charAt(i)}${imageIDReferenceNumberToSelectARandomImage}`;
+        arrayUsedAsCachedKeyStringValue[i] = 
+        `hintData_${theCurrentGamesRandomNumber.charAt(i)}${imageIDReferenceNumberToSelectARandomImage}`;
+    
         arrayHoldingNewlyGeneratedCachedImageObjects.push(await cacheEngine.get(arrayUsedAsCachedKeyStringValue[i]))
         i++;
     }
@@ -19,12 +23,14 @@ async function returnRandomHintImageKeysFromCache (numberOfRandomDigitsToLoopThr
 }
 
 async function returnSuperEasyHints (numberOfRandomDigitsToLoopThrough, theCurrentGamesRandomNumber) {
-    const arrayOfRandomHintImageKeys = await returnRandomHintImageKeysFromCache(numberOfRandomDigitsToLoopThrough, theCurrentGamesRandomNumber)
+    const arrayOfRandomHintImageKeys = 
+        await returnRandomHintImageKeysFromCache(numberOfRandomDigitsToLoopThrough, theCurrentGamesRandomNumber)
+    
     let arrayToHoldCachedHintImageObjects = [];
     
     arrayOfRandomHintImageKeys.forEach((cachedHintImageObject)=> {
         let chachedImageObject = new Object();
-        let parsedHintImageObject = JSON.parse(cachedHintImageObject)
+        let parsedHintImageObject = JSON.parse(cachedHintImageObject);
         chachedImageObject = { caption: parsedHintImageObject.caption, image: parsedHintImageObject.image };
         arrayToHoldCachedHintImageObjects.push(chachedImageObject);
     })
