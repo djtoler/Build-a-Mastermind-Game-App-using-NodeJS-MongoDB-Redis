@@ -6,13 +6,13 @@ That number is either the 1/2, doubled or the cubed value of the random number
 
 ![MM-hard](https://github.com/djtoler/v1-mern/blob/main/assets/images/MM-hard.PNG)
 
-For example, in the picture above, the number sent to the user is 12544. 
+For example, in the picture above our random number is 6272. The number sent to the user is 12544. 
 
-- The 1/2 value = **6272**
-- The doubled value = **25088**
-- The cubed value = **19738227000000**
+- The 1/2 value = **3136**
+- The doubled value = **12544**
+- The cubed value = **246727835648**
 
-Our user has 10 seconds to guess the value of the random number before they lose the game and the page reloads
+Our user has 10 seconds to guess the value of the random number before they lose the game and the page reloads. In this case, our algorithm doubled our random number(6272) to 12544
 
 ![MM-hard1](https://github.com/djtoler/v1-mern/blob/main/assets/images/MM-hard1.PNG)
 
