@@ -44,7 +44,7 @@ The decisions, when building this project, were made with those practices top of
 
 ---
 
-![Untitled](Untitled%201.png)
+![MM-log10](https://github.com/djtoler/v1-mern/blob/main/assets/images/MM-log10.png)
 
 ## **Game Landing Page Component**
 
@@ -52,7 +52,7 @@ The decisions, when building this project, were made with those practices top of
 
 ---
 
-![Untitled](Untitled%202.png)
+![MM-LPGL](https://github.com/djtoler/v1-mern/blob/main/assets/images/MM-LPGL.png)
 
 ## **Game Hints Components**
 
@@ -60,21 +60,21 @@ The decisions, when building this project, were made with those practices top of
 
 [Super Easy: When the game is played in ‘superEasy’ mode…](Super%20Easy%20When%20the%20game%20is%20played%20in%20%E2%80%98superEasy%E2%80%99%20%20da6694236b0f4f988416c1c80cc385c1.md)
 
-![supereasy.PNG](supereasy.png)
+![MM-superEasy](https://github.com/djtoler/v1-mern/blob/main/assets/images/MM-superEasy.PNG)
 
 ---
 
 [**Easy:** When the game is played in “Easy” mode, a user is provided a range of numbers that contains…](Easy%20When%20the%20game%20is%20played%20in%20%E2%80%9CEasy%E2%80%9D%20mode,%20a%20use%206f9ae464bc7c4decacd45d0e30f3566d.md)
 
-![Untitled](Untitled%203.png)
+![MM-easy](https://github.com/djtoler/v1-mern/blob/main/assets/images/MM-easy.PNG)
 
 [Hard: When the game is played in ‘Hard” mode…](Hard%20When%20the%20game%20is%20played%20in%20%E2%80%98Hard%E2%80%9D%20mode%E2%80%A6%20f726856e28f74e82a84e9a8739817bbc.md)
 
-![hard.PNG](hard.png)
+![MM-hard](https://github.com/djtoler/v1-mern/blob/main/assets/images/MM-hard.PNG)
 
 [Super Hard: When the game is played in “Super Hard” mode…](Super%20Hard%20When%20the%20game%20is%20played%20in%20%E2%80%9CSuper%20Hard%E2%80%9D%20a0ac019bc0cd457c97bb7d3512d6049b.md)
 
-![superhard.PNG](superhard.png)
+![MM-superHard](https://github.com/djtoler/v1-mern/blob/main/assets/images/MM-superHard.png)
 
 ## **Takeaways:**
 
