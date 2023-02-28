@@ -5,7 +5,7 @@ Date: December 14, 2021
 My Role: Backend Logic, UI/UX
 Project Overview: This application was built as a full-stack take home project during an apprenticeship interview process
 
-![mastermind.png](mastermind.png)
+![mastermind](https://github.com/djtoler/v1-mern/blob/main/assets/images/mastermind.png)
 
 ## Project Overview:
 
@@ -36,7 +36,7 @@ The decisions, when building this project, were made with those practices top of
 
 [Registration: Our Registration component is the first component, on the first page a user lands on… ](Registration%20Our%20Registration%20component%20is%20the%20fir%205d686ec2dfee4238a2463fd41e672e51.md)
 
-![Untitled](Untitled.png)
+![MM-reg](https://github.com/djtoler/v1-mern/blob/main/assets/images/MM-reg.png)
 
 ## **Login Component**
 
