@@ -2,7 +2,7 @@
 
 **Easy:** When the game is played in “Easy” mode, a user is provided a range of numbers that contains the [random number generated to start a game](https://github.com/djtoler/v1-mern/blob/main/server/functions/game-features/game.features.getRandomNumber.js) based on your guess attempts.
 
-![Untitled](Untitled%203.png)
+![MM-easy](https://github.com/djtoler/v1-mern/blob/main/assets/images/MM-easy.PNG)
 
 For example, if the random number is 5462 and your initial guess attempt is 6098, your hint will tell you to lower your guess number & that the random number is between 0 and 6097. 
 
@@ -12,7 +12,7 @@ To make this happen, we use a [binary search algorithm](https://en.wikipedia.org
 
 We know that a binary search runs in [logarithmic time](https://en.wikipedia.org/wiki/Time_complexity#Logarithmic_time). 
 
-![https://www.doabledanny.com/static/08327c46dbd718a1d2c0c65bd05b801b/1.gif](https://www.doabledanny.com/static/08327c46dbd718a1d2c0c65bd05b801b/1.gif)
+![MM-easy2](https://github.com/djtoler/v1-mern/blob/main/assets/images/MM-easy2.gif)
 
 For our case, that means that if a user guesses a number that's near the middle of the provided number range, the total number of possible correct guess reduces to nearly 1/2 of however many possible correct guesses were available right before the  current guess was made.       
 
@@ -20,7 +20,7 @@ This will increase the odds of making a correct guess from about 1 in 10,000 att
 
 The following is our code implementation of this feature
 
-![Untitled](Untitled%2041.png)
+![MM-easy1](https://github.com/djtoler/v1-mern/blob/main/assets/images/MM-easy1.png)
 
 In line 5, we start building our function called “[returnEasyHints](https://github.com/djtoler/v1-mern/blob/8d536bb23cf1f59a736fba02426b111a5fd5e7aa/server/functions/game-hints/game.hints.easy.js#L5)”. 
 
