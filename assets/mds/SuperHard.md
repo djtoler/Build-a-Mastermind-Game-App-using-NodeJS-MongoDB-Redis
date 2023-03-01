@@ -8,11 +8,12 @@ Our 4-digit random number is hidden within a 13 digit hint number and our user h
 
 For example… In the image above on the right side , our [randomNumber](https://github.com/djtoler/v1-mern/blob/8d536bb23cf1f59a736fba02426b111a5fd5e7aa/server/functions/game-features/game.features.getRandomNumber.js#L6) is “**3070**” and on the left side of the image, our 13 digit random hint number is “31979267**3070**4”. 
 
-![MM-superHard2](https://github.com/djtoler/v1-mern/blob/main/assets/images/MM-superHard2.png)
+![MM-superHard1](https://github.com/djtoler/v1-mern/blob/main/assets/images/MM-superHard1.png)
+
 
 To implement this feature, we start out with [a function that generates a random number at line 1](https://github.com/djtoler/v1-mern/blob/8d536bb23cf1f59a736fba02426b111a5fd5e7aa/server/functions/game-hints/game.hints.superHard.js#L1). 
 
-![MM-superHard1](https://github.com/djtoler/v1-mern/blob/main/assets/images/MM-superHard1.png)
+![MM-superHard2](https://github.com/djtoler/v1-mern/blob/main/assets/images/MM-superHard2.png)
 
 At line 5, we make another function called [hideRandomNumberBetweenTwoRandomNumbers](https://github.com/djtoler/v1-mern/blob/8d536bb23cf1f59a736fba02426b111a5fd5e7aa/server/functions/game-hints/game.hints.superHard.js#L5). This function takes 3 parameters…
 
