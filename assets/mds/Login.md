@@ -2,7 +2,7 @@
 
 For example, when after a visitor registers, a user profile is built for them based on their registration input
 
-![Untitled](Untitled%204.png)
+![MM-log](https://github.com/djtoler/v1-mern/blob/main/assets/images/MM-log.png)
 
 When a user logs into the application, their user data is updated and game playing activity is tracked and updated as well.
 
@@ -12,7 +12,7 @@ We do this in our [login.functions.js](https://github.com/djtoler/v1-mern/blob/m
 
 At line 8, we write our first function called [“*validateVisitorLoginInput”*](https://github.com/djtoler/v1-mern/blob/8d536bb23cf1f59a736fba02426b111a5fd5e7aa/server/functions/login/login.functions.js#L8).
 
-![Untitled](Untitled%205.png)
+![mm-log1](https://github.com/djtoler/v1-mern/blob/main/assets/images/mm-log1.png)
 
 This function uses [conditional statements](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/if...else) to validate a users input to make sure they enter all the required info in the login form. Passwords and emails are required and should be a certain length
 
@@ -22,7 +22,7 @@ If all of the inputs are valid, we set the **isValidLoginInput** variable to tru
 
 Next, we write our function called “[*verifiyVisitorLoginCredentials](https://github.com/djtoler/v1-mern/blob/8d536bb23cf1f59a736fba02426b111a5fd5e7aa/server/functions/login/login.functions.js#L31)”*.
 
-![Untitled](Untitled%206.png)
+![MM-log2](https://github.com/djtoler/v1-mern/blob/main/assets/images/MM-log2.png)
 
 This function takes the email input and searches for that email in whatever database we’re currently using as seen at line 33. 
 
@@ -32,17 +32,17 @@ Once more, we use a [conditional statement](https://developer.mozilla.org/en-US/
 
 Our 3rd function at line 42 is called *“[authenticateVisitorLoginCredentials](https://github.com/djtoler/v1-mern/blob/8d536bb23cf1f59a736fba02426b111a5fd5e7aa/server/functions/login/login.functions.js#L42)”*.
 
-![Untitled](Untitled%207.png)
+![MM-log3](https://github.com/djtoler/v1-mern/blob/main/assets/images/MM-log3.png)
 
 We authenticate our user by checking the password they entered against the password stored for that user profile.
 
 If it doesn’t match, we return an error message, if it does, we return a success object.
 
-![Untitled](Untitled%208.png)
+![MM-log4](https://github.com/djtoler/v1-mern/blob/main/assets/images/MM-log4.png)
 
 Finally our last function is called “[*authorizeUserToStartGame](https://github.com/djtoler/v1-mern/blob/8d536bb23cf1f59a736fba02426b111a5fd5e7aa/server/functions/login/login.functions.js#L61)”*.
 
-![Untitled](Untitled%209.png)
+![MM-log5](https://github.com/djtoler/v1-mern/blob/main/assets/images/MM-log5.png)
 
 From lines 62 to 71, we set the return values of all 3 of the previous functions and our current database implementation to variables and return the results.
 
@@ -50,7 +50,7 @@ This function is then exported to be used in [cache.user.login.js](https://githu
 
 In the cache.user.login file at line 7, we run a function called **findUserFromLoginInCache** that attempts to find a user from our in memory cache engine (Redis) before attempting to find the user from our database.
 
-![Untitled](Untitled%2010.png)
+![MM-log6](https://github.com/djtoler/v1-mern/blob/main/assets/images/MM-log6.png)
 
 Line 8-10 we validate the users input with a simple conditional statement. If the input is validated, we move forward
 
@@ -66,7 +66,7 @@ Finally the *“[authorizeUserToStartGame](https://github.com/djtoler/v1-mern/bl
 
 Our *“[findUserFromLoginInCache](https://github.com/djtoler/v1-mern/blob/8d536bb23cf1f59a736fba02426b111a5fd5e7aa/server/cache/cache.user.login.js#L7)*” function is required in our user controller in the [controller.users.login file](https://github.com/djtoler/v1-mern/blob/main/server/api/controllers/controller.users.login.js).
 
-![Untitled](Untitled%2011.png)
+![MM-log7](https://github.com/djtoler/v1-mern/blob/main/assets/images/MM-log7.png)
 
 At line 5, we make a function called *[“runUserLoginService”](https://github.com/djtoler/v1-mern/blob/main/server/api/controllers/controller.users.login.js).*  
 
@@ -76,4 +76,4 @@ The results are returned in a JSON response at line 8 and the function is export
 
 Finally the function is exported and required on our [routes/user.js](https://github.com/djtoler/v1-mern/blob/main/server/api/routes/users.js) file which is located in our **server/api/routes** module, where it waits for a post request from out client side.
 
-![Untitled](Untitled%2012.png)
+![MM-log8](https://github.com/djtoler/v1-mern/blob/main/assets/images/MM-log8.png)
