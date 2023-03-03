@@ -9,6 +9,7 @@ Date: Fall 2023
 My Role: Backend Logic, UI/UX
 
 Project Overview: This application was built as a full-stack take home project during an apprenticeship interview process (with a backend focus)
+---
 
 ## Project Overview:
 
