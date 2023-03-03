@@ -32,28 +32,28 @@ I’ve learned that modern applications are designed and built prioritizing thin
 
 ### **Registration Component**
 
-- [Registration: Our Registration component is the first component, on the first page a user lands on… ](Registration%20Our%20Registration%20component%20is%20the%20fir%205d686ec2dfee4238a2463fd41e672e51.md)
+- [Registration: Our Registration component is the first component, on the first page a user lands on… ](https://github.com/djtoler/v1-mern/blob/main/assets/mds/Registration.md)
 
 ### **Login Component**
 
-- [Login: Our **Login component is the 2nd component on the first page a user lands on... **](Login%20Our%20Login%20component%20is%20the%202nd%20component%20on%20%2086357e93c2eb4ea68f8b85fe7bf703e2.md)
+- [Login: Our Login component is the 2nd component on the first page a user lands on... ](https://github.com/djtoler/v1-mern/blob/main/assets/mds/Login.md)
 
 ### **Game Landing Page Component**
 
-- [Game Logic:  When a game is started, a random number is generated…](Game%20Logic%20When%20a%20game%20is%20started,%20a%20random%20number%203178fcf98b0c4b4ba287896906a8b663.md)
+- [Game Logic:  When a game is started, a random number is generated…](https://github.com/djtoler/v1-mern/blob/main/assets/mds/LandingPage-GameLogic.md)
 
 ### **Game Hints Components**
 
-- [Super Easy: When the game is played in ‘superEasy’ mode…](Super%20Easy%20When%20the%20game%20is%20played%20in%20%E2%80%98superEasy%E2%80%99%20%20da6694236b0f4f988416c1c80cc385c1.md)
+- [Super Easy: When the game is played in 'superEasy' mode…](https://github.com/djtoler/v1-mern/blob/main/assets/mds/SuperEasy.md)
 
 
-- [**Easy:** When the game is played in “Easy” mode, a user is provided a range of numbers that contains…](Easy%20When%20the%20game%20is%20played%20in%20%E2%80%9CEasy%E2%80%9D%20mode,%20a%20use%206f9ae464bc7c4decacd45d0e30f3566d.md)
+- [**Easy:** When the game is played in 'Easy' mode, a user is provided a range of numbers that contains…](https://github.com/djtoler/v1-mern/blob/main/assets/mds/Easy.md)
 
 
-- [Hard: When the game is played in ‘Hard” mode…](Hard%20When%20the%20game%20is%20played%20in%20%E2%80%98Hard%E2%80%9D%20mode%E2%80%A6%20f726856e28f74e82a84e9a8739817bbc.md)
+- [Hard: When the game is played in 'Hard' mode…](https://github.com/djtoler/v1-mern/blob/main/assets/mds/Hard.md)
 
 
-- [Super Hard: When the game is played in “Super Hard” mode…](Super%20Hard%20When%20the%20game%20is%20played%20in%20%E2%80%9CSuper%20Hard%E2%80%9D%20a0ac019bc0cd457c97bb7d3512d6049b.md)
+- [Super Hard: When the game is played in 'Super Hard' mode…](https://github.com/djtoler/v1-mern/blob/main/assets/mds/SuperHard.md)
 ---
 
 ## **Takeaways:**
