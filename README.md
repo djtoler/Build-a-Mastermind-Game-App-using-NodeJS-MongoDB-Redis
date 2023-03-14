@@ -33,6 +33,19 @@ I’ve learned that modern applications are designed and built prioritizing thin
 
 ---
 
+## Running the Project:
+1. Clone the repo by running the following command: **`git clone https://github.com/djtoler/mastermind.git`**
+
+2. Run **`npm install`** to install server dependencies
+
+3. **`cd`** into the **`client`** directory and run **`npm install`** to install the client dependencies
+   
+4. While still inside the **`client`** directory, use **`npm start`** to run the frontend 
+   
+5. **`cd..`** back into the root directory, then **`cd`** into the **`server`** directory and use **`npm start`** to start our backend
+
+---
+
 ## Code Explinations:
 
 ### **Registration Component**
