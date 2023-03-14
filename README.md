@@ -34,7 +34,7 @@ I’ve learned that modern applications are designed and built prioritizing thin
 ---
 
 ## Running the Project:
-1. Clone the repo by running the following command: **`git clone https://github.com/djtoler/mastermind.git`**
+1. Clone the repo by running the following command: **`git clone https://github.com/djtoler/MasterMind-Game.git`**
 
 2. Run **`npm install`** to install server dependencies
 
