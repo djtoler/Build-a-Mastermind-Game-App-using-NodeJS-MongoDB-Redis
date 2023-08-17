@@ -4,7 +4,7 @@
 
 Category: Software Engineering
 
-Date: Fall 2022
+Date: Fall/Wiinter 2022
 
 My Role: Backend Logic, UI/UX
 
