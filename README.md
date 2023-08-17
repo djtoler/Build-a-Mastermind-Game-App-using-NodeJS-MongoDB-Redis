@@ -80,3 +80,5 @@ I’ve learned that modern applications are designed and built prioritizing thin
 ✅ This project helped us to learn more about the process implementing methods to make an application more scalable, flexible, reliable and faster. We’ll continue to use this project to implement and test new concepts we learn
 
 </aside>
+
+
